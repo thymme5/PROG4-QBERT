@@ -152,12 +152,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoilyComponent.cpp" />
+    <ClCompile Include="EggState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
+    <ClCompile Include="TransformingState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoilyComponent.h" />
+    <ClInclude Include="CoilyState.h" />
+    <ClInclude Include="EggState.h" />
     <ClInclude Include="GameUIComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HitCommand.h" />
@@ -165,6 +171,7 @@
     <ClInclude Include="PelletCommand.h" />
     <ClInclude Include="StopMovingCommand.h" />
     <ClInclude Include="TestCommand.h" />
+    <ClInclude Include="TransformingState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

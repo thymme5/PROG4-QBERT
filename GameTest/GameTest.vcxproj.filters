@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Coily">
+      <UniqueIdentifier>{26a4767c-6ceb-45c2-92ed-9cdba7bd8ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\States">
+      <UniqueIdentifier>{c8881497-dea1-44cc-b3dd-b42fb8f6011e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\States\EggState">
+      <UniqueIdentifier>{801837a9-e2e8-4911-8d01-12c535cc0df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\States\TransformingState">
+      <UniqueIdentifier>{a60d431b-f313-4f23-81ad-e47eba1445a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\States\ChasingState">
+      <UniqueIdentifier>{e2b61196-4ace-4fc6-ad64-19b167337ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Coily\States\DeadState">
+      <UniqueIdentifier>{0306ec7f-b57a-42f3-8b37-766228ed44b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="TestCommand.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoilyComponent.cpp">
+      <Filter>Coily</Filter>
+    </ClCompile>
+    <ClCompile Include="EggState.cpp">
+      <Filter>Coily\States\EggState</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformingState.cpp">
+      <Filter>Coily\States\TransformingState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +76,18 @@
     </ClInclude>
     <ClInclude Include="StopMovingCommand.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyComponent.h">
+      <Filter>Coily</Filter>
+    </ClInclude>
+    <ClInclude Include="CoilyState.h">
+      <Filter>Coily\States</Filter>
+    </ClInclude>
+    <ClInclude Include="EggState.h">
+      <Filter>Coily\States\EggState</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformingState.h">
+      <Filter>Coily\States\TransformingState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
