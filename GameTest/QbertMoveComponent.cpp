@@ -65,6 +65,7 @@ namespace dae
 
 	void QbertMoveComponent::TryMove(Direction direction)
 	{
+		//reject movement if we don't have tile information or if the bitch is already jumping
 		if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping) return;
 
 		auto textureComp = m_pOwner->GetComponent<TextureComponent>();
@@ -141,7 +142,7 @@ namespace dae
 		m_Jump.startPos = startPos;
 		m_Jump.endPos = endPos;
 		m_Jump.elapsed = 0.f;
-		m_Jump.duration = 0.3f;
+		m_Jump.duration = 0.4f;
 		m_Jump.isJumping = true;
 	}
 
