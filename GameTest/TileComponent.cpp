@@ -45,38 +45,33 @@ bool TileComponent::IsCompleted() const
 	return m_IsCompleted;
 }
 
-void TileComponent::OnStepped()
+void TileComponent::OnStepped(GameObject* actor)
 {
-	if (m_IsCompleted)
-		return;
+	if (m_CurrentState == TileState::Target) return;
 
-	//advance tile state logic
-	if (m_CurrentState == TileState::Default)
-		m_CurrentState = TileState::Intermediate;
-	else if (m_CurrentState == TileState::Intermediate)
-		m_CurrentState = TileState::Target;
+	m_CurrentState = TileState::Target;
+	m_IsCompleted = true;
 
-	//check if we hit target
-	if (m_CurrentState == m_TargetState)
-		m_IsCompleted = true;
+
+	actor->NotifyObservers(Event::TileStateChanged);
 
 	//Update texture (inactive now)
-	//auto* texture = GetOwner()->GetComponent<dae::TextureComponent>();
-	//if (texture)
-	//{
-	//	switch (m_CurrentState)
-	//	{
-	//	case TileState::Default:
-	//		texture->SetTexture("tile_default.png");
-	//		break;
-	//	case TileState::Intermediate:
-	//		texture->SetTexture("tile_mid.png");
-	//		break;
-	//	case TileState::Target:
-	//		texture->SetTexture("tile_target.png");
-	//		break;
-	//	}
-	//}
+	auto* texture = GetOwner()->GetComponent<dae::TextureComponent>();
+	if (texture)
+	{
+		switch (m_CurrentState)
+		{
+		case TileState::Default:
+			texture->SetTexture("testing/tile_default_test.png");
+			break;
+		//case TileState::Intermediate:
+		//	texture->SetTexture("tile_mid.png");
+		//	break;
+		case TileState::Target:
+			texture->SetTexture("testing/tile_finished_test.png");
+			break;
+		}
+	}
 }
 
 void dae::TileComponent::SetGridPosition(int row, int col)

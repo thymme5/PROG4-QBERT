@@ -5,11 +5,9 @@ namespace dae
 	class GameObject;
 	enum class Event
 	{
-		PlayerDie,
-		PlayerTookDamage,
-		PlayerDidDamage,
-		PlayerPickUpPellets10,
-		PlayerPickUpPellets100
+		PlayerDied,
+		PlayerLandedOnTile,
+		TileStateChanged
 	};
 
 	class Observer

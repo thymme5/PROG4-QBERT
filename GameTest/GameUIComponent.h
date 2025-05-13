@@ -10,7 +10,7 @@ namespace dae
     class GameUIComponent : public Component, public Observer
     {
     public:
-        GameUIComponent(GameObject& owner, int startingLives, int startingScore);
+        GameUIComponent(GameObject& owner);
 
         void OnNotify(Event event, GameObject* pGameObject) override;
 

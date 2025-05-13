@@ -6,8 +6,8 @@
 
 using namespace dae;
 
-GameUIComponent::GameUIComponent(GameObject& owner, int startingLives, int startingScore)
-    : Component(owner), m_Lives(startingLives), m_Score(startingScore)
+GameUIComponent::GameUIComponent(GameObject& owner)
+    : Component(owner), m_Lives( 3), m_Score( 0 )
 {
 
 }
@@ -20,24 +20,16 @@ void GameUIComponent::OnNotify(Event event, GameObject* pGameObject)
 
     switch (event)
     {
-    case dae::Event::PlayerDie:
-        UpdateLives();
+    case dae::Event::PlayerDied:
         break;
-    case dae::Event::PlayerTookDamage:
-        UpdateLives();
+    case dae::Event::PlayerLandedOnTile:
         break;
-    case dae::Event::PlayerDidDamage:
-        break;
-    case dae::Event::PlayerPickUpPellets10:
-        m_Score += 10;
-        break;
-    case dae::Event::PlayerPickUpPellets100:
-        m_Score += 100;
+    case dae::Event::TileStateChanged:
+        m_Score += 25;
         break;
     default:
         break;
     }
-
 }
 
 void GameUIComponent::UpdateLives()
@@ -55,7 +47,7 @@ void GameUIComponent::UpdateScore(int newScore)
 
 void GameUIComponent::Update() 
 {
-    std::string text{ "# Lives: " + std::to_string(m_Lives) + "\n" + "Score " + std::to_string(m_Score) };
+    std::string text{ "SCORE: " + std::to_string(m_Score) };
     m_pOwner->GetComponent<TextComponent>()->SetText(text);
 }
 

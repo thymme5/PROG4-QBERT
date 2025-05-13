@@ -157,7 +157,6 @@
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
-    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
     <ClCompile Include="TileComponent.cpp" />
@@ -168,11 +167,8 @@
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="EggState.h" />
     <ClInclude Include="GameUIComponent.h" />
-    <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="HitCommand.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="PelletCommand.h" />
     <ClInclude Include="QbertMoveComponent.h" />
     <ClInclude Include="TestCommand.h" />
     <ClInclude Include="TileComponent.h" />

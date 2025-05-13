@@ -12,8 +12,8 @@
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "InputManager.h"
+#include "SoundService.h"
 
-#include <iostream>
 
 //Components
 #include "TextComponent.h"
@@ -28,8 +28,6 @@
 //Commands
 #include "TestCommand.h"
 #include "MoveCommand.h"
-#include "HitCommand.h"
-#include "PelletCommand.h"
 
 //other misc
 #include "LevelBuilder.h"
@@ -63,6 +61,15 @@ void load()
 	qbertMove->SetCurrentTile(tileComp);
 	qbertMove->SetTileMap(LevelBuilder::GetTileComponentMap());
 
+	// === make a GameUIComponent and Put a tracker on qberts ass === 
+	go = std::make_shared<dae::GameObject>();
+	auto* gameUI = go->AddComponent<dae::GameUIComponent>(*go);
+	go->AddComponent<dae::TextComponent>(*go, " ", dae::ResourceManager::GetInstance().LoadFont("minecraft.ttf", 18));
+	go->SetPosition(5, 50);
+	qbert->AddObserver(gameUI);
+	scene.Add(go);
+
+	// === add qberts ass to the scene cuz he's important after all === 
 	scene.Add(qbert);
 
 	// === Input Binding for Qbert ===
@@ -99,10 +106,12 @@ void load()
 	//-------------------------------------------------------------------------------------------------
 	//SOUNDS
 	//-------------------------------------------------------------------------------------------------
-	auto soundService = dae::ServiceLocator::GetSoundService();
+	auto soundService = dae::ServiceLocator::GetSoundService(); 
 	if (soundService)
 	{
-		soundService->LoadSound("sounds/Change Selection.wav");
+		std::filesystem::path path = "../Data/Sounds/QBert Jump.wav";
+		std::cout << "Trying to load: " << std::filesystem::absolute(path) << "\n";
+		soundService->LoadSound("../Data/Sounds/QBert Jump.wav");
 	}
 }
 int main(int, char* [])

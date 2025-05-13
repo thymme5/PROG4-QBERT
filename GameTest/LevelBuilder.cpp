@@ -48,7 +48,7 @@ std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto tile = std::make_shared<dae::GameObject>();
 
-	tile->AddComponent<dae::TextureComponent>(*tile, "testing/tile_test.png", 2.0f);
+	tile->AddComponent<dae::TextureComponent>(*tile, "testing/tile_default_test.png", 2.0f);
 	tile->AddComponent<dae::TextComponent>(*tile, " ", font);
 
 	auto* tileComp = tile->AddComponent<dae::TileComponent>(*tile);

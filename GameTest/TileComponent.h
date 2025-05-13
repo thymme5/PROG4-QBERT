@@ -40,7 +40,7 @@ namespace dae
 		void SetTargetState(TileState targetState);
 		bool IsCompleted() const;
 
-		void OnStepped();
+		void OnStepped(GameObject* actor);
 
 		//grid position (coordinat system)
 		void SetGridPosition(int row, int col);

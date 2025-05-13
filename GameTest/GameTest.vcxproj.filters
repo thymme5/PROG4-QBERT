@@ -49,15 +49,12 @@
     <Filter Include="Game\Components\MoveComponent">
       <UniqueIdentifier>{70b1a7bb-eb75-4ff2-9b3c-0527c42a9059}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\GameUIComponent">
+      <UniqueIdentifier>{23239a7a-d3b4-4500-bc02-a84e0669852f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameUIComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestCommand.cpp">
@@ -81,24 +78,15 @@
     <ClCompile Include="QbertMoveComponent.cpp">
       <Filter>Game\Components\MoveComponent</Filter>
     </ClCompile>
+    <ClCompile Include="GameUIComponent.cpp">
+      <Filter>Game\Components\GameUIComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameUIComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MoveCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PelletCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TestCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HitCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CoilyComponent.h">
@@ -121,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="QbertMoveComponent.h">
       <Filter>Game\Components\MoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUIComponent.h">
+      <Filter>Game\Components\GameUIComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

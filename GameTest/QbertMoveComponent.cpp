@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "LevelBuilder.h"
 #include "TextureComponent.h"
+#include "SoundService.h"
 
 namespace dae
 {
@@ -23,13 +24,18 @@ namespace dae
 		{
 			m_pOwner->SetPosition(m_Jump.endPos.x, m_Jump.endPos.y);
 			m_Jump.isJumping = false;
+
+			//play sound and let tile know that it got stepped on 
+			dae::ServiceLocator::GetSoundService()->PlaySound("../Data/Sounds/QBert Jump.wav");
+			if (m_CurrentTile)
+				m_CurrentTile->OnStepped(m_pOwner);
 			return;
 		}
 
 		//crazy linear interpolation
 		glm::vec2 pos = glm::mix(m_Jump.startPos, m_Jump.endPos, t);
 
-		//math go brr
+		//math go brr brr (patapim)
 		const float arcHeight = 10.f;
 		pos.y -= sin(t * 3.14f * arcHeight);
 		
@@ -97,7 +103,6 @@ namespace dae
 
 		SDL_Rect src{ frameIndex * frameWidth, 0, frameWidth, frameHeight };
 		textureComp->SetSourceRect(src);
-
 
 		std::cout << "Trying move from (" << row << "," << col << ") to (" << newRow << "," << newCol << ")\n";
 
