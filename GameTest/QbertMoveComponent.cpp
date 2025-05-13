@@ -65,7 +65,7 @@ namespace dae
 
 	void QbertMoveComponent::TryMove(Direction direction)
 	{
-		if (!m_CurrentTile || !m_pTileMap) return;
+		if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping) return;
 
 		auto textureComp = m_pOwner->GetComponent<TextureComponent>();
 		if (!textureComp) return;
