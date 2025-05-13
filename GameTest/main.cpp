@@ -54,9 +54,9 @@ void load()
 	go->AddComponent<dae::FPScounterComponent>(*go);
 	scene.Add(go);
 
-	// === Q*bert GameObject ===
+	// === Qbert GameObject ===
 	auto qbert = std::make_shared<dae::GameObject>();
-	qbert->AddComponent<dae::TextureComponent>(*qbert, "testing/qbert_test_character.png", 2.f);
+	qbert->AddComponent<dae::TextureComponent>(*qbert, "Qbert P1 Spritesheet.png", 2.f, 4);
 	qbert->AddComponent<dae::QbertMoveComponent>(*qbert);
 	auto qbertMove = qbert->GetComponent<dae::QbertMoveComponent>();
 
@@ -65,7 +65,7 @@ void load()
 
 	scene.Add(qbert);
 
-	// === Input Binding for Q*bert ===
+	// === Input Binding for Qbert ===
 	using D = Direction;
 
 	//UP = UpLeft

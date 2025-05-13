@@ -33,10 +33,10 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 
 			m_TilesByRow[row].push_back(tile);
 
-			//todo: remove debug text
-			auto [rowTest, colTest] = tileComp->GetGridPosition();
-			std::string coords = "(" + std::to_string(rowTest) + "," + std::to_string(colTest) + ")";
-			tile->AddComponent<dae::TextComponent>(*tile, coords, dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
+			// === DEBUG TEXT ===
+			//auto [rowTest, colTest] = tileComp->GetGridPosition();
+			//std::string coords = "(" + std::to_string(rowTest) + "," + std::to_string(colTest) + ")";
+			//tile->AddComponent<dae::TextComponent>(*tile, coords, dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
 
 			scene.Add(tile);
 		}

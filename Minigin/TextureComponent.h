@@ -13,15 +13,22 @@ namespace dae
 	class TextureComponent final : public Component
 	{
 	public:
-		TextureComponent(GameObject& pOwner, const std::string& filename, float scale = 1.f);
+		TextureComponent(GameObject& pOwner, const std::string& filename, float scale = 1.f, int frames = 0);
 		virtual ~TextureComponent();
 		void Update() override;
 		void Render() const override;
 
 		void SetTexture(const std::string& filename);
+		void SetSourceRect(const SDL_Rect& srcRect);
+		void ClearSourceRect();
+
+		float GetWidth() const noexcept;
+		float GetHeight() const noexcept;
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
 		float m_Scale;
+		SDL_Rect m_SrcRect{ 0, 0, 0, 0 };
+		bool m_UseSrcRect{ false };
 	};
 }
 
