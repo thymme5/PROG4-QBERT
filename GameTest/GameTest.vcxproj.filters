@@ -13,23 +13,41 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Coily">
+    <Filter Include="Game">
+      <UniqueIdentifier>{3108d809-3fff-4faf-a959-8ab176a64912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Coily">
       <UniqueIdentifier>{26a4767c-6ceb-45c2-92ed-9cdba7bd8ce2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coily\States">
+    <Filter Include="Game\Coily\States">
       <UniqueIdentifier>{c8881497-dea1-44cc-b3dd-b42fb8f6011e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coily\States\EggState">
+    <Filter Include="Game\Coily\States\EggState">
       <UniqueIdentifier>{801837a9-e2e8-4911-8d01-12c535cc0df6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coily\States\TransformingState">
+    <Filter Include="Game\Coily\States\TransformingState">
       <UniqueIdentifier>{a60d431b-f313-4f23-81ad-e47eba1445a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coily\States\ChasingState">
+    <Filter Include="Game\Coily\States\ChasingState">
       <UniqueIdentifier>{e2b61196-4ace-4fc6-ad64-19b167337ac2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Coily\States\DeadState">
+    <Filter Include="Game\Coily\States\DeadState">
       <UniqueIdentifier>{0306ec7f-b57a-42f3-8b37-766228ed44b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Level">
+      <UniqueIdentifier>{2417b65d-0e20-45e3-9c26-e8314dd57a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Level\TileComponent">
+      <UniqueIdentifier>{d70e4844-cc36-4e79-9d8f-6cc562c7243e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Qbert">
+      <UniqueIdentifier>{ec6de505-445a-400f-8612-1f646f667ff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components">
+      <UniqueIdentifier>{5a67706d-b9b5-45f1-9d32-7191b2862869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\MoveComponent">
+      <UniqueIdentifier>{70b1a7bb-eb75-4ff2-9b3c-0527c42a9059}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,13 +64,22 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoilyComponent.cpp">
-      <Filter>Coily</Filter>
+      <Filter>Game\Coily</Filter>
     </ClCompile>
     <ClCompile Include="EggState.cpp">
-      <Filter>Coily\States\EggState</Filter>
+      <Filter>Game\Coily\States\EggState</Filter>
     </ClCompile>
     <ClCompile Include="TransformingState.cpp">
-      <Filter>Coily\States\TransformingState</Filter>
+      <Filter>Game\Coily\States\TransformingState</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Game\Level\TileComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Game\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertMoveComponent.cpp">
+      <Filter>Game\Components\MoveComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,20 +101,26 @@
     <ClInclude Include="HitCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StopMovingCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CoilyComponent.h">
-      <Filter>Coily</Filter>
+      <Filter>Game\Coily</Filter>
     </ClInclude>
     <ClInclude Include="CoilyState.h">
-      <Filter>Coily\States</Filter>
+      <Filter>Game\Coily\States</Filter>
     </ClInclude>
     <ClInclude Include="EggState.h">
-      <Filter>Coily\States\EggState</Filter>
+      <Filter>Game\Coily\States\EggState</Filter>
     </ClInclude>
     <ClInclude Include="TransformingState.h">
-      <Filter>Coily\States\TransformingState</Filter>
+      <Filter>Game\Coily\States\TransformingState</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Game\Level\TileComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>Game\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertMoveComponent.h">
+      <Filter>Game\Components\MoveComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

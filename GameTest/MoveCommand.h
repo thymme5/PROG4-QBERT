@@ -1,36 +1,26 @@
 #pragma once
-#include <memory>
-
 #include "Command.h"
-#include "GameObject.h"
-#include "MoveComponent.h"
+#include "QbertMoveComponent.h"
 
 namespace dae
 {
     class MoveCommand : public Command
     {
     public:
-        MoveCommand(GameObject* pGameObject, MovementState movementState, float speed)
-            : m_pGameObject(pGameObject), m_MovementState(movementState), m_Speed(speed)
-        {
-            //if no MoveComponent exists, add one and set movement state
-            if (!m_pGameObject->HasComponent<MoveComponent>())
-            {
-                m_pGameObject->AddComponent<MoveComponent>(*m_pGameObject, m_Speed);
-            }
+        MoveCommand(GameObject* pGameObject, Direction dir)
+            : m_pGameObject(pGameObject), m_Direction(dir) {
         }
 
         void Execute() override
         {
-            if (m_pGameObject->HasComponent<MoveComponent>())
+            if (m_pGameObject->HasComponent<QbertMoveComponent>())
             {
-                m_pGameObject->GetComponent<MoveComponent>()->SetMovementState(m_MovementState);
+                m_pGameObject->GetComponent<QbertMoveComponent>()->TryMove(m_Direction);
             }
         }
 
     private:
-        GameObject* m_pGameObject;
-        MovementState m_MovementState;
-        float m_Speed;
+        GameObject* m_pGameObject{};
+        Direction m_Direction{};
     };
 }

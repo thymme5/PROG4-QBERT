@@ -15,28 +15,24 @@
 
 #include <iostream>
 
-
-//for testing purposes
-#include <windows.h>
-
-
 //Components
 #include "TextComponent.h"
 #include "TextureComponent.h"
 #include "FPScounterComponent.h"
 #include "ImGuiComponent.h"
 #include "GameUIComponent.h"
-#include "MoveComponent.h"
 #include "CoilyComponent.h"
 #include "EggState.h"
+#include "TileComponent.h"
 
 //Commands
-#include "StopMovingCommand.h"
 #include "TestCommand.h"
 #include "MoveCommand.h"
 #include "HitCommand.h"
 #include "PelletCommand.h"
 
+//other misc
+#include "LevelBuilder.h"
 
 void load()
 {
@@ -46,6 +42,13 @@ void load()
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
+	// === Level Loading ===
+	LevelBuilder::LoadLevel1(scene);
+	auto tileMap = LevelBuilder::GetTileMap();
+	auto tileGO = tileMap[0][0];
+	auto tileComp = std::shared_ptr<dae::TileComponent>(tileGO->GetComponent<dae::TileComponent>(), [](dae::TileComponent*) {});
+
+	// === FPS counter ===
 	go = std::make_shared<dae::GameObject>();
 	go->AddComponent<dae::TextComponent>(*go, "0 FPS", font);
 	go->AddComponent<dae::FPScounterComponent>(*go);
@@ -54,30 +57,33 @@ void load()
 	// === Q*bert GameObject ===
 	auto qbert = std::make_shared<dae::GameObject>();
 	qbert->AddComponent<dae::TextureComponent>(*qbert, "testing/qbert_test_character.png", 2.f);
-	qbert->AddComponent<dae::MoveComponent>(*qbert, 10.0f);
-	qbert->SetPosition(25, 25);
+	qbert->AddComponent<dae::QbertMoveComponent>(*qbert);
+	auto qbertMove = qbert->GetComponent<dae::QbertMoveComponent>();
+
+	qbertMove->SetCurrentTile(tileComp);
+	qbertMove->SetTileMap(LevelBuilder::GetTileComponentMap());
+
+
 	scene.Add(qbert);
 
 	// === Input Binding for Q*bert ===
-	auto qbertMoveUp = std::make_shared<dae::MoveCommand>(qbert.get(), dae::MovementState::MovingUp, 2.0f);
-	inputManager.BindCommand(GamepadButton::DPadUp, KeyState::Down, qbertMoveUp);
-	auto qbertStopUp = std::make_shared<dae::StopMovingCommand>(qbert.get());
-	inputManager.BindCommand(GamepadButton::DPadUp, KeyState::Up, qbertStopUp);
+	using D = Direction;
 
-	auto qbertMoveDown = std::make_shared<dae::MoveCommand>(qbert.get(), dae::MovementState::MovingDown, 2.0f);
-	inputManager.BindCommand(GamepadButton::DPadDown, KeyState::Down, qbertMoveDown);
-	auto qbertStopDown = std::make_shared<dae::StopMovingCommand>(qbert.get());
-	inputManager.BindCommand(GamepadButton::DPadDown, KeyState::Up, qbertStopDown);
+	//UP = UpLeft
+	auto moveUL = std::make_shared<dae::MoveCommand>(qbert.get(), D::UpLeft);
+	inputManager.BindCommand(GamepadButton::DPadUp, KeyState::Down, moveUL);
 
-	auto qbertMoveLeft = std::make_shared<dae::MoveCommand>(qbert.get(), dae::MovementState::MovingLeft, 2.0f);
-	inputManager.BindCommand(GamepadButton::DPadLeft, KeyState::Down, qbertMoveLeft);
-	auto qbertStopLeft = std::make_shared<dae::StopMovingCommand>(qbert.get());
-	inputManager.BindCommand(GamepadButton::DPadLeft, KeyState::Up, qbertStopLeft);
+	//RIGHT = UpRight
+	auto moveUR = std::make_shared<dae::MoveCommand>(qbert.get(), D::UpRight);
+	inputManager.BindCommand(GamepadButton::DPadRight, KeyState::Down, moveUR);
 
-	auto qbertMoveRight = std::make_shared<dae::MoveCommand>(qbert.get(), dae::MovementState::MovingRight, 2.0f);
-	inputManager.BindCommand(GamepadButton::DPadRight, KeyState::Down, qbertMoveRight);
-	auto qbertStopRight = std::make_shared<dae::StopMovingCommand>(qbert.get());
-	inputManager.BindCommand(GamepadButton::DPadRight, KeyState::Up, qbertStopRight);
+	//LEFT = DownLeft
+	auto moveDL = std::make_shared<dae::MoveCommand>(qbert.get(), D::DownLeft);
+	inputManager.BindCommand(GamepadButton::DPadLeft, KeyState::Down, moveDL);
+
+	//DOWN = DownRight
+	auto moveDR = std::make_shared<dae::MoveCommand>(qbert.get(), D::DownRight);
+	inputManager.BindCommand(GamepadButton::DPadDown, KeyState::Down, moveDR);
 
 	// === Coily GameObject ===
 	auto coily = std::make_shared<dae::GameObject>();
@@ -92,6 +98,7 @@ void load()
 	coily->SetPosition(256.f, 0.f); 
 	scene.Add(coily);
 
+	
 
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
@@ -103,7 +110,6 @@ void load()
 		soundService->LoadSound("sounds/Change Selection.wav");
 	}
 }
-
 int main(int, char* [])
 {
 	dae::Minigin engine("../Data/");

@@ -154,10 +154,13 @@
   <ItemGroup>
     <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="EggState.cpp" />
+    <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="QbertMoveComponent.cpp" />
     <ClCompile Include="TestCommand.cpp" />
+    <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="TransformingState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,10 +170,12 @@
     <ClInclude Include="GameUIComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HitCommand.h" />
+    <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="PelletCommand.h" />
-    <ClInclude Include="StopMovingCommand.h" />
+    <ClInclude Include="QbertMoveComponent.h" />
     <ClInclude Include="TestCommand.h" />
+    <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TransformingState.h" />
   </ItemGroup>
   <ItemGroup>
