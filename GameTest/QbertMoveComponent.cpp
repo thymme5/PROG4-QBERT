@@ -71,6 +71,7 @@ namespace dae
 
 		std::cout << "Trying move from (" << row << "," << col << ") to (" << newRow << "," << newCol << ")\n";
 
+		//OUT OF BOUNDS IN THIS CONTEXT MEANS QBERT WILL DIE.
 		// Check row bounds
 		if (newRow < 0 || newRow >= static_cast<int>(m_pTileMap->size()))
 		{

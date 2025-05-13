@@ -63,7 +63,6 @@ void load()
 	qbertMove->SetCurrentTile(tileComp);
 	qbertMove->SetTileMap(LevelBuilder::GetTileComponentMap());
 
-
 	scene.Add(qbert);
 
 	// === Input Binding for Q*bert ===
@@ -88,17 +87,13 @@ void load()
 	// === Coily GameObject ===
 	auto coily = std::make_shared<dae::GameObject>();
 	coily->AddComponent<dae::TextureComponent>(*coily, "testing/coily_egg_test_character.png", 2.0f);
-
-	
-	// coily->AddComponent<dae::MoveComponent>(*coily, 10.0f); // Only if needed
+	// coily->AddComponent<dae::MoveComponent>(*coily, 10.0f); //replace this shit for coilymovementcomponent
 
 	auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
 	coilyComponent->SetState(std::make_unique<EggState>()); 
 
 	coily->SetPosition(256.f, 0.f); 
 	scene.Add(coily);
-
-	
 
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
