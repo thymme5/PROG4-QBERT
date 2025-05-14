@@ -145,5 +145,4 @@ namespace dae
 		m_Jump.duration = 0.4f;
 		m_Jump.isJumping = true;
 	}
-
 }
