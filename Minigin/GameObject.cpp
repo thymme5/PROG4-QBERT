@@ -66,31 +66,26 @@ int GameObject::GetChildCount() const noexcept
 	return int(m_Children.size());
 }
 
-void GameObject::SetParent(GameObject* parent)
+void GameObject::SetParent(GameObject* parent) //todo: fix lol
 {
-    // Check if the new parent is valid (not itself or one of its children)
     if (parent == this || std::find(m_Children.begin(), m_Children.end(), parent) != m_Children.end())
     {
-        return; // Parent is invalid
+        return; 
     }
 
-    // Remove itself from the previous parent if it exists
     if (m_Parent)
     {
         auto it = std::remove(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), this);
         m_Parent->m_Children.erase(it, m_Parent->m_Children.end());
     }
 
-    // Set new parent
     m_Parent = parent;
-
-    // Add itself as a child to the new parent
+    
     if (parent)
     {
         parent->m_Children.push_back(this);
     }
 
-    // Update position, rotation
     if (parent)
     {
         m_transform.SetPosition(parent->m_transform.GetPosition().x + m_transform.GetPosition().x,
@@ -99,7 +94,6 @@ void GameObject::SetParent(GameObject* parent)
     }
     else
     {
-        // Reset position and rotation to default values when there’s no parent
         m_transform.SetPosition(0.0f, 0.0f, 0.0f);
         m_transform.SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
     }
@@ -109,7 +103,7 @@ void GameObject::SetParent(GameObject* parent)
 GameObject* GameObject::GetChildAt(int index)
 {
     if (index < 0 || index >= static_cast<int>(m_Children.size())) {
-        return nullptr; // Out of bounds
+        return nullptr;
     }
 
     return m_Children[index];

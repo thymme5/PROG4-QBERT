@@ -26,7 +26,6 @@
 #include "TileComponent.h"
 
 //Commands
-#include "TestCommand.h"
 #include "MoveCommand.h"
 
 //other misc
@@ -44,7 +43,7 @@ void load()
 	LevelBuilder::LoadLevel1(scene);
 	auto tileMap = LevelBuilder::GetTileMap();
 	auto tileGO = tileMap[0][0];
-	auto tileComp = std::shared_ptr<dae::TileComponent>(tileGO->GetComponent<dae::TileComponent>(), [](dae::TileComponent*) {});
+	auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
 	// === FPS counter ===
 	go = std::make_shared<dae::GameObject>();
@@ -55,18 +54,19 @@ void load()
 	// === Qbert GameObject ===
 	auto qbert = std::make_shared<dae::GameObject>();
 	qbert->AddComponent<dae::TextureComponent>(*qbert, "Qbert P1 Spritesheet.png", 2.f, 4);
-	qbert->AddComponent<dae::QbertMoveComponent>(*qbert);
-	auto qbertMove = qbert->GetComponent<dae::QbertMoveComponent>();
+	qbert->AddComponent<QbertMoveComponent>(*qbert);
+	auto qbertMove = qbert->GetComponent<QbertMoveComponent>();
 
 	qbertMove->SetCurrentTile(tileComp);
 	qbertMove->SetTileMap(LevelBuilder::GetTileComponentMap());
 
-	// === make a GameUIComponent and Put a tracker on qberts ass === 
+	// === make a GameUIComponent and put a tracker on qberts ass === 
 	go = std::make_shared<dae::GameObject>();
 	auto* gameUI = go->AddComponent<dae::GameUIComponent>(*go);
 	go->AddComponent<dae::TextComponent>(*go, " ", dae::ResourceManager::GetInstance().LoadFont("minecraft.ttf", 18));
 	go->SetPosition(5, 50);
 	qbert->AddObserver(gameUI);
+
 	scene.Add(go);
 
 	// === add qberts ass to the scene cuz he's important after all === 
@@ -78,18 +78,22 @@ void load()
 	//UP = UpLeft
 	auto moveUL = std::make_shared<dae::MoveCommand>(qbert.get(), D::UpLeft);
 	inputManager.BindCommand(GamepadButton::DPadUp, KeyState::Down, moveUL);
+	inputManager.BindCommand(SDLK_UP, KeyState::Down, moveUL);
 
 	//RIGHT = UpRight
 	auto moveUR = std::make_shared<dae::MoveCommand>(qbert.get(), D::UpRight);
 	inputManager.BindCommand(GamepadButton::DPadRight, KeyState::Down, moveUR);
+	inputManager.BindCommand(SDLK_RIGHT, KeyState::Down, moveUR);
 
 	//LEFT = DownLeft
 	auto moveDL = std::make_shared<dae::MoveCommand>(qbert.get(), D::DownLeft);
 	inputManager.BindCommand(GamepadButton::DPadLeft, KeyState::Down, moveDL);
+	inputManager.BindCommand(SDLK_LEFT, KeyState::Down, moveDL);
 
 	//DOWN = DownRight
 	auto moveDR = std::make_shared<dae::MoveCommand>(qbert.get(), D::DownRight);
 	inputManager.BindCommand(GamepadButton::DPadDown, KeyState::Down, moveDR);
+	inputManager.BindCommand(SDLK_DOWN, KeyState::Down, moveDR);
 
 	// === Coily GameObject ===
 	auto coily = std::make_shared<dae::GameObject>();
@@ -97,6 +101,7 @@ void load()
 	// coily->AddComponent<dae::MoveComponent>(*coily, 10.0f); //replace this shit for coilymovementcomponent
 
 	auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
+	coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
 	coilyComponent->SetState(std::make_unique<EggState>()); 
 
 	coily->SetPosition(256.f, 0.f); 

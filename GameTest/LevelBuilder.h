@@ -26,7 +26,7 @@ public:
 	static void LoadLevel1(dae::Scene& scene);
 	static std::shared_ptr<dae::GameObject> CreateTile(int id, const glm::vec2& pos);
 	static const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& GetTileMap();
-	static const std::vector<std::vector<std::shared_ptr<dae::TileComponent>>>& GetTileComponentMap();
+	static const std::vector<std::vector<std::shared_ptr<TileComponent>>>& GetTileComponentMap();
 
 private:
 	static std::vector<std::vector<std::shared_ptr<dae::GameObject>>> m_TilesByRow;

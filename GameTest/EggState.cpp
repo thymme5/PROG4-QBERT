@@ -4,14 +4,12 @@
 #include "GameObject.h"
 
 #include "TextureComponent.h"
-
 void EggState::Enter(CoilyComponent& coily)
 {
-    // Set egg sprite
+    //set egg sprite
     auto* texture = coily.GetOwner()->GetComponent<dae::TextureComponent>();
     if (texture)
         texture->SetTexture("testing/coily_egg_test_character.png");
-
     //coily.SetPosition({ 256.f, 0.f });
 }
 

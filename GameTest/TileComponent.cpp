@@ -4,8 +4,6 @@
 #include "GameObject.h"
 #include "TextureComponent.h"
 
-using namespace dae;
-
 TileComponent::TileComponent(dae::GameObject& owner)
 	: Component(owner)
 {
@@ -45,7 +43,7 @@ bool TileComponent::IsCompleted() const
 	return m_IsCompleted;
 }
 
-void TileComponent::OnStepped(GameObject* actor)
+void TileComponent::OnStepped(dae::GameObject* actor)
 {
 	if (m_CurrentState == TileState::Target) return;
 
@@ -53,9 +51,8 @@ void TileComponent::OnStepped(GameObject* actor)
 	m_IsCompleted = true;
 
 
-	actor->NotifyObservers(Event::TileStateChanged);
+	actor->NotifyObservers(dae::Event::TileStateChanged);
 
-	//Update texture (inactive now)
 	auto* texture = GetOwner()->GetComponent<dae::TextureComponent>();
 	if (texture)
 	{
@@ -74,13 +71,13 @@ void TileComponent::OnStepped(GameObject* actor)
 	}
 }
 
-void dae::TileComponent::SetGridPosition(int row, int col)
+void TileComponent::SetGridPosition(int row, int col)
 {
 	m_Row = row;
 	m_Col = col;
 }
 
-std::pair<int, int> dae::TileComponent::GetGridPosition() const
+std::pair<int, int> TileComponent::GetGridPosition() const
 {
 	return { m_Row, m_Col };
 }

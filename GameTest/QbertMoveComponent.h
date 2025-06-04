@@ -6,6 +6,22 @@
 #include <memory>
 #include <vector>
 
+// ==============================
+// ==============================
+// ==============================
+//todo: should be vector not enum
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// ==============================
+// ==============================
+// ==============================
 enum class Direction
 {
     UpLeft,
@@ -13,6 +29,17 @@ enum class Direction
     DownLeft,
     DownRight
 };
+// ==============================
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// cooked
+// ==============================
 
 struct JumpData
 {
@@ -22,27 +49,24 @@ struct JumpData
     float duration = 0.3f;
     bool isJumping = false;
 };
-
-namespace dae
+class QbertMoveComponent : public dae::Component
 {
-    class QbertMoveComponent : public Component
-    {
-    public:
-        QbertMoveComponent(GameObject& pOwner);
-        void Update() override;
-        void Render() const override;
+public:
+    QbertMoveComponent(dae::GameObject& pOwner);
+    void Update() override;
+    void Render() const override;
 
-        void SetCurrentTile(std::shared_ptr<TileComponent> tile);
-        void SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap);
+    void SetCurrentTile(std::shared_ptr<TileComponent> tile);
+    void SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap);
 
-        void TryMove(Direction dir);
+    void TryMove(Direction dir);
 
-    private:
-        std::shared_ptr<TileComponent> m_CurrentTile;
-        const std::vector<std::vector<std::shared_ptr<TileComponent>>>* m_pTileMap = nullptr;
-        const float m_xOffset = 15.f;
-        const float m_yOffset = -19.f;
+private:
+    std::shared_ptr<TileComponent> m_CurrentTile;
+    const std::vector<std::vector<std::shared_ptr<TileComponent>>>* m_pTileMap = nullptr;
+    const float m_xOffset = 15.f; //magic number but pre-calculated value (kevin would love this)
+    const float m_yOffset = -19.f; //magic number but pre-calculated value
         
-        JumpData m_Jump;
-    };
-}
+    JumpData m_Jump;
+};
+

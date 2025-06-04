@@ -47,3 +47,17 @@ glm::vec3 CoilyComponent::GetPosition() const
 {
     return GetOwner()->GetWorldPosition();
 }
+void CoilyComponent::SetCurrentTile(std::shared_ptr<TileComponent> tile)
+{
+    m_CurrentTile = std::move(tile);
+
+    if (m_CurrentTile)
+    {
+        const auto& pos = m_CurrentTile->GetOwner()->GetTransform().GetPosition();
+        m_pOwner->SetPosition(pos.x, pos.y);
+    }
+}
+void CoilyComponent::SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap)
+{
+    m_pTileMap = &tileMap;
+}

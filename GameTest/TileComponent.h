@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include <utility> // for std::pair
+#include <utility>
 
 // Coordinate system used for moving entities
 //
@@ -20,39 +20,36 @@ enum class TileState
 	Target
 };
 
-namespace dae
+class TileComponent final : public dae::Component
 {
-	class TileComponent final : public dae::Component
-	{
-	public:
-		explicit TileComponent(dae::GameObject& owner);
-		~TileComponent() override = default;
+public:
+	explicit TileComponent(dae::GameObject& owner);
+	~TileComponent() override = default;
 
-		void Update() override;
-		void Render() const override;
+	void Update() override;
+	void Render() const override;
 
-		void SetID(int id);
-		int GetID() const;
+	void SetID(int id);
+	int GetID() const;
 
-		void SetState(TileState state);
-		TileState GetState() const;
+	void SetState(TileState state);
+	TileState GetState() const;
 
-		void SetTargetState(TileState targetState);
-		bool IsCompleted() const;
+	void SetTargetState(TileState targetState);
+	bool IsCompleted() const;
 
-		void OnStepped(GameObject* actor);
+	void OnStepped(dae::GameObject* actor);
 
-		//grid position (coordinat system)
-		void SetGridPosition(int row, int col);
-		std::pair<int, int> GetGridPosition() const;
+	//grid position (coord system)
+	void SetGridPosition(int row, int col);
+	std::pair<int, int> GetGridPosition() const;
 
-	private:
-		int m_ID{}; //verified and works
-		TileState m_CurrentState{ TileState::Default };
-		TileState m_TargetState{ TileState::Target };
-		bool m_IsCompleted{ false };
+private:
+	int m_ID{}; //basically index
+	TileState m_CurrentState{ TileState::Default };
+	TileState m_TargetState{ TileState::Target };
+	bool m_IsCompleted{ false };
 
-		int m_Row{};
-		int m_Col{};
-	};
-}
+	int m_Row{};
+	int m_Col{};
+};

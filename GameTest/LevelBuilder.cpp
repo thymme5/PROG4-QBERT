@@ -28,15 +28,16 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 			};
 
 			auto tile = CreateTile(id++, pos);
-			auto tileComp = tile->GetComponent<dae::TileComponent>();
+			auto tileComp = tile->GetComponent<TileComponent>();
 			tileComp->SetGridPosition(row, col);
 
 			m_TilesByRow[row].push_back(tile);
 
 			// === DEBUG TEXT ===
 			//auto [rowTest, colTest] = tileComp->GetGridPosition();
-			//std::string coords = "(" + std::to_string(rowTest) + "," + std::to_string(colTest) + ")";
-			//tile->AddComponent<dae::TextComponent>(*tile, coords, dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
+			int testid = tileComp->GetID();
+			std::string coords = std::to_string(testid);
+			tile->AddComponent<dae::TextComponent>(*tile, coords, dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
 
 			scene.Add(tile);
 		}
@@ -45,13 +46,14 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 
 std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos)
 {
+	//font is set for debugging (check debug text above)
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto tile = std::make_shared<dae::GameObject>();
 
 	tile->AddComponent<dae::TextureComponent>(*tile, "testing/tile_default_test.png", 2.0f);
 	tile->AddComponent<dae::TextComponent>(*tile, " ", font);
 
-	auto* tileComp = tile->AddComponent<dae::TileComponent>(*tile);
+	auto* tileComp = tile->AddComponent<TileComponent>(*tile);
 	tileComp->SetID(id);
 	tileComp->SetState(TileState::Default);
 	tileComp->SetTargetState(TileState::Target);
@@ -65,22 +67,21 @@ const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& LevelBuilder::
 {
 	return m_TilesByRow;
 }
-const std::vector<std::vector<std::shared_ptr<dae::TileComponent>>>& LevelBuilder::GetTileComponentMap()
+const std::vector<std::vector<std::shared_ptr<TileComponent>>>& LevelBuilder::GetTileComponentMap()
 {
-	static std::vector<std::vector<std::shared_ptr<dae::TileComponent>>> tileComponentMap;
-	tileComponentMap.clear();
+	static std::vector<std::vector<std::shared_ptr<TileComponent>>> tileComponentMap{};
 
 	for (const auto& row : m_TilesByRow)
 	{
-		std::vector<std::shared_ptr<dae::TileComponent>> compRow;
+		std::vector<std::shared_ptr<TileComponent>> compRow;
 
 		for (const auto& tileGO : row)
 		{
-			auto raw = tileGO->GetComponent<dae::TileComponent>();
+			auto raw = tileGO->GetComponent<TileComponent>();
 
 			if (raw)
 			{
-				auto shared = std::shared_ptr<dae::TileComponent>(raw, [](dae::TileComponent*) {});
+				auto shared = std::shared_ptr<TileComponent>(raw, [](TileComponent*) {});
 				compRow.push_back(shared);
 			}
 		}

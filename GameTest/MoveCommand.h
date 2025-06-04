@@ -8,7 +8,9 @@ namespace dae
     {
     public:
         MoveCommand(GameObject* pGameObject, Direction dir)
-            : m_pGameObject(pGameObject), m_Direction(dir) {
+            : m_pGameObject(pGameObject), m_Direction(dir)
+        {
+
         }
 
         void Execute() override
