@@ -59,6 +59,8 @@ public:
     void SetCurrentTile(std::shared_ptr<TileComponent> tile);
     void SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap);
 
+    std::shared_ptr<TileComponent> GetCurrentTile();
+
     void TryMove(Direction dir);
 
 private:

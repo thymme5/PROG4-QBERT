@@ -62,7 +62,10 @@ void QbertMoveComponent::SetTileMap(const std::vector<std::vector<std::shared_pt
 {
 	m_pTileMap = &tileMap;
 }
-
+std::shared_ptr<TileComponent> QbertMoveComponent::GetCurrentTile()
+{
+	return m_CurrentTile;
+}
 void QbertMoveComponent::TryMove(Direction direction)
 {
 	//reject movement if we don't have tile information or if the bitch is already jumping
@@ -105,7 +108,7 @@ void QbertMoveComponent::TryMove(Direction direction)
 	SDL_Rect src{ frameIndex * frameWidth, 0, frameWidth, frameHeight };
 	textureComp->SetSourceRect(src);
 
-	std::cout << "Trying move from (" << row << "," << col << ") to (" << newRow << "," << newCol << ")\n";
+	//std::cout << "Trying move from (" << row << "," << col << ") (" << m_CurrentTile->GetID() << ") to(" << newRow << ", " << newCol << ")\n";
 
 	//OUT OF BOUNDS IN THIS CONTEXT MEANS QBERT WILL DIE.
 	//check row bounds
@@ -144,6 +147,4 @@ void QbertMoveComponent::TryMove(Direction direction)
 	m_Jump.elapsed = 0.f;
 	m_Jump.duration = 0.4f;
 	m_Jump.isJumping = true;
-
-	std::cout << m_CurrentTile->GetID() << std::endl;
 }

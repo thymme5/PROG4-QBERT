@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChasingState.cpp" />
     <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="EggState.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="TransformingState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChasingState.h" />
     <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="EggState.h" />

@@ -3,6 +3,14 @@
 #include "CoilyState.h"
 #include "GameObject.h"
 #include "TileComponent.h"
+#include "QbertMoveComponent.h"
+
+struct CoilyJumpData
+{
+    bool isJumping = false;
+    float elapsed = 0.f;
+    float duration = 1.f; //TODO: tweak this value
+};
 
 class TileComponent;
 class CoilyComponent final : public dae::Component
@@ -16,22 +24,33 @@ public:
 
     void SetState(std::unique_ptr<CoilyState> newState);
 
-    //utility functions for the states to use
-    //ignore this
-    void MoveBy(const glm::vec3& offset);
-    void SetPosition(const glm::vec3& pos);
-    glm::vec3 GetPosition() const;
-
     //tile functions
     void SetCurrentTile(std::shared_ptr<TileComponent> tile);
     void SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap);
+    std::shared_ptr<TileComponent> GetCoilyTile();
 
-
-private:
-    std::unique_ptr<CoilyState> m_pCurrentState = nullptr;
+    //Get pointer to qbert's ass
+    void SetQbert(std::shared_ptr<dae::GameObject> qbert);
+    std::shared_ptr<TileComponent> GetQbertTile();
     
+    bool IsJumping() const;
+    void TryMove(Direction direction);
+    glm::vec3 GetPosition() const; //TODO: make this grid
+private:
+
+    //pointer to qbert
+    std::shared_ptr<dae::GameObject> m_pQbert;
+
+    //state
+    std::unique_ptr<CoilyState> m_pCurrentState = nullptr;
+
     //incorporate him into the tile mechanic
     std::shared_ptr<TileComponent> m_CurrentTile;
     const std::vector<std::vector<std::shared_ptr<TileComponent>>>* m_pTileMap = nullptr;
 
+    //slight offset to center them in tile
+    const float m_xOffset = 15.f; //magic number but pre-calculated value (kevin would love this)
+    const float m_yOffset = -40.f; //magic number but pre-calculated value
+
+    CoilyJumpData m_Jump;
 };

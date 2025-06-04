@@ -103,8 +103,10 @@ void load()
 	auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
 	coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
 	coilyComponent->SetState(std::make_unique<EggState>()); 
+	coilyComponent->SetCurrentTile(tileComp); 
+	coilyComponent->SetQbert(qbert);
 
-	coily->SetPosition(256.f, 0.f); 
+	//coily->SetPosition(256.f, 0.f); 
 	scene.Add(coily);
 
 	//-------------------------------------------------------------------------------------------------

@@ -78,6 +78,9 @@
     <ClCompile Include="GameUIComponent.cpp">
       <Filter>Game\Components\GameUIComponent</Filter>
     </ClCompile>
+    <ClCompile Include="ChasingState.cpp">
+      <Filter>Game\Coily\States\ChasingState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveCommand.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="GameUIComponent.h">
       <Filter>Game\Components\GameUIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="ChasingState.h">
+      <Filter>Game\Coily\States\ChasingState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

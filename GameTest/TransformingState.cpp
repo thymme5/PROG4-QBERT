@@ -2,7 +2,7 @@
 #include "CoilyComponent.h"
 #include "TextureComponent.h"
 
-//#include "ChasingState.h"
+#include "ChasingState.h"
 #include <memory>
 
 void TransformingState::Enter(CoilyComponent& coily)
@@ -21,7 +21,7 @@ void TransformingState::Update(CoilyComponent& coily)
 
     if (m_AccumulatedTime >= 1.0f) //After 1 second
     {
-        //coily.SetState(std::make_unique<ChasingState>());
+        coily.SetState(std::make_unique<ChasingState>());
         coily;
     }
 }
