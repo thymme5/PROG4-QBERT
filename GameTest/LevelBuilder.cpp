@@ -70,6 +70,7 @@ const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& LevelBuilder::
 const std::vector<std::vector<std::shared_ptr<TileComponent>>>& LevelBuilder::GetTileComponentMap()
 {
 	static std::vector<std::vector<std::shared_ptr<TileComponent>>> tileComponentMap{};
+	tileComponentMap.clear(); // bug fix of the row looping around
 
 	for (const auto& row : m_TilesByRow)
 	{

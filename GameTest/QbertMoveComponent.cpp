@@ -144,4 +144,6 @@ void QbertMoveComponent::TryMove(Direction direction)
 	m_Jump.elapsed = 0.f;
 	m_Jump.duration = 0.4f;
 	m_Jump.isJumping = true;
+
+	std::cout << m_CurrentTile->GetID() << std::endl;
 }
