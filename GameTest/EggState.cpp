@@ -6,33 +6,31 @@
 #include "TextureComponent.h"
 void EggState::Enter(CoilyComponent& coily)
 {
-    //set egg sprite
-    auto* texture = coily.GetOwner()->GetComponent<dae::TextureComponent>();
-    if (texture)
-        texture->SetTexture("testing/coily_egg_test_character.png");
-    //coily.SetPosition({ 256.f, 0.f });
+    std::cout << "Coily entered eggstate" << std::endl;
+    coily;
 }
 
 void EggState::Update(CoilyComponent& coily)
 {
-    //move coily (inactive)
-    //coily.MoveBy({ -50.0f * deltaTime, m_DropSpeed });
+    if (coily.IsJumping()) return;
 
-    //check if Coily reached bottom of pyramid
-    if (coily.GetPosition().y >= 540.0f)
-    {
-        //coily.SetState(new TransformingState()); //next state
-    }
+    // alternate directions
+    //TODO: get rid of the fucking enum and adapt this (i have no fucking clue how)
+    if (m_LastDirection == Direction::DownLeft)
+        m_LastDirection = Direction::DownRight;
+    else
+        m_LastDirection = Direction::DownLeft;
 
-    //For testing purposes, coily changes state after 2 seconds
-    m_AccumulatedTime += 1.0f / 60.0f; //Fixed timesteps
+    coily.TryMove(m_LastDirection);
 
-    if (m_AccumulatedTime >= 2.0f)
+    auto [row, _] = coily.GetCoilyTile()->GetGridPosition();
+    
+    QbertSoundLibrary::Play(SoundID::CoilyEggJump);
+
+    if (row >= 6)
     {
         coily.SetState(std::make_unique<TransformingState>());
-
     }
-
 }
 
 void EggState::Exit(CoilyComponent&)

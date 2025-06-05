@@ -7,12 +7,8 @@
 
 void ChasingState::Enter(CoilyComponent& coily)
 {
-    //set snake sprite
-    auto* texture = coily.GetOwner()->GetComponent<dae::TextureComponent>();
-    if (texture)
-        texture->SetTexture("testing/coily_snake_test_character.png");
-
     std::cout << "Coily entered chasing state.\n";
+    coily;
 }
 
 void ChasingState::Update(CoilyComponent& coily)
@@ -23,8 +19,8 @@ void ChasingState::Update(CoilyComponent& coily)
     auto qbertTile = coily.GetQbertTile();
     if (!coilyTile || !qbertTile) return;
 
-    auto [cr, cc] = coilyTile->GetGridPosition();
-    auto [qr, qc] = qbertTile->GetGridPosition();
+    auto [cr, cc] = coilyTile->GetGridPosition(); //coily row, coily col
+    auto [qr, qc] = qbertTile->GetGridPosition(); // qbert row, qbert col
 
     std::cout << "Coily at (" << cr << "," << cc << ") -> Q*bert at (" << qr << "," << qc << ")\n";
 
@@ -39,8 +35,9 @@ void ChasingState::Update(CoilyComponent& coily)
     else if (qr < cr && qc < cc)
         dir = Direction::UpLeft;
     else
-        return; // Already on same tile
+        return; 
 
+    QbertSoundLibrary::Play(SoundID::CoilySnakeJump);
     coily.TryMove(dir);
 }
 

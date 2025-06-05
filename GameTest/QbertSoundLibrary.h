@@ -1,0 +1,28 @@
+#pragma once
+#include <string>
+#include <unordered_map>
+#include "SoundService.h"
+#include <iostream>
+
+enum class SoundID
+{
+    QbertJump,
+    QbertDeath,
+    CoilySnakeJump,
+    CoilyEggJump,
+    DiscWarp,
+};
+
+// felt like my old implementation of sound was a bit repetitive and error prone, 
+// so I'm writing a small "sound library" to make playing sounds easier and make the main less cluttered
+
+class QbertSoundLibrary
+{
+public:
+    static void LoadAllSounds(); //loads all sounds in the main function
+    static void Play(SoundID id); //plays whatever sound your heart desires 
+private:
+    static void Register(SoundID id, const std::string& path);
+    static std::unordered_map<SoundID, std::string> m_SoundMap;
+};
+

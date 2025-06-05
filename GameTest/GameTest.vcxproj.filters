@@ -52,6 +52,9 @@
     <Filter Include="Game\Components\GameUIComponent">
       <UniqueIdentifier>{23239a7a-d3b4-4500-bc02-a84e0669852f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Sound">
+      <UniqueIdentifier>{7decaafe-5336-4a83-8d4c-4375bbae689b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="ChasingState.cpp">
       <Filter>Game\Coily\States\ChasingState</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertSoundLibrary.cpp">
+      <Filter>Game\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="ChasingState.h">
       <Filter>Game\Coily\States\ChasingState</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertSoundLibrary.h">
+      <Filter>Game\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

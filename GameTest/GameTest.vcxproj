@@ -159,6 +159,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
+    <ClCompile Include="QbertSoundLibrary.cpp" />
     <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="TransformingState.cpp" />
   </ItemGroup>
@@ -171,6 +172,7 @@
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="QbertMoveComponent.h" />
+    <ClInclude Include="QbertSoundLibrary.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TransformingState.h" />
   </ItemGroup>

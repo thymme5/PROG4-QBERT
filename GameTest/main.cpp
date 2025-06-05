@@ -14,7 +14,6 @@
 #include "InputManager.h"
 #include "SoundService.h"
 
-
 //Components
 #include "TextComponent.h"
 #include "TextureComponent.h"
@@ -30,6 +29,9 @@
 
 //other misc
 #include "LevelBuilder.h"
+
+//game sound library
+#include "QbertSoundLibrary.h"
 
 void load()
 {
@@ -116,9 +118,7 @@ void load()
 	auto soundService = dae::ServiceLocator::GetSoundService(); 
 	if (soundService)
 	{
-		std::filesystem::path path = "../Data/Sounds/QBert Jump.wav";
-		std::cout << "Trying to load: " << std::filesystem::absolute(path) << "\n";
-		soundService->LoadSound("../Data/Sounds/QBert Jump.wav");
+		QbertSoundLibrary::LoadAllSounds();
 	}
 }
 int main(int, char* [])

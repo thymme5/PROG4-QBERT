@@ -3,6 +3,7 @@
 CoilyComponent::CoilyComponent(dae::GameObject& owner)
     : Component(owner)
 {
+    m_pOwner->GetComponent<dae::TextureComponent>()->SetTexture("Coily Spritesheet.png");
 }
 
 CoilyComponent::~CoilyComponent()
@@ -13,17 +14,37 @@ CoilyComponent::~CoilyComponent()
 void CoilyComponent::Update()
 {
     constexpr float fixedDeltaTime = 1.f / 60.f;
-    
+
     if (m_Jump.isJumping)
     {
         m_Jump.elapsed += fixedDeltaTime;
-        if (m_Jump.elapsed >= m_Jump.duration)
+
+        float t = m_Jump.elapsed / m_Jump.duration;
+        if (t >= 1.f)
         {
+            m_pOwner->SetPosition(m_Jump.endPos.x, m_Jump.endPos.y);
             m_Jump.isJumping = false;
+            m_Jump.waitTimer = 0.f; 
+            SetJumpSprite(m_LastMoveDir);
+            return;
+        }
+        else
+        {
+            glm::vec2 pos = glm::mix(m_Jump.startPos, m_Jump.endPos, t);
+            const float arcHeight = 10.f;
+            pos.y -= sin(t * 3.14f * arcHeight);
+            m_pOwner->SetPosition(pos.x, pos.y);
+            return;
         }
     }
 
-    if (!m_Jump.isJumping && m_pCurrentState)
+    if (m_Jump.waitTimer < m_Jump.waitDuration)
+    {
+        m_Jump.waitTimer += fixedDeltaTime;
+        return; 
+    }
+
+    if (m_pCurrentState)
     {
         m_pCurrentState->Update(*this);
     }
@@ -46,6 +67,8 @@ void CoilyComponent::SetState(std::unique_ptr<CoilyState> newState)
 }
 void CoilyComponent::TryMove(Direction direction)
 {
+    m_LastMoveDir = direction; 
+
     if (!m_CurrentTile || !m_pTileMap) return;
 
     auto [row, col] = m_CurrentTile->GetGridPosition();
@@ -68,12 +91,15 @@ void CoilyComponent::TryMove(Direction direction)
 
     m_CurrentTile = targetTile;
 
-    //move instantly for now — animation later
-    const auto& pos = targetTile->GetOwner()->GetTransform().GetPosition();
-    m_pOwner->SetPosition(pos.x + m_xOffset, pos.y + m_yOffset);
+    const glm::vec3 startPos = m_pOwner->GetTransform().GetPosition();
+    const glm::vec3 endPos = targetTile->GetOwner()->GetTransform().GetPosition() + glm::vec3(m_xOffset, m_yOffset, 0.f);
 
+    m_Jump.startPos = startPos;
+    m_Jump.endPos = endPos;
     m_Jump.elapsed = 0.f;
     m_Jump.isJumping = true;
+    SetJumpSprite(direction);
+
 }
 glm::vec3 CoilyComponent::GetPosition() const
 {
@@ -115,4 +141,39 @@ void CoilyComponent::SetQbert(std::shared_ptr<dae::GameObject> qbert)
 bool CoilyComponent::IsJumping() const
 {
     return m_Jump.isJumping;
+}
+
+void CoilyComponent::SetJumpSprite(Direction dir)
+{
+    int frameIndex = 0;
+
+    if (dynamic_cast<EggState*>(m_pCurrentState.get()))
+    {
+        frameIndex = m_Jump.isJumping ? 1 : 0;
+    }
+    else
+    {
+        switch (dir)
+        {
+        case Direction::UpRight:
+            frameIndex = m_Jump.isJumping ? 3 : 2;
+            break;
+        case Direction::UpLeft:
+            frameIndex = m_Jump.isJumping ? 5 : 4;
+            break;
+        case Direction::DownRight:
+            frameIndex = m_Jump.isJumping ? 7 : 6;
+            break;
+        case Direction::DownLeft:
+            frameIndex = m_Jump.isJumping ? 9 : 8;
+            break;
+        }
+    }
+
+    constexpr int frameWidth = 16;
+    constexpr int frameHeight = 32;
+
+    SDL_Rect src{ frameIndex * frameWidth, 0, frameWidth, frameHeight };
+    if (auto* tex = m_pOwner->GetComponent<dae::TextureComponent>())
+        tex->SetSourceRect(src);
 }

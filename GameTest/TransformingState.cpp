@@ -7,12 +7,7 @@
 
 void TransformingState::Enter(CoilyComponent& coily)
 {
-    // Set Coily's sprite to snake form (just a placeholder for now)
-    auto* texture = coily.GetOwner()->GetComponent<dae::TextureComponent>();
-    if (texture)
-        texture->SetTexture("testing/coily_snake_test_character.png");
- 
-    m_AccumulatedTime = 0.0f;
+    coily;
 }
 
 void TransformingState::Update(CoilyComponent& coily)

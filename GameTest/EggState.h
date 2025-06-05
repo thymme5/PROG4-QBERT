@@ -1,5 +1,6 @@
 #pragma once
 #include "CoilyState.h"
+#include "CoilyComponent.h"
 
 class EggState final : public CoilyState {
 public:
@@ -8,7 +9,5 @@ public:
     void Exit(CoilyComponent& coily) override;
 
 private:
-    //float m_DropSpeed = 100.0f; //pixels per second
-
-    float m_AccumulatedTime = 0.0f;
+    Direction m_LastDirection;
 };

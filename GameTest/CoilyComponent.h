@@ -4,12 +4,20 @@
 #include "GameObject.h"
 #include "TileComponent.h"
 #include "QbertMoveComponent.h"
+#include "QbertSoundLibrary.h"
+#include "ChasingState.h"
+#include "EggState.h"
+#include "TextureComponent.h"
 
 struct CoilyJumpData
 {
+    glm::vec2 startPos;
+    glm::vec2 endPos;
     bool isJumping = false;
     float elapsed = 0.f;
-    float duration = 1.f; //TODO: tweak this value
+    float duration = 0.8f; //TODO: tweak this value
+    float waitTimer = 0.f;
+    float waitDuration = 0.4f;
 };
 
 class TileComponent;
@@ -37,7 +45,9 @@ public:
     void TryMove(Direction direction);
     glm::vec3 GetPosition() const; //TODO: make this grid
 private:
+    void SetJumpSprite(Direction dir);
 
+    Direction m_LastMoveDir;
     //pointer to qbert
     std::shared_ptr<dae::GameObject> m_pQbert;
 

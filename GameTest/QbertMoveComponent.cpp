@@ -3,12 +3,12 @@
 #include "Transform.h"
 #include "LevelBuilder.h"
 #include "TextureComponent.h"
-#include "SoundService.h"
-
+#include "QbertSoundLibrary.h"
 
 QbertMoveComponent::QbertMoveComponent(dae::GameObject& pOwner)
 	: dae::Component(pOwner)
 {
+
 }
 
 void QbertMoveComponent::Update()
@@ -24,8 +24,9 @@ void QbertMoveComponent::Update()
 		m_pOwner->SetPosition(m_Jump.endPos.x, m_Jump.endPos.y);
 		m_Jump.isJumping = false;
 
-		//play sound and let tile know that it got stepped on 
-		dae::ServiceLocator::GetSoundService()->PlaySound("../Data/Sounds/QBert Jump.wav");
+		//play sound and let tile know that it got stepped on
+		QbertSoundLibrary::Play(SoundID::QbertJump);
+
 		if (m_CurrentTile)
 			m_CurrentTile->OnStepped(m_pOwner);
 		return;
