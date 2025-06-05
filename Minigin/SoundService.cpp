@@ -37,13 +37,22 @@ namespace dae
 
         Mix_CloseAudio();
     }
+    void SDLMixerSoundService::SetMuted(bool muted) 
+    { 
+        std::cout << "muted: " << std::boolalpha << muted << std::endl;
 
+        m_IsMuted = muted;
+    }
+    bool SDLMixerSoundService::IsMuted() const 
+    { 
+        return m_IsMuted;
+    }
     void SDLMixerSoundService::PlaySound(const std::string& soundFile)
     {
-        {
-            std::lock_guard<std::mutex> lock(m_Mutex);
-            m_CommandQueue.push({ SoundCommandType::Play, soundFile });
-        }
+        if (m_IsMuted) return;
+
+        std::lock_guard<std::mutex> lock(m_Mutex);
+        m_CommandQueue.push({ SoundCommandType::Play, soundFile });
         m_CondVar.notify_one();
     }
 

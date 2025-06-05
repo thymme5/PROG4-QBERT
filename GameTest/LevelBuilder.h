@@ -3,6 +3,8 @@
 #include <glm.hpp>
 #include "TileComponent.h"
 #include <vector>
+#include <string>
+#include <nlohmann/json.hpp>
 
 // Coordinate system used for moving entities
 //
@@ -24,11 +26,13 @@ class LevelBuilder
 {
 public:
 	static void LoadLevel1(dae::Scene& scene);
+
+	static void LoadFromJson(dae::Scene& scene, const std::string& pathToJson);
+
 	static std::shared_ptr<dae::GameObject> CreateTile(int id, const glm::vec2& pos);
 	static const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& GetTileMap();
 	static const std::vector<std::vector<std::shared_ptr<TileComponent>>>& GetTileComponentMap();
 
 private:
 	static std::vector<std::vector<std::shared_ptr<dae::GameObject>>> m_TilesByRow;
-
 };

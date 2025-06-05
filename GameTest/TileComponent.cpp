@@ -1,6 +1,5 @@
 #include "TileComponent.h"
 
-#include "TileComponent.h"
 #include "GameObject.h"
 #include "TextureComponent.h"
 
@@ -43,13 +42,34 @@ bool TileComponent::IsCompleted() const
 	return m_IsCompleted;
 }
 
+void TileComponent::SetColorStates(const std::string& startColor, const std::string& intermediateColor, const std::string& targetColor)
+{
+	m_StartColor = startColor;
+	m_IntermediateColor = intermediateColor;
+	m_TargetColor = targetColor;
+}
+
+std::string TileComponent::GetCurrentColor() const
+{
+	switch (m_CurrentState)
+	{
+	case TileState::Default:
+		return m_StartColor;
+	case TileState::Intermediate:
+		return m_IntermediateColor;
+	case TileState::Target:
+		return m_TargetColor;
+	default:
+		return {};
+	}
+}
+
 void TileComponent::OnStepped(dae::GameObject* actor)
 {
 	if (m_CurrentState == TileState::Target) return;
 
 	m_CurrentState = TileState::Target;
 	m_IsCompleted = true;
-
 
 	actor->NotifyObservers(dae::Event::TileStateChanged);
 

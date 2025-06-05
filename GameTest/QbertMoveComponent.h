@@ -49,6 +49,7 @@ struct JumpData
     float duration = 0.3f;
     bool isJumping = false;
 };
+
 class QbertMoveComponent : public dae::Component
 {
 public:
@@ -70,5 +71,7 @@ private:
     const float m_yOffset = -19.f; //magic number but pre-calculated value
         
     JumpData m_Jump;
+
+
 };
 

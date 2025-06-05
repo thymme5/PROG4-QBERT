@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <utility>
-
+#include <string>
 // Coordinate system used for moving entities
 //
 //                               (0,0)
@@ -40,6 +40,9 @@ public:
 
 	void OnStepped(dae::GameObject* actor);
 
+	void SetColorStates(const std::string& startColor, const std::string& intermediateColor, const std::string& targetColor);
+	std::string GetCurrentColor() const;
+
 	//grid position (coord system)
 	void SetGridPosition(int row, int col);
 	std::pair<int, int> GetGridPosition() const;
@@ -52,4 +55,8 @@ private:
 
 	int m_Row{};
 	int m_Col{};
+
+	std::string m_StartColor{};
+	std::string m_IntermediateColor{};
+	std::string m_TargetColor{};
 };

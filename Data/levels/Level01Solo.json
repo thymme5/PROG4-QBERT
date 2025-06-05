@@ -1,0 +1,15 @@
+{
+  "level": 1,
+  "mode": "Solo",
+  "jumpMode": "single",
+  "startTile": [0, 0],
+  "tileStates": [
+    [{ "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }],
+    [{ "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }, { "start": "blue", "target": "purple" }]
+  ]
+}

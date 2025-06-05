@@ -26,11 +26,11 @@
 
 //Commands
 #include "MoveCommand.h"
-
+#include "ToggleMuteCommand.h"
 //other misc
 #include "LevelBuilder.h"
 
-//game sound library
+//sound related 
 #include "QbertSoundLibrary.h"
 
 void load()
@@ -42,7 +42,9 @@ void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
 	// === Level Loading ===
-	LevelBuilder::LoadLevel1(scene);
+	//LevelBuilder::LoadLevel1(scene);
+	LevelBuilder::LoadFromJson(scene, "../data/levels/Level01Solo.json"); //TODO: pathing is terrible
+
 	auto tileMap = LevelBuilder::GetTileMap();
 	auto tileGO = tileMap[0][0];
 	auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
@@ -100,7 +102,6 @@ void load()
 	// === Coily GameObject ===
 	auto coily = std::make_shared<dae::GameObject>();
 	coily->AddComponent<dae::TextureComponent>(*coily, "testing/coily_egg_test_character.png", 2.0f);
-	// coily->AddComponent<dae::MoveComponent>(*coily, 10.0f); //replace this shit for coilymovementcomponent
 
 	auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
 	coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
@@ -108,13 +109,16 @@ void load()
 	coilyComponent->SetCurrentTile(tileComp); 
 	coilyComponent->SetQbert(qbert);
 
-	//coily->SetPosition(256.f, 0.f); 
 	scene.Add(coily);
 
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 	//SOUNDS
 	//-------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	auto toggleMute = std::make_shared<ToggleMuteCommand>();
+	inputManager.BindCommand(SDLK_F2, KeyState::Down, toggleMute);
+
 	auto soundService = dae::ServiceLocator::GetSoundService(); 
 	if (soundService)
 	{
