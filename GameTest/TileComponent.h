@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <utility>
 #include <string>
+
 // Coordinate system used for moving entities
 //
 //                               (0,0)

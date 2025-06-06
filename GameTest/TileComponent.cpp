@@ -3,12 +3,28 @@
 #include "GameObject.h"
 #include "TextureComponent.h"
 
+#include "ColorMap.h"
+
+extern std::unordered_map<std::string, SDL_Rect> g_ColorSpriteMap;
+
 TileComponent::TileComponent(dae::GameObject& owner)
 	: Component(owner)
 {
 }
 
-void TileComponent::Update() {}
+void TileComponent::Update() 
+{
+	auto textureComp = m_pOwner->GetComponent<dae::TextureComponent>();
+	if (!textureComp) return;
+
+	const std::string color = GetCurrentColor();
+
+	auto it = g_ColorSpriteMap.find(color);
+	if (it != g_ColorSpriteMap.end())
+	{
+		textureComp->SetSourceRect(it->second);
+	}
+}
 
 void TileComponent::Render() const {}
 
@@ -66,7 +82,8 @@ std::string TileComponent::GetCurrentColor() const
 
 void TileComponent::OnStepped(dae::GameObject* actor)
 {
-	if (m_CurrentState == TileState::Target) return;
+	if (m_CurrentState == TileState::Target)
+		return;
 
 	m_CurrentState = TileState::Target;
 	m_IsCompleted = true;
@@ -76,20 +93,29 @@ void TileComponent::OnStepped(dae::GameObject* actor)
 	auto* texture = GetOwner()->GetComponent<dae::TextureComponent>();
 	if (texture)
 	{
+		std::string colorToSet;
+
 		switch (m_CurrentState)
 		{
 		case TileState::Default:
-			texture->SetTexture("testing/tile_default_test.png");
+			colorToSet = m_StartColor;
 			break;
-		//case TileState::Intermediate:
-		//	texture->SetTexture("tile_mid.png");
-		//	break;
+			// case TileState::Intermediate:
+			// 	colorToSet = m_IntermediateColor;
+			// 	break;
 		case TileState::Target:
-			texture->SetTexture("testing/tile_finished_test.png");
+			colorToSet = m_TargetColor;
 			break;
+		}
+
+		if (g_ColorSpriteMap.contains(colorToSet))
+		{
+			const SDL_Rect& srcRect = g_ColorSpriteMap.at(colorToSet);
+			texture->SetSourceRect(srcRect);
 		}
 	}
 }
+
 
 void TileComponent::SetGridPosition(int row, int col)
 {

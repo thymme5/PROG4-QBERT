@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="ChasingState.cpp" />
     <ClCompile Include="CoilyComponent.cpp" />
+    <ClCompile Include="ColorMap.cpp" />
     <ClCompile Include="EggState.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="ChasingState.h" />
     <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="CoilyState.h" />
+    <ClInclude Include="ColorMap.h" />
     <ClInclude Include="EggState.h" />
     <ClInclude Include="GameUIComponent.h" />
     <ClInclude Include="LevelBuilder.h" />

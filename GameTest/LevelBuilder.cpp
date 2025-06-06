@@ -30,7 +30,7 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 				startY + row * tileSize * 0.75f
 			};
 
-			auto tile = CreateTile(id++, pos);
+			auto tile = CreateTile(id++, pos, "purple");
 			auto tileComp = tile->GetComponent<TileComponent>();
 			tileComp->SetGridPosition(row, col);
 
@@ -47,13 +47,65 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 	}
 }
  
+//void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
+//{
+//	using json = nlohmann::json;
+//
+//	std::filesystem::path path = pathToJson;
+//	std::cout << "[DEBUG] Attempting to load JSON from: " << std::filesystem::absolute(path) << '\n';
+//
+//
+//	std::ifstream file(pathToJson);
+//	if (!file.is_open())
+//		throw std::runtime_error("Failed to open level json: " + pathToJson);
+//
+//	json data;
+//	file >> data;
+//
+//	constexpr float tileSize = 64.0f;
+//	constexpr float startX = 288.f;
+//	constexpr float startY = 64.f;
+//
+//	m_TilesByRow.clear();
+//	m_TilesByRow.resize(data["tileStates"].size());
+//
+//	int id = 0;
+//
+//	for (size_t row = 0; row < data["tileStates"].size(); ++row)
+//	{
+//		const auto& rowData = data["tileStates"][row];
+//		for (size_t col = 0; col < rowData.size(); ++col)
+//		{
+//			const auto& tileJson = rowData[col];
+//
+//			glm::vec2 pos = {
+//				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
+//				startY + static_cast<float>(row) * tileSize * 0.75f
+//			};
+//
+//			auto tile = CreateTile(id++, pos);
+//			auto* tileComp = tile->GetComponent<TileComponent>();
+//			tileComp->SetGridPosition(static_cast<int>(row), static_cast<int>(col));
+//
+//			if (tileJson.contains("start") && tileJson.contains("target"))
+//			{
+//				std::string intermediate = tileJson.contains("intermediate") ? tileJson["intermediate"].get<std::string>() : "";
+//
+//				tileComp->SetColorStates(
+//					tileJson["start"].get<std::string>(),
+//					intermediate,
+//					tileJson["target"].get<std::string>()
+//				);
+//			}
+//			m_TilesByRow[row].push_back(tile);
+//			scene.Add(tile);
+//		}
+//	}
+//}
+
 void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
 {
 	using json = nlohmann::json;
-
-	std::filesystem::path path = pathToJson;
-	std::cout << "[DEBUG] Attempting to load JSON from: " << std::filesystem::absolute(path) << '\n';
-
 
 	std::ifstream file(pathToJson);
 	if (!file.is_open())
@@ -66,52 +118,56 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 	constexpr float startX = 288.f;
 	constexpr float startY = 64.f;
 
+	// get the tile count (pyramid height)
+	int tileCount = data["tileCount"].get<int>();
 	m_TilesByRow.clear();
-	m_TilesByRow.resize(data["tileStates"].size());
+	m_TilesByRow.resize(tileCount);
+
+	// using the first round as testing purposes
+	const auto& round = data["rounds"][0]; // TODO: update later for rounds
+	std::string startColor = round["startColor"];
+	std::string targetColor = round["targetColor"];
+	std::string intermediateColor = round.contains("intermediateColor") ? round["intermediateColor"].get<std::string>() : "";
 
 	int id = 0;
-
-	for (size_t row = 0; row < data["tileStates"].size(); ++row)
+	for (int row = 0; row < tileCount; ++row)
 	{
-		const auto& rowData = data["tileStates"][row];
-		for (size_t col = 0; col < rowData.size(); ++col)
+		for (int col = 0; col <= row; ++col)
 		{
-			const auto& tileJson = rowData[col];
-
 			glm::vec2 pos = {
 				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
 				startY + static_cast<float>(row) * tileSize * 0.75f
 			};
 
-			auto tile = CreateTile(id++, pos);
+			auto tile = CreateTile(id++, pos, startColor);
 			auto* tileComp = tile->GetComponent<TileComponent>();
-			tileComp->SetGridPosition(static_cast<int>(row), static_cast<int>(col));
+			tileComp->SetGridPosition(row, col);
+			tileComp->SetColorStates(startColor, intermediateColor, targetColor);
 
-			if (tileJson.contains("start") && tileJson.contains("target"))
-			{
-				std::string intermediate = tileJson.contains("intermediate") ? tileJson["intermediate"].get<std::string>() : "";
-
-				tileComp->SetColorStates(
-					tileJson["start"].get<std::string>(),
-					intermediate,
-					tileJson["target"].get<std::string>()
-				);
-			}
 			m_TilesByRow[row].push_back(tile);
 			scene.Add(tile);
 		}
 	}
 }
 
-std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos)
+
+std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos, const std::string& color)
 {
-	//font is set for debugging (check debug text above)
+	//get all them bitches
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto tile = std::make_shared<dae::GameObject>();
 
-	tile->AddComponent<dae::TextureComponent>(*tile, "testing/tile_default_test.png", 2.0f);
+	// Load the full tile spritesheet
+	auto textureComp = tile->AddComponent<dae::TextureComponent>(*tile, "Qbert Cubes.png", 2.0f);
+
+	// use the color argument to select the correct sprite clip from the map
+	const SDL_Rect& srcRect = g_ColorSpriteMap.at(color);
+	textureComp->SetSourceRect(srcRect);
+
+	// debug text (empty)
 	tile->AddComponent<dae::TextComponent>(*tile, " ", font);
 
+	// tile logic
 	auto* tileComp = tile->AddComponent<TileComponent>(*tile);
 	tileComp->SetID(id);
 	tileComp->SetState(TileState::Default);
@@ -121,7 +177,6 @@ std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec
 
 	return tile;
 }
-
 const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& LevelBuilder::GetTileMap()
 {
 	return m_TilesByRow;

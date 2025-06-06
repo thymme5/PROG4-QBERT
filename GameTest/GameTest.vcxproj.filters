@@ -55,6 +55,9 @@
     <Filter Include="Game\Sound">
       <UniqueIdentifier>{7decaafe-5336-4a83-8d4c-4375bbae689b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Level\ColorMap">
+      <UniqueIdentifier>{7eac6d3e-6b1c-4e08-a493-436af7ed11a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="QbertSoundLibrary.cpp">
       <Filter>Game\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorMap.cpp">
+      <Filter>Game\Level\ColorMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="QbertSoundLibrary.h">
       <Filter>Game\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorMap.h">
+      <Filter>Game\Level\ColorMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
