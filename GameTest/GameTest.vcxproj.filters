@@ -58,6 +58,21 @@
     <Filter Include="Game\Level\ColorMap">
       <UniqueIdentifier>{7eac6d3e-6b1c-4e08-a493-436af7ed11a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gameplay">
+      <UniqueIdentifier>{9427a2c4-a5bb-407a-9c77-1a73986d4020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay\GameplayManager">
+      <UniqueIdentifier>{df7308fd-7771-4af2-828e-2cec7d6e458f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay\GameplayManager\States">
+      <UniqueIdentifier>{4564f25e-9ab5-4cc4-b94f-941d61d8ad8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay\GameplayManager\States\PlayingState">
+      <UniqueIdentifier>{d606111f-99e0-44e5-abb3-5600aa273433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay\GameplayManager\States\RoundCompleteState">
+      <UniqueIdentifier>{24acf590-71bc-4fef-8a9e-ef6f68cbf55b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -92,6 +107,18 @@
     </ClCompile>
     <ClCompile Include="ColorMap.cpp">
       <Filter>Game\Level\ColorMap</Filter>
+    </ClCompile>
+    <ClCompile Include="GameplayManagerComponent.cpp">
+      <Filter>Gameplay\GameplayManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RoundCompleteState.cpp">
+      <Filter>Gameplay\GameplayManager\States\RoundCompleteState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayingState.cpp">
+      <Filter>Gameplay\GameplayManager\States\PlayingState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameplayState.cpp">
+      <Filter>Gameplay\GameplayManager\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="ColorMap.h">
       <Filter>Game\Level\ColorMap</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayManagerComponent.h">
+      <Filter>Gameplay\GameplayManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RoundCompleteState.h">
+      <Filter>Gameplay\GameplayManager\States\RoundCompleteState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayingState.h">
+      <Filter>Gameplay\GameplayManager\States\PlayingState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayState.h">
+      <Filter>Gameplay\GameplayManager\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

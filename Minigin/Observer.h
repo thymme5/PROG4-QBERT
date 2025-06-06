@@ -3,11 +3,14 @@
 namespace dae
 {
 	class GameObject;
+
 	enum class Event
 	{
 		PlayerDied,
 		PlayerLandedOnTile,
-		TileStateChanged
+		TileStateChanged,
+		PlayerWonGame,
+		LevelComplete
 	};
 
 	class Observer

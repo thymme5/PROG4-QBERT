@@ -150,7 +150,6 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 	}
 }
 
-
 std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos, const std::string& color)
 {
 	//get all them bitches

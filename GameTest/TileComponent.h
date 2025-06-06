@@ -44,12 +44,16 @@ public:
 	void SetColorStates(const std::string& startColor, const std::string& intermediateColor, const std::string& targetColor);
 	std::string GetCurrentColor() const;
 
-	//grid position (coord system)
+	// grid position (coord system)
 	void SetGridPosition(int row, int col);
 	std::pair<int, int> GetGridPosition() const;
 
+	//for the cool game ending animation
+	void StartFlashing();
+	void StopFlashing();
+
 private:
-	int m_ID{}; //basically index
+	int m_ID{}; // basically index
 	TileState m_CurrentState{ TileState::Default };
 	TileState m_TargetState{ TileState::Target };
 	bool m_IsCompleted{ false };
@@ -60,4 +64,10 @@ private:
 	std::string m_StartColor{};
 	std::string m_IntermediateColor{};
 	std::string m_TargetColor{};
+
+	//game ending animation
+	bool m_IsFlashing{ false };
+	float m_FlashTimer{ 0.0f };
+	float m_FlashInterval{ 0.2f };
+	bool m_FlashVisibleState{ true };
 };

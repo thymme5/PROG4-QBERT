@@ -135,6 +135,7 @@ std::shared_ptr<TileComponent> CoilyComponent::GetCoilyTile()
 }
 void CoilyComponent::SetQbert(std::shared_ptr<dae::GameObject> qbert)
 { 
+    //TODO: apply observer pattern here
     m_pQbert = std::move(qbert); 
 }
 

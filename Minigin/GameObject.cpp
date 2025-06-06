@@ -99,7 +99,6 @@ void GameObject::SetParent(GameObject* parent) //todo: fix lol
     }
 }
 
-
 GameObject* GameObject::GetChildAt(int index)
 {
     if (index < 0 || index >= static_cast<int>(m_Children.size())) {

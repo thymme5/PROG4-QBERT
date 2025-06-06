@@ -11,6 +11,7 @@ enum class SoundID
     CoilySnakeJump,
     CoilyEggJump,
     DiscWarp,
+    RoundComplete
 };
 
 // felt like my old implementation of sound was a bit repetitive and error prone, 

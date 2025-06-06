@@ -23,6 +23,7 @@
 #include "CoilyComponent.h"
 #include "EggState.h"
 #include "TileComponent.h"
+#include "GameplayManagerComponent.h"
 
 //Commands
 #include "MoveCommand.h"
@@ -32,6 +33,7 @@
 
 //sound related 
 #include "QbertSoundLibrary.h"
+
 
 void load()
 {
@@ -48,6 +50,11 @@ void load()
 	auto tileMap = LevelBuilder::GetTileMap();
 	auto tileGO = tileMap[0][0];
 	auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+	// === GameplayManager ===
+	auto controller = std::make_shared<dae::GameObject>();
+	controller->AddComponent<GameplayManagerComponent>(*controller);
+	scene.Add(controller);
 
 	// === FPS counter ===
 	go = std::make_shared<dae::GameObject>();

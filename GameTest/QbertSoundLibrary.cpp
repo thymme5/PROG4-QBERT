@@ -7,6 +7,7 @@ void QbertSoundLibrary::LoadAllSounds()
     Register(SoundID::QbertJump, "../Data/Sounds/QBert Jump.wav");
     Register(SoundID::CoilyEggJump, "../Data/Sounds/Coily Egg Jump.wav");
     Register(SoundID::CoilySnakeJump, "../Data/Sounds/Coily Snake Jump.wav");
+    Register(SoundID::RoundComplete, "../Data/Sounds/Round Complete Tune.wav");
     //Register(SoundID::QbertDeath, "../Data/Sounds/QBert Death.wav");
     //Register(SoundID::DiscWarp, "../Data/Sounds/DiscWarp.wav");
 }
