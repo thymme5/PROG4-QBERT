@@ -22,6 +22,7 @@ class QbertSoundLibrary
 public:
     static void LoadAllSounds(); //loads all sounds in the main function
     static void Play(SoundID id); //plays whatever sound your heart desires 
+    static bool IsPlaying(SoundID id); //checks if song is playing or not
 private:
     static void Register(SoundID id, const std::string& path);
     static std::unordered_map<SoundID, std::string> m_SoundMap;

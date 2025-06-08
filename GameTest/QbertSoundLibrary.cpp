@@ -33,3 +33,16 @@ void QbertSoundLibrary::Register(SoundID id, const std::string& path)
     service->LoadSound(path);
 }
 
+bool QbertSoundLibrary::IsPlaying(SoundID id)
+{
+    auto* service = dae::ServiceLocator::GetSoundService();
+    if (!service) return false;
+
+    const auto it = m_SoundMap.find(id);
+    if (it != m_SoundMap.end())
+    {
+        return service->IsPlaying(it->second);
+    }
+
+    return false;
+}

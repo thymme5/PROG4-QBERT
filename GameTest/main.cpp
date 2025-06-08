@@ -28,6 +28,8 @@
 //Commands
 #include "MoveCommand.h"
 #include "ToggleMuteCommand.h"
+#include "FinishRoundCommand.h"
+
 //other misc
 #include "LevelBuilder.h"
 
@@ -51,7 +53,7 @@ void load()
 	manager->Init(scene, "../data/levels/Level01Solo.json");
 
 	scene.Add(controller);
-
+	
 	auto tileMap = LevelBuilder::GetTileMap();
 	auto tileGO = tileMap[0][0];
 	auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
@@ -105,6 +107,10 @@ void load()
 	auto moveDR = std::make_shared<dae::MoveCommand>(qbert.get(), D::DownRight);
 	inputManager.BindCommand(GamepadButton::DPadDown, KeyState::Down, moveDR);
 	inputManager.BindCommand(SDLK_DOWN, KeyState::Down, moveDR);
+
+	//F4 = FINISH ROUND CMMAND
+	auto finishCmd = std::make_shared<FinishRoundCommand>(manager);
+	inputManager.BindCommand(SDLK_F4, KeyState::Down, finishCmd);
 
 	// === Coily GameObject ===
 	auto coily = std::make_shared<dae::GameObject>();

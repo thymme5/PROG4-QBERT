@@ -156,6 +156,7 @@
     <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="ColorMap.cpp" />
     <ClCompile Include="EggState.cpp" />
+    <ClCompile Include="FinishRoundCommand.h" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />

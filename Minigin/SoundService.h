@@ -22,6 +22,7 @@ namespace dae
 
         virtual void SetMuted(bool muted) = 0;
         virtual bool IsMuted() const = 0;
+        virtual bool IsPlaying(const std::string& soundFile) = 0;
     };
 
     class SDLMixerSoundService final : public SoundService
@@ -36,6 +37,7 @@ namespace dae
 
         void SetMuted(bool muted) override;
         bool IsMuted() const override;
+        bool IsPlaying(const std::string& soundFile) override;
 
     private:
         void ProcessQueue();
@@ -53,6 +55,7 @@ namespace dae
         std::condition_variable m_CondVar;
         std::atomic<bool> m_Running{ true };
         std::thread m_WorkerThread;
+        std::unordered_map<std::string, int> m_SoundToChannel;
 
         std::atomic<bool> m_IsMuted{ false };
 

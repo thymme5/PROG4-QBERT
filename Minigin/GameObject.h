@@ -74,8 +74,8 @@ namespace dae
 
         GameObject();
         ~GameObject();
-        GameObject(GameObject&& other) noexcept = default; // Allow move constructor
-        GameObject& operator=(GameObject&& other) noexcept = default; // Allow move assignment
+        GameObject(GameObject&& other) noexcept = default;
+        GameObject& operator=(GameObject&& other) noexcept = default; 
         GameObject(const GameObject& other) = delete;
         GameObject& operator=(const GameObject& other) = delete;
 

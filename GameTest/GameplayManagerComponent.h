@@ -20,6 +20,7 @@ public:
     void Update() override;
     void Render() const override {}
 
+    void ForceCompleteRound();
 private:
     void CheckRoundComplete();
     void StopTileFlashing();

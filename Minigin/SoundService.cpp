@@ -64,7 +64,14 @@ namespace dae
         }
         m_CondVar.notify_one();
     }
+    bool SDLMixerSoundService::IsPlaying(const std::string& soundFile)
+    {
+        const auto it = m_SoundToChannel.find(soundFile);
+        if (it == m_SoundToChannel.end()) return false;
 
+        int channel = it->second;
+        return Mix_Playing(channel) != 0;
+    }
     void SDLMixerSoundService::StopAllSounds()
     {
         Mix_HaltChannel(-1);
@@ -101,6 +108,13 @@ namespace dae
                         Mix_PlayChannel(-1, it->second, 0);
                     else
                         std::cerr << "Sound not loaded: " << cmd.soundFile << std::endl;
+                    
+                    int channel = Mix_PlayChannel(-1, it->second, 0);
+                    if (channel != -1)
+                    {
+                        m_SoundToChannel[cmd.soundFile] = channel;
+                    }
+
                 }
 
                 lock.lock();

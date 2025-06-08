@@ -73,6 +73,9 @@
     <Filter Include="Gameplay\GameplayManager\States\RoundCompleteState">
       <UniqueIdentifier>{24acf590-71bc-4fef-8a9e-ef6f68cbf55b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{925a5e55-d357-4008-8ce0-822d8d64ceef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="GameplayState.cpp">
       <Filter>Gameplay\GameplayManager\States</Filter>
+    </ClCompile>
+    <ClCompile Include="FinishRoundCommand.h">
+      <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
