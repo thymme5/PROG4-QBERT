@@ -30,7 +30,7 @@ class LevelBuilder
 public:
 	static void LoadLevel1(dae::Scene& scene);
 
-	static void LoadFromJson(dae::Scene& scene, const std::string& pathToJson);
+	static void LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber);
 
 	static std::shared_ptr<dae::GameObject> CreateTile(int id, const glm::vec2& pos, const std::string& color);
 	static const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& GetTileMap();

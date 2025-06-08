@@ -43,18 +43,18 @@ void load()
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
-	// === Level Loading ===
-	//LevelBuilder::LoadLevel1(scene);
-	LevelBuilder::LoadFromJson(scene, "../data/levels/Level01Solo.json"); //TODO: pathing is terrible
+	// === GameplayManager ===
+	//level loading also gets handled here
+	auto controller = std::make_shared<dae::GameObject>();
+	controller->AddComponent<GameplayManagerComponent>(*controller);
+	auto* manager = controller->AddComponent<GameplayManagerComponent>(*controller);
+	manager->Init(scene, "../data/levels/Level01Solo.json");
+
+	scene.Add(controller);
 
 	auto tileMap = LevelBuilder::GetTileMap();
 	auto tileGO = tileMap[0][0];
 	auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
-
-	// === GameplayManager ===
-	auto controller = std::make_shared<dae::GameObject>();
-	controller->AddComponent<GameplayManagerComponent>(*controller);
-	scene.Add(controller);
 
 	// === FPS counter ===
 	go = std::make_shared<dae::GameObject>();

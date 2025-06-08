@@ -13,8 +13,8 @@
     {
       "round": 2,
       "jumpMode": "single",
-      "startColor": "blue",
-      "targetColor": "red"
+      "startColor": "orange",
+      "targetColor": "gold"
     },
     {
       "round": 3,

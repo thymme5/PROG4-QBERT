@@ -103,7 +103,54 @@ void LevelBuilder::LoadLevel1(dae::Scene& scene)
 //	}
 //}
 
-void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
+//void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
+//{
+//	using json = nlohmann::json;
+//
+//	std::ifstream file(pathToJson);
+//	if (!file.is_open())
+//		throw std::runtime_error("Failed to open level json: " + pathToJson);
+//
+//	json data;
+//	file >> data;
+//
+//	constexpr float tileSize = 64.0f;
+//	constexpr float startX = 288.f;
+//	constexpr float startY = 64.f;
+//
+//	// get the tile count (pyramid height)
+//	int tileCount = data["tileCount"].get<int>();
+//	m_TilesByRow.clear();
+//	m_TilesByRow.resize(tileCount);
+//
+//	// using the first round as testing purposes
+//	const auto& round = data["rounds"][0]; // TODO: update later for rounds
+//	std::string startColor = round["startColor"];
+//	std::string targetColor = round["targetColor"];
+//	std::string intermediateColor = round.contains("intermediateColor") ? round["intermediateColor"].get<std::string>() : "";
+//
+//	int id = 0;
+//	for (int row = 0; row < tileCount; ++row)
+//	{
+//		for (int col = 0; col <= row; ++col)
+//		{
+//			glm::vec2 pos = {
+//				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
+//				startY + static_cast<float>(row) * tileSize * 0.75f
+//			};
+//
+//			auto tile = CreateTile(id++, pos, startColor);
+//			auto* tileComp = tile->GetComponent<TileComponent>();
+//			tileComp->SetGridPosition(row, col);
+//			tileComp->SetColorStates(startColor, intermediateColor, targetColor);
+//
+//			m_TilesByRow[row].push_back(tile);
+//			scene.Add(tile);
+//		}
+//	}
+//}
+
+void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber)
 {
 	using json = nlohmann::json;
 
@@ -118,17 +165,43 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 	constexpr float startX = 288.f;
 	constexpr float startY = 64.f;
 
-	// get the tile count (pyramid height)
+	// Load basic level info
 	int tileCount = data["tileCount"].get<int>();
 	m_TilesByRow.clear();
 	m_TilesByRow.resize(tileCount);
 
-	// using the first round as testing purposes
-	const auto& round = data["rounds"][0]; // TODO: update later for rounds
-	std::string startColor = round["startColor"];
-	std::string targetColor = round["targetColor"];
-	std::string intermediateColor = round.contains("intermediateColor") ? round["intermediateColor"].get<std::string>() : "";
+	// === Search for the round with "round": roundNumber ===
+	const auto& rounds = data["rounds"];
+	const json* round = nullptr;
 
+	for (const auto& r : rounds)
+	{
+		if (r.contains("round") && r["round"].get<int>() == roundNumber)
+		{
+			round = &r;
+			break;
+		}
+	}
+
+	if (!round)
+	{
+		throw std::runtime_error("Round number " + std::to_string(roundNumber) + " not found in JSON.");
+	}
+
+	// === get color data ===
+	std::string startColor = (*round)["startColor"];
+	std::string targetColor = (*round)["targetColor"];
+	std::string intermediateColor = "";
+
+	if (round->contains("jumpMode") && (*round)["jumpMode"] == "double")
+	{
+		if (round->contains("intermediateColor"))
+			intermediateColor = (*round)["intermediateColor"];
+		else
+			throw std::runtime_error("jumpMode is 'double' but 'intermediateColor' is missing.");
+	}
+
+	// === Create tiles ===
 	int id = 0;
 	for (int row = 0; row < tileCount; ++row)
 	{
@@ -149,6 +222,7 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 		}
 	}
 }
+
 
 std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos, const std::string& color)
 {

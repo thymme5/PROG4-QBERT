@@ -7,7 +7,14 @@ GameplayManagerComponent::GameplayManagerComponent(dae::GameObject& owner)
     : Component(owner)
 {
 }
+void GameplayManagerComponent::Init(dae::Scene& scene, const std::string& levelPath)
+{
+    m_pScene = &scene;
+    m_LevelPath = levelPath;
+    m_CurrentRoundIndex = 3;
 
+    LevelBuilder::LoadFromJson(scene, m_LevelPath, m_CurrentRoundIndex);
+}
 void GameplayManagerComponent::Update() {
     constexpr float deltaTime = 1.0f / 60.0f;
 
@@ -52,19 +59,23 @@ void GameplayManagerComponent::CheckRoundComplete() {
         if (!allDone) break;
     }
 
-    if (allDone) {
+    if (allDone)
+    {
         m_CurrentState = GameState::RoundComplete;
         m_StateTimer = 0.0f;
         m_RoundInProgress = false;
         QbertSoundLibrary::Play(SoundID::RoundComplete);
-        for (const auto& row : LevelBuilder::GetTileComponentMap()) {
+
+        for (const auto& row : LevelBuilder::GetTileComponentMap())
+        {
             for (const auto& tile : row)
                 tile->StartFlashing();
         }
     }
 }
 
-void GameplayManagerComponent::StopTileFlashing() {
+void GameplayManagerComponent::StopTileFlashing()
+{
     for (const auto& row : LevelBuilder::GetTileComponentMap()) {
         for (const auto& tile : row)
             tile->StopFlashing();
