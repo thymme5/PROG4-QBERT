@@ -27,11 +27,12 @@ void GameplayManagerComponent::Update()
         break;
 
     case GameState::RoundComplete:
-        m_StateTimer += deltaTime;
         if (!QbertSoundLibrary::IsPlaying(SoundID::RoundComplete))
         {
             QbertSoundLibrary::Play(SoundID::RoundComplete);
         }
+
+        m_StateTimer += deltaTime;
 
         for (auto& row : LevelBuilder::GetTileComponentMap()) 
         {
@@ -97,6 +98,7 @@ void GameplayManagerComponent::StopTileFlashing()
 
 void GameplayManagerComponent::StartNextRound()
 {
+
     ++m_CurrentRoundIndex;
 
     //count levels
@@ -117,10 +119,13 @@ void GameplayManagerComponent::StartNextRound()
         std::cout << "[GameplayManager] All rounds completed. Level finished.\n";
         m_RoundInProgress = false;
         m_CurrentState = GameState::Playing;
+        m_pOwner->NotifyObservers(dae::Event::LevelComplete);
+
         return;
     }
 
     std::cout << "[GameplayManager] Starting round " << m_CurrentRoundIndex << '\n';
+    m_pOwner->NotifyObservers(dae::Event::roundComplete);
 
     // remove old tile gameobjects
     m_pScene->RemoveObjectsWithComponent<TileComponent>();
@@ -128,6 +133,30 @@ void GameplayManagerComponent::StartNextRound()
     // load new tiles for the next round (same level)
     LevelBuilder::LoadFromJson(*m_pScene, m_LevelPath, m_CurrentRoundIndex);
 
+    const auto& newTileMap = LevelBuilder::GetTileMap();
+    auto firstTile = newTileMap[0][0];
+    auto firstTileComp = std::shared_ptr<TileComponent>(firstTile->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+    // update Qbert
+    if (auto qbert = m_pQbert.lock())
+    {
+        auto* qbertMoveComponent = qbert->GetComponent<QbertMoveComponent>();
+            
+        qbertMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+        qbertMoveComponent->SetCurrentTile(firstTileComp);
+    }
+
+    //reset enemies (only coily for now) 
+    //TODO: maybe refactor when we have more enemies
+    if (auto coily = m_pCoily.lock())
+    {
+        auto* coilyMoveComponent = coily->GetComponent<CoilyComponent>();
+
+        coilyMoveComponent->SetState(std::make_unique<EggState>());
+        coilyMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+        coilyMoveComponent->SetCurrentTile(firstTileComp);
+    }
+    
     // set state flags
     m_CurrentState = GameState::Playing;
     m_RoundInProgress = true;

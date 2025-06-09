@@ -36,10 +36,21 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	for (const auto& object : m_objects)
+	/*for (const auto& object : m_objects)
 	{
 		object->Render();
-	}
+	}*/
+
+	// render objects based on their layer
+	auto sortedObjects = m_objects;
+	std::sort(sortedObjects.begin(), sortedObjects.end(),
+		[](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b)
+		{
+			return static_cast<int>(a->GetRenderLayer()) < static_cast<int>(b->GetRenderLayer());
+		});
+
+	for (const auto& obj : sortedObjects)
+		obj->Render();
 }
 
 void Scene::RenderImGui()

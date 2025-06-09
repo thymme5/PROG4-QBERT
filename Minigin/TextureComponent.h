@@ -24,6 +24,8 @@ namespace dae
 
 		float GetWidth() const noexcept;
 		float GetHeight() const noexcept;
+		std::shared_ptr<Texture2D> GetTexture() const noexcept { return m_texture; }
+
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
 		float m_Scale;

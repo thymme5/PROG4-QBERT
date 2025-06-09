@@ -1,9 +1,11 @@
 ﻿#include "CoilyComponent.h"
 
 CoilyComponent::CoilyComponent(dae::GameObject& owner)
-    : Component(owner)
+    : Component(owner),
+    m_LastMoveDir{}
 {
     m_pOwner->GetComponent<dae::TextureComponent>()->SetTexture("Coily Spritesheet.png");
+    m_pOwner->SetRenderLayer(RenderLayer::Characters);
 }
 
 CoilyComponent::~CoilyComponent()

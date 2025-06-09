@@ -8,8 +8,18 @@ void QbertSoundLibrary::LoadAllSounds()
     Register(SoundID::CoilyEggJump, "../Data/Sounds/Coily Egg Jump.wav");
     Register(SoundID::CoilySnakeJump, "../Data/Sounds/Coily Snake Jump.wav");
     Register(SoundID::RoundComplete, "../Data/Sounds/Round Complete Tune.wav");
-    //Register(SoundID::QbertDeath, "../Data/Sounds/QBert Death.wav");
-    //Register(SoundID::DiscWarp, "../Data/Sounds/DiscWarp.wav");
+    Register(SoundID::ChangeSelection, "../Data/Sounds/Change Selection.wav");
+    Register(SoundID::ClearDisks, "../Data/Sounds/Clear Disks.wav");
+    Register(SoundID::CoilyFall, "../Data/Sounds/Coily Fall.wav");
+    Register(SoundID::DemoSound, "../Data/Sounds/Demo Sound.wav");
+    Register(SoundID::DiskLand, "../Data/Sounds/Disk Land.wav");
+    Register(SoundID::DiskLift, "../Data/Sounds/Disk Lift.wav");
+    Register(SoundID::LevelScreenTune, "../Data/Sounds/Level Screen Tune.wav");
+    Register(SoundID::OtherFoesJump, "../Data/Sounds/Other Foes Jump.wav");
+    Register(SoundID::QbertFall, "../Data/Sounds/QBert Fall.wav");
+    Register(SoundID::QbertHit, "../Data/Sounds/QBert Hit.wav");
+    Register(SoundID::SlickSamCaught, "../Data/Sounds/SlickSam Caught.wav");
+    Register(SoundID::Swearing, "../Data/Sounds/Swearing.wav");
 }
 
 void QbertSoundLibrary::Play(SoundID id)
@@ -28,7 +38,6 @@ void QbertSoundLibrary::Register(SoundID id, const std::string& path)
 {
     auto* service = dae::ServiceLocator::GetSoundService();
     if (!service) return;
-    else std::cout << "loading sound " << path << std::endl;
     m_SoundMap[id] = path;
     service->LoadSound(path);
 }

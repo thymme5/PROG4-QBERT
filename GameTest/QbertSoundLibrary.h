@@ -11,7 +11,19 @@ enum class SoundID
     CoilySnakeJump,
     CoilyEggJump,
     DiscWarp,
-    RoundComplete
+    RoundComplete,
+    ChangeSelection,
+    ClearDisks,
+    CoilyFall,
+    DemoSound,
+    DiskLand,
+    DiskLift,
+    LevelScreenTune,
+    OtherFoesJump,
+    QbertFall,
+    QbertHit,
+    SlickSamCaught,
+    Swearing
 };
 
 // felt like my old implementation of sound was a bit repetitive and error prone, 

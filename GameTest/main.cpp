@@ -51,7 +51,6 @@ void load()
 	controller->AddComponent<GameplayManagerComponent>(*controller);
 	auto* manager = controller->AddComponent<GameplayManagerComponent>(*controller);
 	manager->Init(scene, "../data/levels/Level01Solo.json");
-
 	scene.Add(controller);
 	
 	auto tileMap = LevelBuilder::GetTileMap();
@@ -72,15 +71,35 @@ void load()
 
 	qbertMove->SetCurrentTile(tileComp);
 	qbertMove->SetTileMap(LevelBuilder::GetTileComponentMap());
+	manager->SetQbert(qbert);
 
 	// === make a GameUIComponent and put a tracker on qberts ass === 
 	go = std::make_shared<dae::GameObject>();
 	auto* gameUI = go->AddComponent<dae::GameUIComponent>(*go);
 	go->AddComponent<dae::TextComponent>(*go, " ", dae::ResourceManager::GetInstance().LoadFont("minecraft.ttf", 18));
 	go->SetPosition(5, 50);
+
+	//add UI as observer to objects
 	qbert->AddObserver(gameUI);
+	controller->AddObserver(gameUI);
 
 	scene.Add(go);
+
+	// === Round UI ===
+	auto roundGO = std::make_shared<dae::GameObject>();
+	roundGO->AddComponent<dae::TextComponent>(*roundGO, "ROUND: 1", font);
+	roundGO->SetPosition(400, 80);
+	scene.Add(roundGO);
+
+	// === Level UI ===
+	auto levelGO = std::make_shared<dae::GameObject>();
+	levelGO->AddComponent<dae::TextComponent>(*levelGO, "LEVEL: 1", font);
+	levelGO->SetPosition(400, 110);
+	scene.Add(levelGO);
+
+	// Link to GameUIComponent
+	gameUI->SetRoundText(roundGO->GetComponent<dae::TextComponent>());
+	gameUI->SetLevelText(levelGO->GetComponent<dae::TextComponent>());
 
 	// === add qberts ass to the scene cuz he's important after all === 
 	scene.Add(qbert);
@@ -123,6 +142,7 @@ void load()
 	coilyComponent->SetQbert(qbert);
 
 	scene.Add(coily);
+	manager->SetCoily(coily);
 
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
@@ -135,6 +155,7 @@ void load()
 	auto soundService = dae::ServiceLocator::GetSoundService(); 
 	if (soundService)
 	{
+		soundService->SetVolume(10);
 		QbertSoundLibrary::LoadAllSounds();
 	}
 }

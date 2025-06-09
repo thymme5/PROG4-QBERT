@@ -1,6 +1,7 @@
 #include "SoundService.h"
 #include <SDL_mixer.h>
 #include <iostream>
+#include <algorithm>
 
 namespace dae
 {
@@ -77,6 +78,18 @@ namespace dae
         Mix_HaltChannel(-1);
     }
 
+    void SDLMixerSoundService::SetVolume(int volume)
+    {
+        m_Volume = std::clamp(volume, 0, MIX_MAX_VOLUME);
+
+        for (auto& [_, chunk] : m_LoadedSounds)
+        {
+            Mix_VolumeChunk(chunk, m_Volume);
+        }
+
+        std::cout << "Volume set to: " << m_Volume << '\n';
+    }
+
     void SDLMixerSoundService::ProcessQueue()
     {
         while (m_Running)
@@ -96,7 +109,10 @@ namespace dae
                     {
                         Mix_Chunk* chunk = Mix_LoadWAV(cmd.soundFile.c_str());
                         if (chunk)
+                        {
+                            Mix_VolumeChunk(chunk, m_Volume); 
                             m_LoadedSounds[cmd.soundFile] = chunk;
+                        }
                         else
                             std::cerr << "Failed to load sound: " << Mix_GetError() << std::endl;
                     }

@@ -8,7 +8,8 @@
 QbertMoveComponent::QbertMoveComponent(dae::GameObject& pOwner)
 	: dae::Component(pOwner)
 {
-
+	//set rendering layer to characters
+	m_pOwner->SetRenderLayer(RenderLayer::Characters);
 }
 
 void QbertMoveComponent::Update()

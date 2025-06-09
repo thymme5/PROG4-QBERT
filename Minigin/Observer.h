@@ -10,6 +10,7 @@ namespace dae
 		PlayerLandedOnTile,
 		TileStateChanged,
 		PlayerWonGame,
+		roundComplete,
 		LevelComplete
 	};
 

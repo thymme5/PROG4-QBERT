@@ -8,6 +8,13 @@
 #include "ImGuiComponent.h"
 #include "Observer.h"
 
+enum class RenderLayer { 
+    Background = 0, 
+    Tiles = 1, 
+    Characters = 2, 
+    UI = 3 
+};
+
 namespace dae
 {
     class Texture2D;
@@ -17,10 +24,15 @@ namespace dae
     class GameObject final
     {
     public:
+
         void Update();
         void Render() const;
         void RenderImGui();
         void SetPosition(float x, float y);
+
+        void SetRenderLayer(RenderLayer layer) { m_RenderLayer = layer; }
+        RenderLayer GetRenderLayer() const { return m_RenderLayer; }
+
 
         template <typename T, typename... Args>
         T* AddComponent(Args&&... args)
@@ -98,6 +110,7 @@ namespace dae
 
     private:
 
+        RenderLayer m_RenderLayer{ RenderLayer::Tiles };
 
         Transform m_transform{};
 

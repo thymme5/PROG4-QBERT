@@ -2,8 +2,10 @@
 #include "Component.h"
 #include "LevelBuilder.h"
 #include "QbertSoundLibrary.h"
+#include "QbertMoveComponent.h"
+#include "CoilyComponent.h"
 
-enum class GameState 
+enum class GameState
 {
     Playing,
     RoundComplete,
@@ -14,6 +16,9 @@ class GameplayManagerComponent final : public dae::Component {
 public:
     explicit GameplayManagerComponent(dae::GameObject& owner);
     void Init(dae::Scene& scene, const std::string& levelPath = "../data/levels/Level01Solo.json");
+
+    void SetQbert(const std::shared_ptr<dae::GameObject>& qbert) { m_pQbert = qbert; }
+    void SetCoily(const std::shared_ptr<dae::GameObject>& coily) { m_pCoily = coily; }
 
     ~GameplayManagerComponent() override = default;
 
@@ -34,4 +39,7 @@ private:
     std::string m_LevelPath{};
     int m_CurrentRoundIndex = 0;
 
+    //pointers to entities
+    std::weak_ptr<dae::GameObject> m_pQbert;
+    std::weak_ptr<dae::GameObject> m_pCoily;
 };
