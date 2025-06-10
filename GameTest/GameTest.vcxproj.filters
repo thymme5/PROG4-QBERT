@@ -76,6 +76,27 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{925a5e55-d357-4008-8ce0-822d8d64ceef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMode">
+      <UniqueIdentifier>{22c70aa0-6793-4dea-9d82-d85d7fee03e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\SinglePlayerMode">
+      <UniqueIdentifier>{ee855862-e20d-43f3-a40f-38ad51258766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\CoopMode">
+      <UniqueIdentifier>{a3f49624-3f32-47e9-ba26-8160675f0b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\VersusMode">
+      <UniqueIdentifier>{a35eceac-86fa-47fe-bd62-d0cc96f2a3b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\GameModeManager">
+      <UniqueIdentifier>{4eb65f4e-5ec8-4169-b12e-69f0af694d18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\PlayerConfig">
+      <UniqueIdentifier>{4196248d-c934-4efe-8489-7c0beb723cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneBuilder">
+      <UniqueIdentifier>{1a80dde7-1850-492e-952e-218678320bdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,6 +147,24 @@
     <ClCompile Include="FinishRoundCommand.h">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="SinglePlayerMode.cpp">
+      <Filter>GameMode\SinglePlayerMode</Filter>
+    </ClCompile>
+    <ClCompile Include="CoopMode.cpp">
+      <Filter>GameMode\CoopMode</Filter>
+    </ClCompile>
+    <ClCompile Include="VersusMode.cpp">
+      <Filter>GameMode\VersusMode</Filter>
+    </ClCompile>
+    <ClCompile Include="GameModeManager.cpp">
+      <Filter>GameMode\GameModeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerConfig.cpp">
+      <Filter>GameMode\PlayerConfig</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertSceneBuilder.cpp">
+      <Filter>SceneBuilder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveCommand.h">
@@ -175,6 +214,27 @@
     </ClInclude>
     <ClInclude Include="GameplayState.h">
       <Filter>Gameplay\GameplayManager\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <Filter>GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePlayerMode.h">
+      <Filter>GameMode\SinglePlayerMode</Filter>
+    </ClInclude>
+    <ClInclude Include="CoopMode.h">
+      <Filter>GameMode\CoopMode</Filter>
+    </ClInclude>
+    <ClInclude Include="VersusMode.h">
+      <Filter>GameMode\VersusMode</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModeManager.h">
+      <Filter>GameMode\GameModeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerConfig.h">
+      <Filter>GameMode\PlayerConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertSceneBuilder.h">
+      <Filter>SceneBuilder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

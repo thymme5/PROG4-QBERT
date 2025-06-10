@@ -155,37 +155,50 @@
     <ClCompile Include="ChasingState.cpp" />
     <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="ColorMap.cpp" />
+    <ClCompile Include="CoopMode.cpp" />
     <ClCompile Include="EggState.cpp" />
     <ClCompile Include="FinishRoundCommand.h" />
+    <ClCompile Include="GameModeManager.cpp" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
+    <ClCompile Include="PlayerConfig.cpp" />
     <ClCompile Include="PlayingState.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
+    <ClCompile Include="QbertSceneBuilder.cpp" />
     <ClCompile Include="QbertSoundLibrary.cpp" />
     <ClCompile Include="RoundCompleteState.cpp" />
+    <ClCompile Include="SinglePlayerMode.cpp" />
     <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="TransformingState.cpp" />
+    <ClCompile Include="VersusMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChasingState.h" />
     <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="ColorMap.h" />
+    <ClInclude Include="CoopMode.h" />
     <ClInclude Include="EggState.h" />
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="GameModeManager.h" />
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="PlayerConfig.h" />
     <ClInclude Include="PlayingState.h" />
     <ClInclude Include="QbertMoveComponent.h" />
+    <ClInclude Include="QbertSceneBuilder.h" />
     <ClInclude Include="QbertSoundLibrary.h" />
     <ClInclude Include="RoundCompleteState.h" />
+    <ClInclude Include="SinglePlayerMode.h" />
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TransformingState.h" />
+    <ClInclude Include="VersusMode.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

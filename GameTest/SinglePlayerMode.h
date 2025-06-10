@@ -1,0 +1,11 @@
+#pragma once
+#include "GameMode.h"
+#include <iostream>
+
+class SinglePlayerMode : public GameMode
+{
+public:
+    void Enter() override;
+    void Exit() override;
+    void Update() override;
+};
