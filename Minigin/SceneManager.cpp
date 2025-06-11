@@ -16,6 +16,21 @@ void dae::SceneManager::Render()
 		scene->Render();
 	}
 }
+void dae::SceneManager::PopScene()
+{
+	m_scenes.pop_back();
+}
+void dae::SceneManager::RemoveScene(const std::string& name)
+{
+	for (auto it = m_scenes.begin(); it != m_scenes.end(); ++it)
+	{
+		if ((*it)->GetName() == name)
+		{
+			m_scenes.erase(it);
+			break;
+		}
+	}
+}
 void dae::SceneManager::RenderUI()
 {
 	for (auto& scene : m_scenes)

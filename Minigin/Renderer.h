@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include "glm.hpp"
 
 namespace dae
 {
@@ -23,6 +24,8 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, float x, float y, float width, float height) const;
 
 		SDL_Renderer* GetSDLRenderer() const;
+		glm::ivec2 GetWindowSize() const;
+
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }

@@ -164,6 +164,8 @@
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainMenuUIComponent.cpp" />
     <ClCompile Include="PlayerConfig.cpp" />
     <ClCompile Include="PlayingState.cpp" />
     <ClCompile Include="QbertMoveComponent.cpp" />
@@ -182,13 +184,17 @@
     <ClInclude Include="ColorMap.h" />
     <ClInclude Include="CoopMode.h" />
     <ClInclude Include="EggState.h" />
+    <ClInclude Include="EnterGameMode.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameModeManager.h" />
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
     <ClInclude Include="LevelBuilder.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MainMenuUIComponent.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="MoveMenuArrow.h" />
     <ClInclude Include="PlayerConfig.h" />
     <ClInclude Include="PlayingState.h" />
     <ClInclude Include="QbertMoveComponent.h" />

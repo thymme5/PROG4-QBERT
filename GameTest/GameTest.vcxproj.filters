@@ -97,6 +97,12 @@
     <Filter Include="SceneBuilder">
       <UniqueIdentifier>{1a80dde7-1850-492e-952e-218678320bdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\MainMenuUIComponent">
+      <UniqueIdentifier>{45b4ebe0-377a-4d7a-92b4-c679f8326ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\MainMenu">
+      <UniqueIdentifier>{bf4d4da1-d67a-42e0-81db-51e4a433015d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -164,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="QbertSceneBuilder.cpp">
       <Filter>SceneBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuUIComponent.cpp">
+      <Filter>Game\Components\MainMenuUIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>GameMode\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +247,18 @@
     </ClInclude>
     <ClInclude Include="QbertSceneBuilder.h">
       <Filter>SceneBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuUIComponent.h">
+      <Filter>Game\Components\MainMenuUIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveMenuArrow.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>GameMode\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="EnterGameMode.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

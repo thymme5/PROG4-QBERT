@@ -1,21 +1,19 @@
 #pragma once
 #include <memory>
 #include "GameMode.h"
+#include "Singleton.h"
 
 class GameMode;
 
-enum class GameModeType 
-{ 
-    SinglePlayer, 
-    Coop, 
-    Versus 
-};
-
-class GameModeManager
+class GameModeManager final : public dae::Singleton<GameModeManager>
 {
 public:
     void SetMode(std::unique_ptr<GameMode> newMode);
     void Update();
+
 private:
+    friend class dae::Singleton<GameModeManager>;
+    GameModeManager() = default;
+
     std::unique_ptr<GameMode> m_CurrentMode;
 };

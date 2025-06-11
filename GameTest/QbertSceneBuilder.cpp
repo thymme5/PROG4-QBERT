@@ -25,6 +25,9 @@
 #include "FinishRoundCommand.h"
 #include "QbertSoundLibrary.h"
 #include "GameModeManager.h"
+#include "MainMenuUIComponent.h"
+#include "MoveMenuArrow.h"
+#include "EnterGameMode.h"
 
 std::shared_ptr<dae::GameObject> QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::Font>& font, bool isSecondPlayer)
 {
@@ -37,14 +40,56 @@ std::shared_ptr<dae::GameObject> QbertSceneBuilder::CreateQbertPlayer(const std:
 	moveComp->SetCurrentTile(startTile);
 	return qbert;
 }
-void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& levelPath, GameModeType mode)
+
+void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font)
+{
+    // === main menu component ===
+    auto go = std::make_shared<dae::GameObject>();
+    auto UIcomponent = go->AddComponent<MainMenuUIComponent>(*go);
+
+    scene.Add(go);
+
+    // === options ===
+    const float baseX = 200.0f;
+    const float baseY = 350.0f;
+    const float spacing = 50.0f;
+
+    std::vector<std::string> options = { "Solo mode", "Co-op Mode", "Versus mode" };
+    for (size_t i = 0; i < options.size(); ++i)
+    {
+        auto optionGO = std::make_shared<dae::GameObject>();
+        optionGO->AddComponent<dae::TextComponent>(*optionGO, options[i], font);
+        optionGO->SetPosition(baseX, baseY + i * spacing);
+        scene.Add(optionGO);
+    }
+
+    // === Selection Arrow ===
+    auto arrowGO = std::make_shared<dae::GameObject>();
+    arrowGO->AddComponent<dae::TextureComponent>(*arrowGO, "Selection Arrow.png", 2.f);
+    arrowGO->SetPosition(180.f, 355.f);
+    UIcomponent->SetArrow(arrowGO);
+    scene.Add(arrowGO);
+
+    // === main menu input bindings ===
+    //TODO: controller input
+    auto& inputManager = dae::InputManager::GetInstance();
+
+    auto moveArrowUp = std::make_shared<MoveMenuArrow>(UIcomponent, -1.f);
+    inputManager.BindCommand(SDLK_UP, KeyState::Down, moveArrowUp);
+
+    auto moveArrowDown = std::make_shared<MoveMenuArrow>(UIcomponent, 1.f);
+    inputManager.BindCommand(SDLK_DOWN, KeyState::Down, moveArrowDown);
+
+    // === Confirm selection command ===
+    auto confirmCommand = std::make_shared<EnterGameMode>(UIcomponent);
+    inputManager.BindCommand(SDLK_RETURN, KeyState::Down, confirmCommand);
+}
+
+void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& levelPath)
 {
     // Get references to input and font resources.
     auto& inputManager = dae::InputManager::GetInstance();
     auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
-    // (Unused parameters can be discarded or used later if needed.)
-    mode;
 
     // === Gameplay Manager ===
     auto controller = std::make_shared<dae::GameObject>();
@@ -97,8 +142,9 @@ void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& le
     scene.Add(levelGO);
 
     // Link the Round and Level texts to the GameUIComponent.
-    gameUI->SetRoundText(roundGO->GetComponent<dae::TextComponent>());
-    gameUI->SetLevelText(levelGO->GetComponent<dae::TextComponent>());
+    gameUI->SetRoundText(std::shared_ptr<dae::TextComponent>(roundGO->GetComponent<dae::TextComponent>(), [](dae::TextComponent*) {}));
+    gameUI->SetLevelText(std::shared_ptr<dae::TextComponent>(levelGO->GetComponent<dae::TextComponent>(), [](dae::TextComponent*) {}));
+
 
     // === Add Qbert to the Scene ===
     scene.Add(qbert);
@@ -148,3 +194,4 @@ void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& le
         QbertSoundLibrary::LoadAllSounds();
     }
 }
+

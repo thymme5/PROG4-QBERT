@@ -39,6 +39,7 @@ namespace dae
 		void Update();
 		void Render() const;
 		void RenderImGui();
+		std::string GetName() const { return m_name; };
 
 		~Scene();
 		Scene(const Scene& other) = delete;

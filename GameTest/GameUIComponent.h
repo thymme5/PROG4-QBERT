@@ -18,8 +18,9 @@ namespace dae
         void Update() override;
         void Render() const override;
 
-        void SetRoundText(TextComponent* pText) { m_pRoundText = pText; }
-        void SetLevelText(TextComponent* pText) { m_pLevelText = pText; }
+        void SetRoundText(std::shared_ptr<TextComponent> pText) { m_pRoundText = pText; }
+        void SetLevelText(std::shared_ptr<TextComponent> pText) { m_pLevelText = pText; }
+
 
     private: 
         void UpdateLives();
@@ -33,8 +34,8 @@ namespace dae
 
         std::shared_ptr<dae::Texture2D> m_HeartTexture;
 
-        TextComponent* m_pRoundText = nullptr;
-        TextComponent* m_pLevelText = nullptr;
+        std::shared_ptr<TextComponent> m_pRoundText;
+        std::shared_ptr<TextComponent> m_pLevelText;
 
         bool m_IsDirty;
     };
