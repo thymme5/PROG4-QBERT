@@ -161,6 +161,7 @@
     <ClCompile Include="GameModeManager.cpp" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
+    <ClCompile Include="InputBindingHelper.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUIComponent.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
+    <ClInclude Include="InputBindingHelper.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuUIComponent.h" />

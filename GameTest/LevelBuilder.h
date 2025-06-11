@@ -28,8 +28,6 @@ namespace dae
 class LevelBuilder
 {
 public:
-	static void LoadLevel1(dae::Scene& scene);
-
 	static void LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber);
 
 	static std::shared_ptr<dae::GameObject> CreateTile(int id, const glm::vec2& pos, const std::string& color);
@@ -38,4 +36,5 @@ public:
 
 private:
 	static std::vector<std::vector<std::shared_ptr<dae::GameObject>>> m_TilesByRow;
+	inline static std::vector<std::pair<int, int>> m_StartTiles{};
 };

@@ -35,6 +35,16 @@ namespace dae
 				m_objects.end());
 
 		}
+		template <typename T>
+		std::shared_ptr<dae::GameObject> FindFirstObjectOfType()
+		{
+			for (const auto& go : m_objects)
+			{
+				if (go->GetComponent<T>() != nullptr)
+					return go;
+			}
+			return nullptr;
+		}
 
 		void Update();
 		void Render() const;

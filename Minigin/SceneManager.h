@@ -11,8 +11,8 @@ namespace dae
 	{
 	public:
 		Scene& CreateScene(const std::string& name);
-		void PopScene();
 		void RemoveScene(const std::string& name);
+		void PopScene();
 
 		void Update();
 		void Render();

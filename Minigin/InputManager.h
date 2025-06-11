@@ -24,7 +24,7 @@ namespace dae
 
 		bool ProcessInput();
 		void BindCommand(SDL_Keycode key, KeyState state, std::shared_ptr<Command> command);
-		void BindCommand(GamepadButton gamepadButton, KeyState state, std::shared_ptr<Command> command);
+		void BindCommand(int playerIdx, GamepadButton gamepadButton, KeyState state, std::shared_ptr<Command> command);
 
 		void ClearAllBindings();
 

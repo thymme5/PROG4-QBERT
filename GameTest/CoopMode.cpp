@@ -1,13 +1,13 @@
 #include "CoopMode.h"
+#include "QbertSceneBuilder.h"
 
 void CoopMode::Enter()
 {
-    std::cout << "Entered Single Player Mode\n";
+    QbertSceneBuilder::BuildCoopScene(dae::SceneManager::GetInstance().CreateScene("CoopModeScene"), "../data/levels/Level01Coop.json");
 }
 
 void CoopMode::Exit()
 {
-    std::cout << "Exiting Single Player Mode\n";
 }
 
 void CoopMode::Update()

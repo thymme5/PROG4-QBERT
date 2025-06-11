@@ -11,145 +11,6 @@
 
 std::vector<std::vector<std::shared_ptr<dae::GameObject>>> LevelBuilder::m_TilesByRow{};
 
-void LevelBuilder::LoadLevel1(dae::Scene& scene)
-{
-	constexpr int baseRow = 7;
-	m_TilesByRow.resize(baseRow);
-
-	constexpr float tileSize = 64.0f;
-	constexpr float startX = 288.f;
-	constexpr float startY = 64.f;
-
-	int id = 0;
-	for (int row = 0; row < baseRow; ++row)
-	{
-		for (int col = 0; col <= row; ++col)
-		{
-			glm::vec2 pos = {
-				startX + (col - row / 2.0f) * tileSize,
-				startY + row * tileSize * 0.75f
-			};
-
-			auto tile = CreateTile(id++, pos, "purple");
-			auto tileComp = tile->GetComponent<TileComponent>();
-			tileComp->SetGridPosition(row, col);
-
-			m_TilesByRow[row].push_back(tile);
-
-			// === DEBUG TEXT ===
-			//auto [rowTest, colTest] = tileComp->GetGridPosition();
-			//int testid = tileComp->GetID();
-			//std::string coords = std::to_string(testid);
-			//tile->AddComponent<dae::TextComponent>(*tile, coords, dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
-
-			scene.Add(tile);
-		}
-	}
-}
- 
-//void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
-//{
-//	using json = nlohmann::json;
-//
-//	std::filesystem::path path = pathToJson;
-//	std::cout << "[DEBUG] Attempting to load JSON from: " << std::filesystem::absolute(path) << '\n';
-//
-//
-//	std::ifstream file(pathToJson);
-//	if (!file.is_open())
-//		throw std::runtime_error("Failed to open level json: " + pathToJson);
-//
-//	json data;
-//	file >> data;
-//
-//	constexpr float tileSize = 64.0f;
-//	constexpr float startX = 288.f;
-//	constexpr float startY = 64.f;
-//
-//	m_TilesByRow.clear();
-//	m_TilesByRow.resize(data["tileStates"].size());
-//
-//	int id = 0;
-//
-//	for (size_t row = 0; row < data["tileStates"].size(); ++row)
-//	{
-//		const auto& rowData = data["tileStates"][row];
-//		for (size_t col = 0; col < rowData.size(); ++col)
-//		{
-//			const auto& tileJson = rowData[col];
-//
-//			glm::vec2 pos = {
-//				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
-//				startY + static_cast<float>(row) * tileSize * 0.75f
-//			};
-//
-//			auto tile = CreateTile(id++, pos);
-//			auto* tileComp = tile->GetComponent<TileComponent>();
-//			tileComp->SetGridPosition(static_cast<int>(row), static_cast<int>(col));
-//
-//			if (tileJson.contains("start") && tileJson.contains("target"))
-//			{
-//				std::string intermediate = tileJson.contains("intermediate") ? tileJson["intermediate"].get<std::string>() : "";
-//
-//				tileComp->SetColorStates(
-//					tileJson["start"].get<std::string>(),
-//					intermediate,
-//					tileJson["target"].get<std::string>()
-//				);
-//			}
-//			m_TilesByRow[row].push_back(tile);
-//			scene.Add(tile);
-//		}
-//	}
-//}
-
-//void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson)
-//{
-//	using json = nlohmann::json;
-//
-//	std::ifstream file(pathToJson);
-//	if (!file.is_open())
-//		throw std::runtime_error("Failed to open level json: " + pathToJson);
-//
-//	json data;
-//	file >> data;
-//
-//	constexpr float tileSize = 64.0f;
-//	constexpr float startX = 288.f;
-//	constexpr float startY = 64.f;
-//
-//	// get the tile count (pyramid height)
-//	int tileCount = data["tileCount"].get<int>();
-//	m_TilesByRow.clear();
-//	m_TilesByRow.resize(tileCount);
-//
-//	// using the first round as testing purposes
-//	const auto& round = data["rounds"][0]; // TODO: update later for rounds
-//	std::string startColor = round["startColor"];
-//	std::string targetColor = round["targetColor"];
-//	std::string intermediateColor = round.contains("intermediateColor") ? round["intermediateColor"].get<std::string>() : "";
-//
-//	int id = 0;
-//	for (int row = 0; row < tileCount; ++row)
-//	{
-//		for (int col = 0; col <= row; ++col)
-//		{
-//			glm::vec2 pos = {
-//				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
-//				startY + static_cast<float>(row) * tileSize * 0.75f
-//			};
-//
-//			auto tile = CreateTile(id++, pos, startColor);
-//			auto* tileComp = tile->GetComponent<TileComponent>();
-//			tileComp->SetGridPosition(row, col);
-//			tileComp->SetColorStates(startColor, intermediateColor, targetColor);
-//
-//			m_TilesByRow[row].push_back(tile);
-//			scene.Add(tile);
-//		}
-//	}
-//}
-
 void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber)
 {
 	using json = nlohmann::json;
@@ -165,12 +26,31 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 	constexpr float startX = 288.f;
 	constexpr float startY = 64.f;
 
-	// Load basic level info
+	// === Load basic level structure ===
 	int tileCount = data["tileCount"].get<int>();
 	m_TilesByRow.clear();
 	m_TilesByRow.resize(tileCount);
 
-	// === Search for the round with "round": roundNumber ===
+	// === Decide start tiles based on mode ===
+	m_StartTiles.clear();
+	std::string mode = data.value("mode", "Solo");
+
+	if (mode == "Solo" && data.contains("startTile"))
+	{
+		const auto& start = data["startTile"];
+		m_StartTiles.emplace_back(start[0], start[1]);
+	}
+	else if ((mode == "Coop" || mode == "Versus") && data.contains("startTiles"))
+	{
+		for (const auto& start : data["startTiles"])
+			m_StartTiles.emplace_back(start[0], start[1]);
+	}
+	else
+	{
+		throw std::runtime_error("Missing or invalid start tile(s) for mode: " + mode);
+	}
+
+	// === Find the correct round entry ===
 	const auto& rounds = data["rounds"];
 	const json* round = nullptr;
 
@@ -182,26 +62,22 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
 			break;
 		}
 	}
-
 	if (!round)
-	{
-		throw std::runtime_error("Round number " + std::to_string(roundNumber) + " not found in JSON.");
-	}
+		throw std::runtime_error("Round number " + std::to_string(roundNumber) + " not found.");
 
-	// === get color data ===
+	// === Extract round color data ===
 	std::string startColor = (*round)["startColor"];
 	std::string targetColor = (*round)["targetColor"];
-	std::string intermediateColor = "";
+	std::string intermediateColor{};
 
-	if (round->contains("jumpMode") && (*round)["jumpMode"] == "double")
+	if (round->value("jumpMode", "single") == "double")
 	{
-		if (round->contains("intermediateColor"))
-			intermediateColor = (*round)["intermediateColor"];
-		else
+		if (!round->contains("intermediateColor"))
 			throw std::runtime_error("jumpMode is 'double' but 'intermediateColor' is missing.");
+		intermediateColor = (*round)["intermediateColor"];
 	}
 
-	// === Create tiles ===
+	// === Create all tiles ===
 	int id = 0;
 	for (int row = 0; row < tileCount; ++row)
 	{

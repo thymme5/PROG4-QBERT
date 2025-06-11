@@ -103,6 +103,9 @@
     <Filter Include="GameMode\MainMenu">
       <UniqueIdentifier>{bf4d4da1-d67a-42e0-81db-51e4a433015d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\InputBindingHelper">
+      <UniqueIdentifier>{4c900370-2859-4b24-b444-494d555ea6b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>GameMode\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="InputBindingHelper.cpp">
+      <Filter>Game\InputBindingHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="EnterGameMode.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="InputBindingHelper.h">
+      <Filter>Game\InputBindingHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

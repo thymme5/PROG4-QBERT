@@ -4,7 +4,7 @@
 
 void SinglePlayerMode::Enter()
 {
-    QbertSceneBuilder::BuildQbertScene(dae::SceneManager::GetInstance().CreateScene("SinglePlayerModeScene"), "../data/levels/Level01Solo.json");
+    QbertSceneBuilder::BuildSinglePlayerScene(dae::SceneManager::GetInstance().CreateScene("SinglePlayerModeScene"), "../data/levels/Level01Solo.json");
 }
 
 void SinglePlayerMode::Exit()

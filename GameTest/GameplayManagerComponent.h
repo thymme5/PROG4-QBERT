@@ -4,6 +4,7 @@
 #include "QbertSoundLibrary.h"
 #include "QbertMoveComponent.h"
 #include "CoilyComponent.h"
+#include "GameUIComponent.h"
 
 enum class GameState
 {
@@ -19,6 +20,9 @@ public:
 
     void SetQbert(const std::shared_ptr<dae::GameObject>& qbert) { m_pQbert = qbert; }
     void SetCoily(const std::shared_ptr<dae::GameObject>& coily) { m_pCoily = coily; }
+
+    void SetGameUI(dae::GameUIComponent* gameUI);
+    dae::GameUIComponent* GetGameUI() const;
 
     ~GameplayManagerComponent() override = default;
 
@@ -43,4 +47,6 @@ private:
     //pointers to entities
     std::weak_ptr<dae::GameObject> m_pQbert;
     std::weak_ptr<dae::GameObject> m_pCoily;
+
+    dae::GameUIComponent* m_GameUIComponent;
 };

@@ -55,7 +55,14 @@ void GameplayManagerComponent::Update()
         break;
     }
 }
-
+void GameplayManagerComponent::SetGameUI(dae::GameUIComponent* gameUI)
+{
+    m_GameUIComponent = gameUI;
+}
+dae::GameUIComponent* GameplayManagerComponent::GetGameUI() const
+{
+    return m_GameUIComponent;
+}
 void GameplayManagerComponent::CheckRoundComplete()
 {
     bool allDone = true;
