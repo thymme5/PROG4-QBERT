@@ -1,5 +1,6 @@
 #include "SinglePlayerMode.h"
 #include "QbertSceneBuilder.h"
+#include "InputManager.h"
 
 void SinglePlayerMode::Enter()
 {
@@ -8,6 +9,7 @@ void SinglePlayerMode::Enter()
 
 void SinglePlayerMode::Exit()
 {
+    dae::InputManager::GetInstance().ClearAllBindings();
     dae::SceneManager::GetInstance().RemoveScene("SinglePlayerModeScene");
 }
 

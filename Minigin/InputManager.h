@@ -26,6 +26,8 @@ namespace dae
 		void BindCommand(SDL_Keycode key, KeyState state, std::shared_ptr<Command> command);
 		void BindCommand(GamepadButton gamepadButton, KeyState state, std::shared_ptr<Command> command);
 
+		void ClearAllBindings();
+
 	private:
 		class Impl;
 		std::unique_ptr<Impl> m_Impl;

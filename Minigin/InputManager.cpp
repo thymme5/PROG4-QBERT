@@ -72,7 +72,11 @@ namespace dae
         {
             m_ControllerCommands[static_cast<WORD>(button)].emplace_back(state, command);
         }
-
+        void ClearAll()
+        {
+            m_KeyCommands.clear();
+            m_ControllerCommands.clear();
+        }
         bool IsButtonState(WORD button, KeyState state) const 
         {
             if (m_Gamepad == nullptr)
@@ -119,4 +123,9 @@ namespace dae
     {
         m_Impl->BindCommand(static_cast<WORD>(button), state, command);
     }
+    void InputManager::ClearAllBindings()
+    {
+        m_Impl->ClearAll();
+    }
+
 }

@@ -8,38 +8,11 @@
 
 //engine files
 #include "Minigin.h"
-#include "SceneManager.h"
-#include "ResourceManager.h"
 #include "Scene.h"
 #include "InputManager.h"
-#include "SoundService.h"
 
-//Components
-#include "TextComponent.h"
-#include "TextureComponent.h"
-#include "FPScounterComponent.h"
-#include "ImGuiComponent.h"
-#include "GameUIComponent.h"
-#include "CoilyComponent.h"
-#include "EggState.h"
-#include "TileComponent.h"
-#include "GameplayManagerComponent.h"
-#include "MainMenuUIComponent.h"
 #include "GameModeManager.h"
 #include "MainMenu.h"
-
-//Commands
-#include "MoveCommand.h"
-#include "ToggleMuteCommand.h"
-#include "FinishRoundCommand.h"
-
-//other misc
-#include "LevelBuilder.h"
-#include "QbertSceneBuilder.h"
-#include "GameModeManager.h"
-
-//sound related 
-#include "QbertSoundLibrary.h"
 
 void load()
 {
