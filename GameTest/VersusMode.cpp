@@ -1,13 +1,14 @@
 #include "VersusMode.h"
+#include "QbertSceneBuilder.h"
 
 void VersusMode::Enter()
 {
-    std::cout << "Entered Single Player Mode\n";
+    QbertSceneBuilder::BuildVersusScene(dae::SceneManager::GetInstance().CreateScene(m_SceneName), "../data/levels/Level01Versus.json");
 }
 
 void VersusMode::Exit()
 {
-    std::cout << "Exiting Single Player Mode\n";
+    dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
 }
 
 void VersusMode::Update()

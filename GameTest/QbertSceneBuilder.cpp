@@ -205,3 +205,59 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert1.get());
     InputBindingHelper::BindPlayer2GamepadInputs(qbert2.get());
 }
+
+void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& levelPath)
+{
+    BuildQbertScene(scene, levelPath);
+
+    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+    auto tileMap = LevelBuilder::GetTileMap();
+
+    // P1 (Qbert) at top-left
+    auto qbertTileGO = tileMap[0][0];
+    auto qbertTile = std::shared_ptr<TileComponent>(qbertTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
+    auto qbert = CreateQbertPlayer(qbertTile, font, false);
+    
+    scene.Add(qbert);
+
+    // === Coily GameObject ===
+    
+    // Coily starts at the top
+    const int startRow = 0;
+    const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
+    auto coilyTileGO = tileMap[startRow][startCol];
+    auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+    auto coily = std::make_shared<dae::GameObject>();
+
+    // texture component
+    constexpr float coilyScale{ 2.f };
+    constexpr int coilyFrames{ 9 };
+    coily->AddComponent<dae::TextureComponent>(*coily, "Coily Spritesheet.png", coilyScale, coilyFrames);
+
+    auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
+    coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+    coilyComponent->SetState(std::make_unique<EggState>());
+    coilyComponent->SetCurrentTile(coilyTile);
+    coilyComponent->SetQbert(qbert);
+    coilyComponent->SetPlayerControlled(true);
+
+    scene.Add(coily);
+
+    // connect to manager
+    if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
+    {
+        auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
+        manager->SetQbert(qbert);
+        manager->SetCoily(coily);
+
+        if (auto* gameUI = manager->GetGameUI())
+        {
+            qbert->AddObserver(gameUI);
+            coily->AddObserver(gameUI);
+        }
+    }
+
+    InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());
+    InputBindingHelper::BindPlayer2CoilyGamepadInputs(coily.get());
+}

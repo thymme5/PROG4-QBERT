@@ -8,4 +8,6 @@ public:
     void Enter() override;
     void Exit() override;
     void Update() override;
+private:
+    std::string m_SceneName{"CoopScene"};
 };

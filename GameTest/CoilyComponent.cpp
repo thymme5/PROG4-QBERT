@@ -15,6 +15,7 @@ CoilyComponent::~CoilyComponent()
 
 void CoilyComponent::Update()
 {
+
     constexpr float fixedDeltaTime = 1.f / 60.f;
 
     if (m_Jump.isJumping)
@@ -46,6 +47,11 @@ void CoilyComponent::Update()
         return; 
     }
 
+    if (m_IsPlayerControlled)
+    {
+        if (dynamic_cast<ChasingState*>(m_pCurrentState.get()))
+            return;
+    }
     if (m_pCurrentState)
     {
         m_pCurrentState->Update(*this);
@@ -71,7 +77,7 @@ void CoilyComponent::TryMove(Direction direction)
 {
     m_LastMoveDir = direction; 
 
-    if (!m_CurrentTile || !m_pTileMap) return;
+    if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping) return;
 
     auto [row, col] = m_CurrentTile->GetGridPosition();
     int newRow = row;
@@ -101,7 +107,6 @@ void CoilyComponent::TryMove(Direction direction)
     m_Jump.elapsed = 0.f;
     m_Jump.isJumping = true;
     SetJumpSprite(direction);
-
 }
 glm::vec3 CoilyComponent::GetPosition() const
 {
@@ -116,6 +121,19 @@ void CoilyComponent::SetCurrentTile(std::shared_ptr<TileComponent> tile)
         const auto& pos = m_CurrentTile->GetOwner()->GetTransform().GetPosition();
         m_pOwner->SetPosition(pos.x + m_xOffset, pos.y + m_yOffset);
     }
+}
+const CoilyState* CoilyComponent::GetState() const noexcept
+{
+    return m_pCurrentState.get();
+}
+
+void CoilyComponent::SetPlayerControlled(bool isControlled)
+{
+    m_IsPlayerControlled = isControlled;
+}
+bool CoilyComponent::IsPlayerControlled() const noexcept
+{
+    return m_IsPlayerControlled;
 }
 void CoilyComponent::SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap)
 {

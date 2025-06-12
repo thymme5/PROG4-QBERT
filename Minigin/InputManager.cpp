@@ -70,7 +70,6 @@ public:
                 {
                     if (IsButtonState(*gamepad, button, state))
                     {
-                        std::cout << "[Execute] Gamepad " << playerIdx << " button " << button << " executing\n";
                         command->Execute();
                     }
                 }

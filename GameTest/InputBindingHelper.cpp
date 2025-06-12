@@ -46,7 +46,13 @@ void InputBindingHelper::BindPlayer2GamepadInputs(dae::GameObject* qbert)
     input.BindCommand(0, GamepadButton::DPadDown, KeyState::Down, std::make_shared<dae::MoveCommand>(qbert, D::DownRight));
 }
 
-void InputBindingHelper::BindPlayer2CoilyInputs(dae::GameObject* /*coily*/)
+void InputBindingHelper::BindPlayer2CoilyGamepadInputs(dae::GameObject* coily)
 {
-    //placeholder
+    auto& input = dae::InputManager::GetInstance();
+
+    input.BindCommand(0, GamepadButton::DPadUp, KeyState::Down, std::make_shared<dae::MoveCommand>(coily, D::UpLeft));
+    input.BindCommand(0, GamepadButton::DPadRight, KeyState::Down, std::make_shared<dae::MoveCommand>(coily, D::UpRight));
+    input.BindCommand(0, GamepadButton::DPadLeft, KeyState::Down, std::make_shared<dae::MoveCommand>(coily, D::DownLeft));
+    input.BindCommand(0, GamepadButton::DPadDown, KeyState::Down, std::make_shared<dae::MoveCommand>(coily, D::DownRight));
 }
+

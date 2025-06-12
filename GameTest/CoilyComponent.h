@@ -21,6 +21,7 @@ struct CoilyJumpData
 };
 
 class TileComponent;
+
 class CoilyComponent final : public dae::Component
 {
 public:
@@ -31,6 +32,8 @@ public:
     void Render() const override;
 
     void SetState(std::unique_ptr<CoilyState> newState);
+    const CoilyState* GetState() const noexcept;
+
 
     //tile functions
     void SetCurrentTile(std::shared_ptr<TileComponent> tile);
@@ -44,10 +47,15 @@ public:
     bool IsJumping() const;
     void TryMove(Direction direction);
     glm::vec3 GetPosition() const; //TODO: make this grid
+
+    void SetPlayerControlled(bool isControlled);
+    bool IsPlayerControlled() const noexcept;
+
 private:
     void SetJumpSprite(Direction dir);
 
     Direction m_LastMoveDir;
+
     //pointer to qbert
     std::shared_ptr<dae::GameObject> m_pQbert;
 
@@ -63,4 +71,7 @@ private:
     const float m_yOffset = -40.f; //magic number but pre-calculated value
 
     CoilyJumpData m_Jump;
+
+    bool m_IsPlayerControlled{ false };
+
 };

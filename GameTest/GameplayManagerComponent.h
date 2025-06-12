@@ -42,10 +42,11 @@ private:
 
     dae::Scene* m_pScene = nullptr;
     std::string m_LevelPath{};
+    
     int m_CurrentRoundIndex = 0;
 
     //pointers to entities
-    std::weak_ptr<dae::GameObject> m_pQbert;
+    std::weak_ptr<dae::GameObject> m_pQbert; // in multiplayer modes gameplaymanager component will still use qbert 1 as a reference - which shouldn't create any gameplay differences, but also doesn't require for gameplaymanager to be aware of all qbert entities
     std::weak_ptr<dae::GameObject> m_pCoily;
 
     dae::GameUIComponent* m_GameUIComponent;

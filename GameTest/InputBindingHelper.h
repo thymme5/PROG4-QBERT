@@ -8,5 +8,5 @@ public:
     static void BindPlayer1GamepadInputs(dae::GameObject* qbert);
     static void BindPlayer2KeyboardInputs(dae::GameObject* qbert);
     static void BindPlayer2GamepadInputs(dae::GameObject* qbert);
-    static void BindPlayer2CoilyInputs(dae::GameObject* coily);
+    static void BindPlayer2CoilyGamepadInputs(dae::GameObject* coily);
 };

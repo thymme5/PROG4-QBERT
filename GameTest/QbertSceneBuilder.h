@@ -15,5 +15,5 @@ public:
     //different gamemodes
     static void BuildSinglePlayerScene(dae::Scene& scene, const std::string& levelPath);
     static void BuildCoopScene(dae::Scene& scene, const std::string& levelPath);
-
+    static void BuildVersusScene(dae::Scene& scene, const std::string& levelPath);
 };
