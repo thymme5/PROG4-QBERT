@@ -91,6 +91,9 @@ void CoilyComponent::TryMove(Direction direction)
         case Direction::DownRight: newRow += 1; newCol += 1; break;
     }
 
+    std::cout << "Coily trying to move to tile (" << newRow << ", " << newCol << ")\n";
+    std::cout << "Jumping: " << m_Jump.isJumping << "\n";
+
     if (newRow < 0 || newRow >= static_cast<int>(m_pTileMap->size())) return;
     if (newCol < 0 || newCol >= static_cast<int>((*m_pTileMap)[newRow].size())) return;
 

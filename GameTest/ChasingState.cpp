@@ -5,10 +5,8 @@
 #include "GameObject.h"
 #include "TextureComponent.h"
 
-void ChasingState::Enter(CoilyComponent& coily)
+void ChasingState::Enter(CoilyComponent&)
 {
-    std::cout << "Coily entered chasing state.\n";
-    coily;
 }
 
 void ChasingState::Update(CoilyComponent& coily)
@@ -17,25 +15,34 @@ void ChasingState::Update(CoilyComponent& coily)
 
     auto coilyTile = coily.GetCoilyTile();
     auto qbertTile = coily.GetQbertTile();
+
     if (!coilyTile || !qbertTile) return;
 
     auto [cr, cc] = coilyTile->GetGridPosition(); //coily row, coily col
     auto [qr, qc] = qbertTile->GetGridPosition(); // qbert row, qbert col
 
+    // already on the same tile
+    if (qr == cr && qc == cc)
+    {
+        return; 
+    }
+
     std::cout << "Coily at (" << cr << "," << cc << ") -> Q*bert at (" << qr << "," << qc << ")\n";
+
+    int rowDiff = qr - cr;
+    int colDiff = qc - cc;
 
     Direction dir;
 
-    if (qr > cr && qc > cc)
+
+    if (rowDiff > 0 && colDiff > 0)
         dir = Direction::DownRight;
-    else if (qr > cr && qc <= cc)
+    else if (rowDiff > 0 && colDiff <= 0)
         dir = Direction::DownLeft;
-    else if (qr < cr && qc >= cc)
+    else if (rowDiff <= 0 && colDiff > 0)
         dir = Direction::UpRight;
-    else if (qr < cr && qc < cc)
+    else // rowDiff <= 0 && colDiff <= 0
         dir = Direction::UpLeft;
-    else
-        return; 
 
     coily.TryMove(dir);
 }
