@@ -11,7 +11,8 @@ namespace dae
 		TileStateChanged,
 		PlayerWonGame,
 		roundComplete,
-		LevelComplete
+		LevelComplete,
+		CoilyHitPlayer
 	};
 
 	class Observer

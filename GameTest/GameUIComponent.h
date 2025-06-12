@@ -2,7 +2,6 @@
 #include "Observer.h"
 #include "Component.h"
 #include "TextComponent.h"
-
 namespace dae
 {
     class GameObject;
