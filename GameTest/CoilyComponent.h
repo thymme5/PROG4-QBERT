@@ -36,7 +36,6 @@ public:
     void SetState(std::unique_ptr<CoilyState> newState);
     const CoilyState* GetState() const noexcept;
 
-
     //tile functions
     void SetCurrentTile(std::shared_ptr<TileComponent> tile);
     void SetTileMap(const std::vector<std::vector<std::shared_ptr<TileComponent>>>& tileMap);
@@ -44,11 +43,12 @@ public:
 
     //Get pointer to qbert's ass
     void SetQbert(std::shared_ptr<dae::GameObject> qbert);
+    const QbertMoveComponent* GetQbert();
     std::shared_ptr<TileComponent> GetQbertTile();
     
     bool IsJumping() const;
     void TryMove(Direction direction);
-    glm::vec3 GetPosition() const; //TODO: make this grid
+    glm::vec3 GetPosition() const;
 
     void SetPlayerControlled(bool isControlled);
     bool IsPlayerControlled() const noexcept;

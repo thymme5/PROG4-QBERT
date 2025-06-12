@@ -143,6 +143,10 @@ void CoilyComponent::SetTileMap(const std::vector<std::vector<std::shared_ptr<Ti
 {
     m_pTileMap = &tileMap;
 }
+const QbertMoveComponent* CoilyComponent::GetQbert()
+{
+    return m_pQbert->GetComponent<QbertMoveComponent>();
+}
 
 std::shared_ptr<TileComponent> CoilyComponent::GetQbertTile()
 {

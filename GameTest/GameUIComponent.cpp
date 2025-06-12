@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "TextureComponent.h"
+#include "QbertSoundLibrary.h"
 
 using namespace dae;
 
@@ -38,6 +39,9 @@ void GameUIComponent::OnNotify(Event event, GameObject* pGameObject)
         m_Level++;
         m_IsDirty = true;
         break;
+    case dae::Event::CoilyHitPlayer:
+        QbertSoundLibrary::Play(SoundID::QbertDeath);
+            break;
     default:
         break;
     }
