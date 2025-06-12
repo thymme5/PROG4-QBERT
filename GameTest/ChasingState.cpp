@@ -37,7 +37,6 @@ void ChasingState::Update(CoilyComponent& coily)
     else
         return; 
 
-    QbertSoundLibrary::Play(SoundID::CoilySnakeJump);
     coily.TryMove(dir);
 }
 

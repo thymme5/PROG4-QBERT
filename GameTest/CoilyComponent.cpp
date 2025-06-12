@@ -77,7 +77,7 @@ void CoilyComponent::TryMove(Direction direction)
 {
     m_LastMoveDir = direction; 
 
-    if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping) return;
+    if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping || GameplayManagerComponent::GetInstance()->GetCurrentState() != GameState::Playing) return;
 
     auto [row, col] = m_CurrentTile->GetGridPosition();
     int newRow = row;
@@ -107,6 +107,7 @@ void CoilyComponent::TryMove(Direction direction)
     m_Jump.elapsed = 0.f;
     m_Jump.isJumping = true;
     SetJumpSprite(direction);
+    QbertSoundLibrary::Play(SoundID::CoilySnakeJump);
 }
 glm::vec3 CoilyComponent::GetPosition() const
 {

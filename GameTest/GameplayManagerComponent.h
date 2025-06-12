@@ -24,7 +24,12 @@ public:
     void SetGameUI(dae::GameUIComponent* gameUI);
     dae::GameUIComponent* GetGameUI() const;
 
+    GameState GetCurrentState() const noexcept;
+
     ~GameplayManagerComponent() override = default;
+
+    static GameplayManagerComponent* GetInstance();
+    static void SetInstance(GameplayManagerComponent* instance);
 
     void Update() override;
     void Render() const override {};
@@ -50,4 +55,6 @@ private:
     std::weak_ptr<dae::GameObject> m_pCoily;
 
     dae::GameUIComponent* m_GameUIComponent;
+
+    inline static GameplayManagerComponent* s_Instance = nullptr;
 };

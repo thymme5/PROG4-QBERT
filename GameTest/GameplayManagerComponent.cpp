@@ -193,3 +193,18 @@ void GameplayManagerComponent::ForceCompleteRound()
         }
     }
 }
+
+GameState GameplayManagerComponent::GetCurrentState() const noexcept
+{
+    return m_CurrentState;
+}
+
+
+GameplayManagerComponent* GameplayManagerComponent::GetInstance()
+{
+    return s_Instance;
+}
+ void GameplayManagerComponent::SetInstance(GameplayManagerComponent* instance)
+{
+     s_Instance = instance;
+}
