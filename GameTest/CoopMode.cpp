@@ -4,8 +4,6 @@
 void CoopMode::Enter()
 {
     QbertSceneBuilder::BuildCoopScene(dae::SceneManager::GetInstance().CreateScene(m_SceneName), "../data/levels/Level01Coop.json");
-
-
 }
 
 void CoopMode::Exit()

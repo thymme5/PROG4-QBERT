@@ -110,8 +110,6 @@ void QbertMoveComponent::TryMove(Direction direction)
 	SDL_Rect src{ frameIndex * frameWidth, 0, frameWidth, frameHeight };
 	textureComp->SetSourceRect(src);
 
-	//std::cout << "Trying move from (" << row << "," << col << ") (" << m_CurrentTile->GetID() << ") to(" << newRow << ", " << newCol << ")\n";
-
 	//OUT OF BOUNDS IN THIS CONTEXT MEANS QBERT WILL DIE.
 	//check row bounds
 	if (newRow < 0 || newRow >= static_cast<int>(m_pTileMap->size()))

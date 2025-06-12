@@ -1,3 +1,4 @@
+
 #include <SDL.h>
 #include <iostream>
 #include <memory>
@@ -18,10 +19,14 @@ public:
         {
             m_Gamepads.push_back(std::make_unique<Gamepad>(i));
         }
+
+        m_ClearedInput = false;
     }
 
     bool ProcessInput()
     {
+        m_ClearedInput = false;
+
         // Update all connected gamepads
         for (auto& gamepad : m_Gamepads)
         {
@@ -66,6 +71,8 @@ public:
             const auto& buttonMap = m_ControllerCommands[static_cast<int>(playerIdx)];
             for (const auto& [button, commands] : buttonMap)
             {
+                if (m_ClearedInput) return true;
+
                 for (const auto& [state, command] : commands)
                 {
                     if (IsButtonState(*gamepad, button, state))
@@ -75,6 +82,7 @@ public:
                 }
             }
         }
+        
         return true;
     }
 
@@ -92,6 +100,8 @@ public:
     {
         m_KeyCommands.clear();
         m_ControllerCommands.clear();
+        m_ClearedInput = true;
+        
     }
 
 private:
@@ -113,6 +123,7 @@ private:
     std::vector<std::unique_ptr<Gamepad>> m_Gamepads;
     std::unordered_map<SDL_Keycode, std::vector<std::pair<KeyState, std::shared_ptr<Command>>>> m_KeyCommands;
     std::unordered_map<int, std::unordered_map<WORD, std::vector<std::pair<KeyState, std::shared_ptr<Command>>>>> m_ControllerCommands;
+    bool m_ClearedInput;
 };
 
 InputManager::InputManager() : m_Impl(std::make_unique<Impl>()) {}

@@ -9,5 +9,5 @@ public:
     void Exit(CoilyComponent& coily) override;
 
 private:
-    Direction m_LastDirection;
+    Direction m_LastDirection{};
 };

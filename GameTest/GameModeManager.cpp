@@ -1,5 +1,6 @@
 #pragma once
 #include "GameModeManager.h"
+#include "InputManager.h"
 
 void GameModeManager::SetMode(std::unique_ptr<GameMode> newMode)
 {

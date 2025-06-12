@@ -42,6 +42,23 @@ std::shared_ptr<dae::GameObject> QbertSceneBuilder::CreateQbertPlayer(const std:
 	moveComp->SetCurrentTile(startTile);
 	return qbert;
 }
+std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::GameObject>& qbert, bool isPlayerControlled)
+{
+    auto coily = std::make_shared<dae::GameObject>();
+
+    constexpr float coilyScale{ 2.f };
+    constexpr int coilyFrames{ 9 };
+    coily->AddComponent<dae::TextureComponent>(*coily, "Coily Spritesheet.png", coilyScale, coilyFrames);
+
+    auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
+    coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+    coilyComponent->SetState(std::make_unique<EggState>());
+    coilyComponent->SetCurrentTile(startTile);
+    coilyComponent->SetQbert(qbert);
+    coilyComponent->SetPlayerControlled(isPlayerControlled);
+
+    return coily;
+}
 
 void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font)
 {
@@ -73,18 +90,21 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
     scene.Add(arrowGO);
 
     // === main menu input bindings ===
-    //TODO: controller input
     auto& inputManager = dae::InputManager::GetInstance();
 
     auto moveArrowUp = std::make_shared<MoveMenuArrow>(UIcomponent, -1.f);
     inputManager.BindCommand(SDLK_UP, KeyState::Down, moveArrowUp);
+    inputManager.BindCommand(0, GamepadButton::DPadUp, KeyState::Down, moveArrowUp);
 
     auto moveArrowDown = std::make_shared<MoveMenuArrow>(UIcomponent, 1.f);
     inputManager.BindCommand(SDLK_DOWN, KeyState::Down, moveArrowDown);
+    inputManager.BindCommand(0, GamepadButton::DPadDown, KeyState::Down, moveArrowDown);
 
     // === Confirm selection command ===
     auto confirmCommand = std::make_shared<EnterGameMode>(UIcomponent);
     inputManager.BindCommand(SDLK_RETURN, KeyState::Down, confirmCommand);
+    inputManager.BindCommand(0, GamepadButton::A, KeyState::Down, confirmCommand);
+
 }
 
 void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& levelPath)
@@ -152,6 +172,14 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
     auto qbert = CreateQbertPlayer(tileComp, font, false);
     scene.Add(qbert);
 
+    // === coily component ===
+    const int startRow = 0;
+    const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
+    auto coilyTileGO = tileMap[startRow][startCol];
+    auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+    auto coily = SpawnCoily(coilyTile, qbert, false);
+    
     // === Connect Qbert to gameplayManager & UI ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
@@ -188,6 +216,14 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
     auto p2Tile = std::shared_ptr<TileComponent>(p2TileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
     auto qbert2 = CreateQbertPlayer(p2Tile, font, true);
     scene.Add(qbert2);
+
+    // === coily component ===
+    const int startRow = 0;
+    const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
+    auto coilyTileGO = tileMap[startRow][startCol];
+    auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+    auto coily = SpawnCoily(coilyTile, qbert1, false);
 
     // === Connect them to gameplay ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
@@ -228,20 +264,7 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
     auto coilyTileGO = tileMap[startRow][startCol];
     auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
-    auto coily = std::make_shared<dae::GameObject>();
-
-    // texture component
-    constexpr float coilyScale{ 2.f };
-    constexpr int coilyFrames{ 9 };
-    coily->AddComponent<dae::TextureComponent>(*coily, "Coily Spritesheet.png", coilyScale, coilyFrames);
-
-    auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
-    coilyComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
-    coilyComponent->SetState(std::make_unique<EggState>());
-    coilyComponent->SetCurrentTile(coilyTile);
-    coilyComponent->SetQbert(qbert);
-    coilyComponent->SetPlayerControlled(true);
-
+    auto coily = SpawnCoily(coilyTile, qbert, true); 
     scene.Add(coily);
 
     // connect to manager
