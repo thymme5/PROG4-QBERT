@@ -8,6 +8,8 @@
 #include "ChasingState.h"
 #include "EggState.h"
 #include "TextureComponent.h"
+#include "GameplayManagerComponent.h"
+
 
 struct CoilyJumpData
 {

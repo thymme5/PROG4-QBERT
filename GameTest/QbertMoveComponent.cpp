@@ -4,6 +4,7 @@
 #include "LevelBuilder.h"
 #include "TextureComponent.h"
 #include "QbertSoundLibrary.h"
+#include "GameplayManagerComponent.h"
 
 QbertMoveComponent::QbertMoveComponent(dae::GameObject& pOwner)
 	: dae::Component(pOwner)
@@ -71,7 +72,7 @@ std::shared_ptr<TileComponent> QbertMoveComponent::GetCurrentTile()
 void QbertMoveComponent::TryMove(Direction direction)
 {
 	//reject movement if we don't have tile information or if the bitch is already jumping
-	if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping) return;
+	if (!m_CurrentTile || !m_pTileMap || m_Jump.isJumping || GameplayManagerComponent::GetInstance()->GetCurrentState() != GameState::Playing) return;
 
 	auto textureComp = m_pOwner->GetComponent<dae::TextureComponent>();
 	if (!textureComp) return;

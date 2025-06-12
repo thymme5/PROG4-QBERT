@@ -196,6 +196,7 @@ void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string
     auto controller = std::make_shared<dae::GameObject>();
     auto* manager = controller->AddComponent<GameplayManagerComponent>(*controller);
     manager->Init(scene, levelPath);
+    manager->SetInstance(manager);
     scene.Add(controller);
 
     // === FPS counter ===
