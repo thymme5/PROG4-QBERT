@@ -5,7 +5,7 @@
 #include "SinglePlayerMode.h"
 #include "CoopMode.h"
 #include "VersusMode.h"
-
+#include "HighScoreMenu.h"
 class EnterGameMode final : public dae::Command
 {
 public:
@@ -31,6 +31,9 @@ public:
             break;
         case 2:
             GameModeManager::GetInstance().SetMode(std::make_unique<VersusMode>());
+            break;
+        case 3:
+            GameModeManager::GetInstance().SetMode(std::make_unique<HighScoreMenu>());
             break;
         default:
             break;

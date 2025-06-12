@@ -106,6 +106,9 @@
     <Filter Include="Game\InputBindingHelper">
       <UniqueIdentifier>{4c900370-2859-4b24-b444-494d555ea6b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMode\HighScore">
+      <UniqueIdentifier>{3afdf041-8fe9-435d-99f9-a444de71d546}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -182,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="InputBindingHelper.cpp">
       <Filter>Game\InputBindingHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreMenu.cpp">
+      <Filter>GameMode\HighScore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +273,12 @@
       <Filter>Game\InputBindingHelper</Filter>
     </ClInclude>
     <ClInclude Include="MoveCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreMenu.h">
+      <Filter>GameMode\HighScore</Filter>
+    </ClInclude>
+    <ClInclude Include="BackToMenuCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
