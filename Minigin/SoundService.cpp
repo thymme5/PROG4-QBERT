@@ -5,18 +5,21 @@
 
 namespace dae
 {
-    SoundService* ServiceLocator::m_pSoundService = nullptr;
+    std::unique_ptr<SoundService> ServiceLocator::m_pSoundService = nullptr;
 
-    void ServiceLocator::RegisterSoundService(SoundService* service)
+    void ServiceLocator::RegisterSoundService(std::unique_ptr<SoundService> service)
     {
-        m_pSoundService = service;
+        m_pSoundService = std::move(service); // transfers ownership
     }
 
     SoundService* ServiceLocator::GetSoundService()
     {
-        return m_pSoundService;
+        return m_pSoundService.get();
     }
-
+    void ServiceLocator::Destroy()
+    {
+        m_pSoundService.reset();
+    }
     SDLMixerSoundService::SDLMixerSoundService()
     {
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
@@ -33,11 +36,21 @@ namespace dae
         if (m_WorkerThread.joinable())
             m_WorkerThread.join();
 
+        {
+            std::lock_guard<std::mutex> lock(m_Mutex);
+            while (!m_CommandQueue.empty())
+                m_CommandQueue.pop();
+        }
+
         for (auto& pair : m_LoadedSounds)
             Mix_FreeChunk(pair.second);
+        m_LoadedSounds.clear();
+
+        m_SoundToChannel.clear();
 
         Mix_CloseAudio();
     }
+
     void SDLMixerSoundService::SetMuted(bool muted) 
     { 
         std::cout << "muted: " << std::boolalpha << muted << std::endl;

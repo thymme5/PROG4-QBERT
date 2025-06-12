@@ -13,11 +13,14 @@
 
 #include "GameModeManager.h"
 #include "MainMenu.h"
+#include "SoundService.h"
 
 void load()
 {
 	// build main menu
 	GameModeManager::GetInstance().SetMode(std::make_unique<MainMenu>());
+	
+
 }
 int main(int, char* [])
 {
