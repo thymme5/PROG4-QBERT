@@ -24,6 +24,7 @@ namespace dae
         virtual bool IsMuted() const = 0;
         virtual bool IsPlaying(const std::string& soundFile) = 0;
         virtual void SetVolume(int volume) = 0; // volume: 0 (mute) to MIX_MAX_VOLUME (128)
+
     };
 
     class SDLMixerSoundService final : public SoundService
@@ -70,11 +71,11 @@ namespace dae
     {
     public:
         static SoundService* GetSoundService();
-        static void RegisterSoundService(SoundService* service);
-
-
+        //static void RegisterSoundService(SoundService* service);
+        static void RegisterSoundService(std::unique_ptr<SoundService> service);
+        static void Destroy();
 
     private:
-        static SoundService* m_pSoundService;
+        static std::unique_ptr<SoundService> m_pSoundService;
     };
 }

@@ -74,8 +74,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 	ResourceManager::GetInstance().Init(dataPath);
 
-	auto soundService = new dae::SDLMixerSoundService();
-	dae::ServiceLocator::RegisterSoundService(soundService);
+	dae::ServiceLocator::RegisterSoundService(std::make_unique<dae::SDLMixerSoundService>());
 }
 
 dae::Minigin::~Minigin()
