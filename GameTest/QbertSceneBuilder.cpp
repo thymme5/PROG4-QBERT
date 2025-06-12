@@ -50,12 +50,14 @@ void QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& 
     scene.Add(qbert);
     scene.Add(swear);
 }
+
 std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::GameObject>& qbert, bool isPlayerControlled)
 {
     auto coily = std::make_shared<dae::GameObject>();
 
     constexpr float coilyScale{ 2.f };
     constexpr int coilyFrames{ 9 };
+
     coily->AddComponent<dae::TextureComponent>(*coily, "Coily Spritesheet.png", coilyScale, coilyFrames);
 
     auto* coilyComponent = coily->AddComponent<CoilyComponent>(*coily);
@@ -70,34 +72,50 @@ std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared
 
 void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font)
 {
-    // === main menu component ===
     auto go = std::make_shared<dae::GameObject>();
     auto UIcomponent = go->AddComponent<MainMenuUIComponent>(*go);
-
     scene.Add(go);
 
-    // === options ===
-    const float baseX = 200.0f;
-    const float baseY = 350.0f;
+    const float baseY = 300.0f;
     const float spacing = 50.0f;
+    const auto windowWidth = dae::Renderer::GetInstance().GetWindowSize().x;
 
-    std::vector<std::string> options = { "Solo mode", "Co-op Mode", "Versus mode" };
+    std::vector<std::string> options = { "Solo mode", "Co-op Mode", "Versus mode", "High score"};
+
+    float arrowX{};
+    float arrowY{};
+
     for (size_t i = 0; i < options.size(); ++i)
     {
         auto optionGO = std::make_shared<dae::GameObject>();
-        optionGO->AddComponent<dae::TextComponent>(*optionGO, options[i], font);
-        optionGO->SetPosition(baseX, baseY + i * spacing);
+        auto* text = optionGO->AddComponent<dae::TextComponent>(*optionGO, options[i], font);
+
+        // Force texture creation before getting size
+        text->SetText(options[i]);
+        text->Update();
+
+        auto width = text->GetTextureSize().x;
+        float x = (windowWidth - width) / 2.0f;
+        float y = baseY + i * spacing;
+
+        optionGO->SetPosition(x, y);
         scene.Add(optionGO);
+
+        if (i == 0)
+        {
+            arrowX = x - 30.f; 
+            arrowY = y;
+        }
     }
 
     // === Selection Arrow ===
     auto arrowGO = std::make_shared<dae::GameObject>();
     arrowGO->AddComponent<dae::TextureComponent>(*arrowGO, "Selection Arrow.png", 2.f);
-    arrowGO->SetPosition(180.f, 355.f);
+    arrowGO->SetPosition(arrowX, arrowY);
     UIcomponent->SetArrow(arrowGO);
     scene.Add(arrowGO);
 
-    // === main menu input bindings ===
+    // === Input bindings ===
     auto& inputManager = dae::InputManager::GetInstance();
 
     auto moveArrowUp = std::make_shared<MoveMenuArrow>(UIcomponent, -1.f);
@@ -108,14 +126,68 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
     inputManager.BindCommand(SDLK_DOWN, KeyState::Down, moveArrowDown);
     inputManager.BindCommand(0, GamepadButton::DPadDown, KeyState::Down, moveArrowDown);
 
-    // === Confirm selection command ===
     auto confirmCommand = std::make_shared<EnterGameMode>(UIcomponent);
     inputManager.BindCommand(SDLK_RETURN, KeyState::Down, confirmCommand);
     inputManager.BindCommand(0, GamepadButton::A, KeyState::Down, confirmCommand);
-
 }
 
-void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& levelPath)
+void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
+{
+    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+    auto fontSmaller = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+
+    // === Title ===
+    auto title = std::make_shared<dae::GameObject>();
+    auto* titleText = title->AddComponent<dae::TextComponent>(*title, "HIGH SCORES", font);
+    titleText->Update(); // force texture creation
+    float titleWidth = static_cast<float>(titleText->GetTextureSize().x);
+    float titleX = (dae::Renderer::GetInstance().GetWindowSize().x - titleWidth) / 2.0f;
+    title->SetPosition(titleX, 100.f);
+    scene.Add(title);
+
+    // === Dummy scores ===
+    std::vector<std::string> scores =
+    {
+        "69. THY - 6969",
+        "69. SIE - 6969",
+        "69. RUB - 6969",
+        "69. IDK - 6969",
+        "69. JFDKLMSJFKDSLMJFKDLSMJFMLK - 6969"
+    };
+
+    const float baseY = 180.0f;
+    const float spacing = 40.0f;
+
+    for (size_t i = 0; i < scores.size(); ++i)
+    {
+        auto scoreGO = std::make_shared<dae::GameObject>();
+        auto* scoreText = scoreGO->AddComponent<dae::TextComponent>(*scoreGO, scores[i], font);
+        scoreText->Update(); // force texture creation
+        float width = static_cast<float>(scoreText->GetTextureSize().x);
+        float x = (dae::Renderer::GetInstance().GetWindowSize().x - width) / 2.0f;
+        scoreGO->SetPosition(x, baseY + i * spacing);
+        scene.Add(scoreGO);
+    }
+
+    // === ESC Return Hint ===
+    auto escGO = std::make_shared<dae::GameObject>();
+    auto* escText = escGO->AddComponent<dae::TextComponent>(*escGO, "ESC OR B TO GO BACK", fontSmaller);
+    escText->Update(); // force texture creation
+    float escWidth = static_cast<float>(escText->GetTextureSize().x);
+    float escX = (dae::Renderer::GetInstance().GetWindowSize().x - escWidth) / 2.0f;
+    escGO->SetPosition(escX, 400.f);
+    scene.Add(escGO);
+
+    // === Input bindings ===
+    auto& inputManager = dae::InputManager::GetInstance();
+
+    auto confirmCommand = std::make_shared<BackToMenuCommand>();
+    inputManager.BindCommand(SDLK_ESCAPE, KeyState::Down, confirmCommand);
+    inputManager.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCommand);
+}
+
+
+void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath)
 {
     auto& inputManager = dae::InputManager::GetInstance();
     auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -139,7 +211,7 @@ void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& le
     uiGO->SetPosition(5, 50);
     scene.Add(uiGO);
 
-    manager->SetGameUI(gameUI); // Store reference to UI in manager
+    manager->SetGameUI(gameUI); 
     controller->AddObserver(gameUI);
 
     // === Round & Level UI ===
@@ -160,11 +232,15 @@ void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& le
     auto toggleMute = std::make_shared<ToggleMuteCommand>();
     inputManager.BindCommand(SDLK_F2, KeyState::Down, toggleMute);
 
-    
+    // === Skip round === 
+    auto skipRound = std::make_shared<FinishRoundCommand>(manager);
+    inputManager.BindCommand(SDLK_F4, KeyState::Down, skipRound);
+
 }
+
 void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::string& levelPath)
 {
-    BuildQbertScene(scene, levelPath);
+    BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
     auto tileGO = tileMap[0][0];
@@ -202,7 +278,7 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
 
 void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& levelPath)
 {
-    BuildQbertScene(scene, levelPath);
+    BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
 
@@ -254,7 +330,7 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
 
 void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& levelPath)
 {
-    BuildQbertScene(scene, levelPath);
+    BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
 

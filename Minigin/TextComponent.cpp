@@ -87,6 +87,13 @@ dae::TextComponent::~TextComponent()
 {
 	
 }
+glm::ivec2 dae::TextComponent::GetTextureSize() const
+{
+    if (m_TextTexture)
+        return m_TextTexture->GetSize();
+    return { 0, 0 };
+}
+
 void dae::TextComponent::Render() const
 {
     if (m_TextTexture != nullptr)

@@ -25,6 +25,8 @@ namespace dae
 		TextComponent(GameObject& owner, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent();
 
+		glm::ivec2 GetTextureSize() const;
+
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;

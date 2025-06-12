@@ -105,68 +105,74 @@ void GameplayManagerComponent::StopTileFlashing()
 
 void GameplayManagerComponent::StartNextRound()
 {
-
-    ++m_CurrentRoundIndex;
-
-    //count levels
-    std::ifstream file(m_LevelPath);
-    if (!file.is_open())
+    if (m_CurrentRoundIndex < 3)
     {
-        std::cerr << "[GameplayManager] Failed to open level JSON: " << m_LevelPath << '\n';
-        return;
-    }
+        ++m_CurrentRoundIndex;
 
-    nlohmann::json levelData;
-    file >> levelData;
+        //count levels
+        std::ifstream file(m_LevelPath);
+        if (!file.is_open())
+        {
+            std::cerr << "[GameplayManager] Failed to open level JSON: " << m_LevelPath << '\n';
+            return;
+        }
 
-    int maxRounds = static_cast<int>(levelData["rounds"].size());
+        nlohmann::json levelData;
+        file >> levelData;
 
-    if (m_CurrentRoundIndex > maxRounds)
-    {
-        std::cout << "[GameplayManager] All rounds completed. Level finished.\n";
-        m_RoundInProgress = false;
+        int maxRounds = static_cast<int>(levelData["rounds"].size());
+
+        if (m_CurrentRoundIndex > maxRounds)
+        {
+            std::cout << "[GameplayManager] All rounds completed. Level finished.\n";
+            m_RoundInProgress = false;
+            m_CurrentState = GameState::Playing;
+            m_pOwner->NotifyObservers(dae::Event::LevelComplete);
+
+            return;
+        }
+
+        std::cout << "[GameplayManager] Starting round " << m_CurrentRoundIndex << '\n';
+        m_pOwner->NotifyObservers(dae::Event::roundComplete);
+
+        // remove old tile gameobjects
+        m_pScene->RemoveObjectsWithComponent<TileComponent>();
+
+        // load new tiles for the next round (same level)
+        LevelBuilder::LoadFromJson(*m_pScene, m_LevelPath, m_CurrentRoundIndex);
+
+        const auto& newTileMap = LevelBuilder::GetTileMap();
+        auto firstTile = newTileMap[0][0];
+        auto firstTileComp = std::shared_ptr<TileComponent>(firstTile->GetComponent<TileComponent>(), [](TileComponent*) {});
+
+        // update Qbert
+        if (auto qbert = m_pQbert.lock())
+        {
+            auto* qbertMoveComponent = qbert->GetComponent<QbertMoveComponent>();
+
+            qbertMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+            qbertMoveComponent->SetCurrentTile(firstTileComp);
+        }
+
+        //reset enemies (only coily for now) 
+        //TODO: maybe refactor when we have more enemies
+        if (auto coily = m_pCoily.lock())
+        {
+            auto* coilyMoveComponent = coily->GetComponent<CoilyComponent>();
+
+            coilyMoveComponent->SetState(std::make_unique<EggState>());
+            coilyMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
+            coilyMoveComponent->SetCurrentTile(firstTileComp);
+        }
+
+        // set state flags
         m_CurrentState = GameState::Playing;
-        m_pOwner->NotifyObservers(dae::Event::LevelComplete);
-
-        return;
+        m_RoundInProgress = true;
     }
-
-    std::cout << "[GameplayManager] Starting round " << m_CurrentRoundIndex << '\n';
-    m_pOwner->NotifyObservers(dae::Event::roundComplete);
-
-    // remove old tile gameobjects
-    m_pScene->RemoveObjectsWithComponent<TileComponent>();
-
-    // load new tiles for the next round (same level)
-    LevelBuilder::LoadFromJson(*m_pScene, m_LevelPath, m_CurrentRoundIndex);
-
-    const auto& newTileMap = LevelBuilder::GetTileMap();
-    auto firstTile = newTileMap[0][0];
-    auto firstTileComp = std::shared_ptr<TileComponent>(firstTile->GetComponent<TileComponent>(), [](TileComponent*) {});
-
-    // update Qbert
-    if (auto qbert = m_pQbert.lock())
+    else
     {
-        auto* qbertMoveComponent = qbert->GetComponent<QbertMoveComponent>();
-            
-        qbertMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
-        qbertMoveComponent->SetCurrentTile(firstTileComp);
+        //start next level
     }
-
-    //reset enemies (only coily for now) 
-    //TODO: maybe refactor when we have more enemies
-    if (auto coily = m_pCoily.lock())
-    {
-        auto* coilyMoveComponent = coily->GetComponent<CoilyComponent>();
-
-        coilyMoveComponent->SetState(std::make_unique<EggState>());
-        coilyMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
-        coilyMoveComponent->SetCurrentTile(firstTileComp);
-    }
-    
-    // set state flags
-    m_CurrentState = GameState::Playing;
-    m_RoundInProgress = true;
 }
 
 void GameplayManagerComponent::ForceCompleteRound()

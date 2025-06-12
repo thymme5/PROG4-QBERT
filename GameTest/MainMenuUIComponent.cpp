@@ -9,7 +9,7 @@ void MainMenuUIComponent::MoveArrow(float directionSign)
 {
 	if (directionSign == 0) return;
 
-	constexpr int totalOptions = 3;
+	constexpr int totalOptions = 4;
 	constexpr float spacing = 50.f;
 
 	if (directionSign > 0)

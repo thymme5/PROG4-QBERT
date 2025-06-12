@@ -76,14 +76,13 @@ void GameObject::SetParent(GameObject* parent)
     if (parent == this || std::find(m_Children.begin(), m_Children.end(), parent) != m_Children.end())
         return;
 
-    // Remove from old parent
     if (m_Parent)
     {
         auto it = std::remove(m_Parent->m_Children.begin(), m_Parent->m_Children.end(), this);
         m_Parent->m_Children.erase(it, m_Parent->m_Children.end());
     }
 
-    glm::vec3 worldPos = GetWorldPosition(); // before parent change
+    glm::vec3 worldPos = GetWorldPosition();
     m_Parent = parent;
 
     if (m_Parent)

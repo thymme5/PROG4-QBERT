@@ -4,12 +4,18 @@
 #include "Scene.h"
 #include "GameplayManagerComponent.h"
 #include "GameModeManager.h"
+#include "BackToMenuCommand.h"
+#include "FinishRoundCommand.h"
 
 class QbertSceneBuilder
 {
 public:
+    
+    //menu
     static void BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font);
-    static void BuildQbertScene(dae::Scene& scene, const std::string& levelPath);
+    static void BuildHighScoreScene(dae::Scene& scene);
+
+    static void BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath);
     static void CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer);
 
 

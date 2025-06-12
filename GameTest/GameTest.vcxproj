@@ -161,6 +161,7 @@
     <ClCompile Include="GameModeManager.cpp" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
+    <ClCompile Include="HighScoreMenu.cpp" />
     <ClCompile Include="InputBindingHelper.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="main.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="VersusMode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackToMenuCommand.h" />
     <ClInclude Include="ChasingState.h" />
     <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="CoilyState.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
+    <ClInclude Include="HighScoreMenu.h" />
     <ClInclude Include="InputBindingHelper.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="MainMenu.h" />
