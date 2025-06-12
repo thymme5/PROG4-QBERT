@@ -1,5 +1,5 @@
 #include "MainMenuUIComponent.h"
-
+#include "QbertSoundLibrary.h"
 MainMenuUIComponent::MainMenuUIComponent(dae::GameObject& owner) :
 	dae::Component(owner), m_ArrowBaseY{}, m_ArrowX{}
 {
@@ -22,6 +22,7 @@ void MainMenuUIComponent::MoveArrow(float directionSign)
 		float newY = m_ArrowBaseY + m_SelectedIndex * spacing;
 		arrow->SetPosition(m_ArrowX, newY);
 	}
+	QbertSoundLibrary::Play(SoundID::ChangeSelection);
 }
 
 void MainMenuUIComponent::Update() 

@@ -26,23 +26,23 @@ void dae::TextureComponent::Update()
 }
 void dae::TextureComponent::Render() const 
 {
-	//const auto& pos = m_pOwner->GetTransform().GetPosition();
-	//Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_texture->GetSize().x * m_Scale, m_texture->GetSize().y * m_Scale);
-
-	const auto& pos = m_pOwner->GetTransform().GetPosition();
-
-	if (!m_texture) return;
-
-	if (m_UseSrcRect)
+	if (m_IsVisible)
 	{
-		float width = static_cast<float>(m_SrcRect.w) * m_Scale;
-		float height = static_cast<float>(m_SrcRect.h) * m_Scale;
+		const auto& pos = m_pOwner->GetWorldPosition();
 
-		Renderer::GetInstance().RenderTexture(*m_texture, m_SrcRect, pos.x, pos.y, width, height);
-	}
-	else
-	{
-		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_texture->GetSize().x * m_Scale, m_texture->GetSize().y * m_Scale);
+		if (!m_texture) return;
+
+		if (m_UseSrcRect)
+		{
+			float width = static_cast<float>(m_SrcRect.w) * m_Scale;
+			float height = static_cast<float>(m_SrcRect.h) * m_Scale;
+
+			Renderer::GetInstance().RenderTexture(*m_texture, m_SrcRect, pos.x, pos.y, width, height);
+		}
+		else
+		{
+			Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_texture->GetSize().x * m_Scale, m_texture->GetSize().y * m_Scale);
+		}
 	}
 }
 
@@ -67,4 +67,12 @@ float dae::TextureComponent::GetWidth() const noexcept
 float dae::TextureComponent::GetHeight() const noexcept
 {
 	return float(m_texture->GetSize().y);
+}
+void dae::TextureComponent::SetVisible(bool visible)
+{
+	m_IsVisible = visible;
+}
+bool dae::TextureComponent::GetVisible() const noexcept
+{
+	return m_IsVisible;
 }

@@ -26,11 +26,14 @@ namespace dae
 		float GetHeight() const noexcept;
 		std::shared_ptr<Texture2D> GetTexture() const noexcept { return m_texture; }
 
+		void SetVisible(bool visible);
+		bool GetVisible() const noexcept;
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
 		float m_Scale;
 		SDL_Rect m_SrcRect{ 0, 0, 0, 0 };
 		bool m_UseSrcRect{ false };
+		bool m_IsVisible{ true };
 	};
 }
 

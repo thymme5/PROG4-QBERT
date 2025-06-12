@@ -36,11 +36,6 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	/*for (const auto& object : m_objects)
-	{
-		object->Render();
-	}*/
-
 	// render objects based on their layer
 	auto sortedObjects = m_objects;
 	std::sort(sortedObjects.begin(), sortedObjects.end(),

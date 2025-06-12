@@ -6,6 +6,14 @@ void MainMenu::Enter()
 {
 	QbertSceneBuilder::BuildMainMenu(dae::SceneManager::GetInstance().CreateScene(m_SceneName),
 		dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36));
+
+	// load all sounds
+	auto soundService = dae::ServiceLocator::GetSoundService();
+	if (soundService)
+	{
+		soundService->SetVolume(10);
+		QbertSoundLibrary::LoadAllSounds();
+	}
 }
 void MainMenu::Exit() 
 {

@@ -31,16 +31,24 @@
 #include "InputBindingHelper.h"
 
 
-std::shared_ptr<dae::GameObject> QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::Font>& font, bool isSecondPlayer)
+void QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer)
 {
-	font;
+    auto qbert = std::make_shared<dae::GameObject>();
+    qbert->AddComponent<dae::TextureComponent>(*qbert, isSecondPlayer ? "Qbert P2 Spritesheet.png" : "Qbert P1 Spritesheet.png", 2.f, 4);
 
-	auto qbert = std::make_shared<dae::GameObject>();
-	qbert->AddComponent<dae::TextureComponent>(*qbert, isSecondPlayer ? "Qbert P2 Spritesheet.png" : "Qbert P1 Spritesheet.png", 2.f, 4);
-	auto* moveComp = qbert->AddComponent<QbertMoveComponent>(*qbert);
-	moveComp->SetTileMap(LevelBuilder::GetTileComponentMap());
-	moveComp->SetCurrentTile(startTile);
-	return qbert;
+    auto* moveComp = qbert->AddComponent<QbertMoveComponent>(*qbert);
+    moveComp->SetTileMap(LevelBuilder::GetTileComponentMap());
+    moveComp->SetCurrentTile(startTile);
+
+    // === Create swear bubble as child ===
+    auto swear = std::make_shared<dae::GameObject>();
+    auto* textureComponent =  swear->AddComponent<dae::TextureComponent>(*swear, "Qbert Curses.png", 2.f, 1);
+    textureComponent->SetVisible(false);
+    swear->SetParent(qbert.get());
+    swear->SetPosition(-5.f, -30.f);
+
+    scene.Add(qbert);
+    scene.Add(swear);
 }
 std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::GameObject>& qbert, bool isPlayerControlled)
 {
@@ -152,25 +160,20 @@ void QbertSceneBuilder::BuildQbertScene(dae::Scene& scene, const std::string& le
     auto toggleMute = std::make_shared<ToggleMuteCommand>();
     inputManager.BindCommand(SDLK_F2, KeyState::Down, toggleMute);
 
-    auto soundService = dae::ServiceLocator::GetSoundService();
-    if (soundService)
-    {
-        soundService->SetVolume(10);
-        QbertSoundLibrary::LoadAllSounds();
-    }
+    
 }
 void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::string& levelPath)
 {
     BuildQbertScene(scene, levelPath);
 
-    // === create qbert ===
-    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
     auto tileMap = LevelBuilder::GetTileMap();
     auto tileGO = tileMap[0][0];
     auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
-    auto qbert = CreateQbertPlayer(tileComp, font, false);
-    scene.Add(qbert);
+    CreateQbertPlayer(tileComp, scene, false);
+
+    // Find Qbert after creation
+    auto qbert = scene.FindFirstObjectOfType<QbertMoveComponent>();
 
     // === coily component ===
     const int startRow = 0;
@@ -181,7 +184,7 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
     auto coily = SpawnCoily(coilyTile, qbert, false);
     scene.Add(coily);
 
-    // === Connect Qbert to gameplayManager & UI ===
+    // === connect to manager ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
@@ -192,7 +195,7 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
         }
     }
 
-    // === Input binding ===
+    // Input binding
     InputBindingHelper::BindPlayer1GamepadInputs(qbert.get());
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());
 }
@@ -201,36 +204,42 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
 {
     BuildQbertScene(scene, levelPath);
 
-    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
     auto tileMap = LevelBuilder::GetTileMap();
 
     // P1 starts top-left
     auto p1TileGO = tileMap[0][0];
     auto p1Tile = std::shared_ptr<TileComponent>(p1TileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
-    auto qbert1 = CreateQbertPlayer(p1Tile, font, false);
-    scene.Add(qbert1);
+    CreateQbertPlayer(p1Tile, scene, false);
 
     // P2 starts bottom-right
     int rows = static_cast<int>(tileMap.size());
     int cols = static_cast<int>(tileMap.back().size());
     auto p2TileGO = tileMap[rows - 1][cols - 1];
     auto p2Tile = std::shared_ptr<TileComponent>(p2TileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
-    auto qbert2 = CreateQbertPlayer(p2Tile, font, true);
-    scene.Add(qbert2);
+    CreateQbertPlayer(p2Tile, scene, true);
 
-    // === coily component ===
+    // === Get Qbert instances ===
+    auto qbertObjects = scene.FindObjectsOfType<QbertMoveComponent>();
+    if (qbertObjects.size() < 2)
+        return;
+
+    auto qbert1 = qbertObjects[0];
+    auto qbert2 = qbertObjects[1];
+
+    // === Coily component ===
     const int startRow = 0;
     const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
     auto coilyTileGO = tileMap[startRow][startCol];
     auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
     auto coily = SpawnCoily(coilyTile, qbert1, false);
+    scene.Add(coily);
 
-    // === Connect them to gameplay ===
+    // === Connect to gameplay manager ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
-        manager->SetQbert(qbert1); // Main player (can be used for win condition)
+        manager->SetQbert(qbert1);
         if (auto* gameUI = manager->GetGameUI())
         {
             qbert1->AddObserver(gameUI);
@@ -247,28 +256,27 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
 {
     BuildQbertScene(scene, levelPath);
 
-    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
     auto tileMap = LevelBuilder::GetTileMap();
 
-    // P1 (Qbert) at top-left
+    // Qbert (P1) at top-left
     auto qbertTileGO = tileMap[0][0];
     auto qbertTile = std::shared_ptr<TileComponent>(qbertTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
-    auto qbert = CreateQbertPlayer(qbertTile, font, false);
-    
-    scene.Add(qbert);
+    CreateQbertPlayer(qbertTile, scene, false);
 
-    // === Coily GameObject ===
-    
-    // Coily starts at the top
+    auto qbert = scene.FindFirstObjectOfType<QbertMoveComponent>();
+    if (!qbert)
+        return;
+
+    // Coily starts at center top
     const int startRow = 0;
     const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
     auto coilyTileGO = tileMap[startRow][startCol];
     auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
-    auto coily = SpawnCoily(coilyTile, qbert, true); 
+    auto coily = SpawnCoily(coilyTile, qbert, true);
     scene.Add(coily);
 
-    // connect to manager
+    // Connect to manager
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
@@ -282,6 +290,7 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
         }
     }
 
+    // Bind inputs
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());
     InputBindingHelper::BindPlayer2CoilyGamepadInputs(coily.get());
 }

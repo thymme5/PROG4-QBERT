@@ -45,7 +45,21 @@ namespace dae
 			}
 			return nullptr;
 		}
+		template <typename T>
+		std::vector<std::shared_ptr<dae::GameObject>> FindObjectsOfType()
+		{
+			static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
 
+			std::vector<std::shared_ptr<dae::GameObject>> results;
+
+			for (const auto& go : m_objects)
+			{
+				if (go->GetComponent<T>() != nullptr)
+					results.push_back(go);
+			}
+
+			return results;
+		}
 		void Update();
 		void Render() const;
 		void RenderImGui();
