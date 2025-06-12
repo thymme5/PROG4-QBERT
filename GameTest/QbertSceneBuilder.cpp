@@ -179,7 +179,8 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
     auto coilyTile = std::shared_ptr<TileComponent>(coilyTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
     auto coily = SpawnCoily(coilyTile, qbert, false);
-    
+    scene.Add(coily);
+
     // === Connect Qbert to gameplayManager & UI ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
