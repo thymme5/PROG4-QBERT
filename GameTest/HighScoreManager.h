@@ -16,6 +16,7 @@ public:
     void AddHighscore(const HighscoreEntry& entry);
     void LoadHighscores();
     void SaveHighscores() const;
+    HighscoreEntry& GetLastAddedEntry();
 
 private:
     friend class dae::Singleton<HighscoreManager>; 
@@ -25,4 +26,5 @@ private:
 
     std::vector<HighscoreEntry> m_Highscores;
     const std::string m_FilePath = "highscores.json";
+    HighscoreEntry m_LastAddedEntry{};
 };

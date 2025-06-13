@@ -200,6 +200,7 @@
     <ClCompile Include="TileComponent.cpp" />
     <ClCompile Include="TransformingState.cpp" />
     <ClCompile Include="VersusMode.cpp" />
+    <ClCompile Include="VictoryScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackToMenuCommand.h" />
@@ -234,6 +235,7 @@
     <ClInclude Include="TileComponent.h" />
     <ClInclude Include="TransformingState.h" />
     <ClInclude Include="VersusMode.h" />
+    <ClInclude Include="VictoryScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

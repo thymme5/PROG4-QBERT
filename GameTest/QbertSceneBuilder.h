@@ -15,6 +15,7 @@ public:
     static void BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font);
     static void BuildHighScoreScene(dae::Scene& scene);
     static void BuildGameOverScene(dae::Scene& scene);
+    static void BuildVictoryScene(dae::Scene& scene);
 
     static void BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath);
     static void CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer);
