@@ -29,6 +29,7 @@
 #include "MoveMenuArrow.h"
 #include "EnterGameMode.h"
 #include "InputBindingHelper.h"
+#include "HighScoreManager.h"
 
 
 void QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer)
@@ -72,14 +73,14 @@ std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared
 
 void QbertSceneBuilder::BuildGameOverScene(dae::Scene& scene)
 {
-    // === Load texture ===
+    // === load texture ===
     auto gameOverTexture = dae::ResourceManager::GetInstance().LoadTexture("Game Over Title.png");
 
-    // === Create GameObject with texture ===
+    // === create GO with texture ===
     auto titleGO = std::make_shared<dae::GameObject>();
     titleGO->AddComponent<dae::TextureComponent>(*titleGO, "Game Over Title.png");
 
-    // Center it on screen
+    // center dumb shit to screen
     const auto screenWidth = dae::Renderer::GetInstance().GetWindowSize().x;
     const auto screenHeight = dae::Renderer::GetInstance().GetWindowSize().y;
     const auto textureSize = gameOverTexture->GetSize();
@@ -90,9 +91,9 @@ void QbertSceneBuilder::BuildGameOverScene(dae::Scene& scene)
     titleGO->SetPosition(x, y);
     scene.Add(titleGO);
 
-    // === Input binding: Press ESC or B to return to menu ===
+    // === input binding: Press ESC or B to return to menu ===
     auto& inputManager = dae::InputManager::GetInstance();
-    auto backCommand = std::make_shared<BackToMenuCommand>();
+    auto backCommand = std::make_shared<EnterGameMode>(3);
 
     inputManager.BindCommand(SDLK_ESCAPE, KeyState::Down, backCommand);
     inputManager.BindCommand(0, GamepadButton::B, KeyState::Down, backCommand);
@@ -117,7 +118,7 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
         auto optionGO = std::make_shared<dae::GameObject>();
         auto* text = optionGO->AddComponent<dae::TextComponent>(*optionGO, options[i], font);
 
-        // force texture creation before getting size
+        // force texture creation before getting size so that it works
         text->SetText(options[i]);
         text->Update();
 
@@ -160,58 +161,60 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
 
 void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
 {
-    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-    auto fontSmaller = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+    const auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+    const auto smallFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+    const auto windowWidth = dae::Renderer::GetInstance().GetWindowSize().x;
 
     // === Title ===
-    auto title = std::make_shared<dae::GameObject>();
-    auto* titleText = title->AddComponent<dae::TextComponent>(*title, "HIGH SCORES", font);
-    titleText->Update(); // force texture creation
-    float titleWidth = static_cast<float>(titleText->GetTextureSize().x);
-    float titleX = (dae::Renderer::GetInstance().GetWindowSize().x - titleWidth) / 2.0f;
-    title->SetPosition(titleX, 100.f);
-    scene.Add(title);
-
-    // === Dummy scores ===
-    std::vector<std::string> scores =
     {
-        "69. THY - 6969",
-        "69. NIG - 6969",
-        "69. GGE - 6969",
-        "69. RRS - 6969",
-        "69. JFDKLMSJFKDSLMJFKDLSMJFMLK - 6969"
-    };
+        auto titleGO = std::make_shared<dae::GameObject>();
+        auto* titleText = titleGO->AddComponent<dae::TextComponent>(*titleGO, "HIGH SCORES", font);
+        titleText->Update();
+        float x = (windowWidth - static_cast<float>(titleText->GetTextureSize().x)) / 2.f;
+        titleGO->SetPosition(x, 100.f);
+        scene.Add(titleGO);
+    }
 
+    // === Load and display scores ===
+    const auto& scores = HighscoreManager::GetInstance().GetHighscores();
     const float baseY = 180.0f;
     const float spacing = 40.0f;
 
     for (size_t i = 0; i < scores.size(); ++i)
     {
+        std::stringstream ss;
+        ss << (i + 1) << ". " << scores[i].initials << " - " << scores[i].score;
+
         auto scoreGO = std::make_shared<dae::GameObject>();
-        auto* scoreText = scoreGO->AddComponent<dae::TextComponent>(*scoreGO, scores[i], font);
-        scoreText->Update(); // force texture creation
+        auto* scoreText = scoreGO->AddComponent<dae::TextComponent>(*scoreGO, ss.str(), font);
+        scoreText->Update();
+
         float width = static_cast<float>(scoreText->GetTextureSize().x);
-        float x = (dae::Renderer::GetInstance().GetWindowSize().x - width) / 2.0f;
-        scoreGO->SetPosition(x, baseY + i * spacing);
+        float x = (windowWidth - width) / 2.f;
+        float y = baseY + static_cast<float>(i) * spacing;
+
+        scoreGO->SetPosition(x, y);
         scene.Add(scoreGO);
     }
 
-    // === ESC Return Hint ===
-    auto escGO = std::make_shared<dae::GameObject>();
-    auto* escText = escGO->AddComponent<dae::TextComponent>(*escGO, "ESC OR B TO GO BACK", fontSmaller);
-    escText->Update(); // force texture creation
-    float escWidth = static_cast<float>(escText->GetTextureSize().x);
-    float escX = (dae::Renderer::GetInstance().GetWindowSize().x - escWidth) / 2.0f;
-    escGO->SetPosition(escX, 400.f);
-    scene.Add(escGO);
+    // === Hint text ===
+    {
+        auto hintGO = std::make_shared<dae::GameObject>();
+        auto* hintText = hintGO->AddComponent<dae::TextComponent>(*hintGO, "ESC OR B TO GO BACK", smallFont);
+        hintText->Update();
 
-    // === Input bindings ===
-    auto& inputManager = dae::InputManager::GetInstance();
+        float x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
+        hintGO->SetPosition(x, 400.f);
+        scene.Add(hintGO);
+    }
 
-    auto confirmCommand = std::make_shared<BackToMenuCommand>();
-    inputManager.BindCommand(SDLK_ESCAPE, KeyState::Down, confirmCommand);
-    inputManager.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCommand);
+    // === Input ===
+    auto& input = dae::InputManager::GetInstance();
+    auto confirmCmd = std::make_shared<BackToMenuCommand>();
+    input.BindCommand(SDLK_ESCAPE, KeyState::Down, confirmCmd);
+    input.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCmd);
 }
+
 
 void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath)
 {

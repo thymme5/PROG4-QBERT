@@ -56,7 +56,11 @@ void GameUIComponent::UpdateLives()
     }
     else
     {
-        //should also save current score to a file
+        HighscoreEntry newEntry{ "YOU", m_Score };
+        HighscoreManager::GetInstance().AddHighscore(newEntry);
+
+        HighscoreManager::GetInstance().SaveHighscores();
+
         GameModeManager::GetInstance().SetMode(std::make_unique<GameOverMenu>());
     }
 }

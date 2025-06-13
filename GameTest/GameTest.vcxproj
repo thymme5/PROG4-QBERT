@@ -182,6 +182,7 @@
     <ClCompile Include="GameOverMenu.cpp" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
+    <ClCompile Include="HighScoreManager.cpp" />
     <ClCompile Include="HighScoreMenu.cpp" />
     <ClCompile Include="InputBindingHelper.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
+    <ClInclude Include="HighScoreManager.h" />
     <ClInclude Include="HighScoreMenu.h" />
     <ClInclude Include="InputBindingHelper.h" />
     <ClInclude Include="LevelBuilder.h" />

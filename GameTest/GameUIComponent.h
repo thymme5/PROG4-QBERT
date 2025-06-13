@@ -4,6 +4,8 @@
 #include "TextComponent.h"
 #include "GameModeManager.h"
 #include "GameOverMenu.h"
+#include "HighScoreManager.h"
+
 namespace dae
 {
     class GameObject;

@@ -195,6 +195,9 @@
     <ClCompile Include="GameOverMenu.cpp">
       <Filter>GameMode\GameOverMenu</Filter>
     </ClCompile>
+    <ClCompile Include="HighScoreManager.cpp">
+      <Filter>GameMode\HighScore</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoilyComponent.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="GameOverMenu.h">
       <Filter>GameMode\GameOverMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreManager.h">
+      <Filter>GameMode\HighScore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
