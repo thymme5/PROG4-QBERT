@@ -45,6 +45,7 @@ void ChasingState::Update(CoilyComponent& coily)
     if (isOverlapping)
     {
         coily.GetOwner()->NotifyObservers(dae::Event::CoilyHitPlayer);
+
     }
 
     if (coily.IsJumping()) return;

@@ -90,7 +90,7 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
         auto optionGO = std::make_shared<dae::GameObject>();
         auto* text = optionGO->AddComponent<dae::TextComponent>(*optionGO, options[i], font);
 
-        // Force texture creation before getting size
+        // force texture creation before getting size
         text->SetText(options[i]);
         text->Update();
 
@@ -186,7 +186,6 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     inputManager.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCommand);
 }
 
-
 void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath)
 {
     auto& inputManager = dae::InputManager::GetInstance();
@@ -269,6 +268,10 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
         if (auto* gameUI = manager->GetGameUI())
         {
             qbert->AddObserver(gameUI);
+            qbert->AddObserver(manager);
+
+            coily->AddObserver(gameUI);
+            coily->AddObserver(manager);
         }
     }
 

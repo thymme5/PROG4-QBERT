@@ -40,8 +40,8 @@ void GameUIComponent::OnNotify(Event event, GameObject* pGameObject)
         m_IsDirty = true;
         break;
     case dae::Event::CoilyHitPlayer:
-        QbertSoundLibrary::Play(SoundID::QbertDeath);
-            break;
+        //QbertSoundLibrary::Play(SoundID::Swearing);
+        break;
     default:
         break;
     }

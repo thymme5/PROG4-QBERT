@@ -99,6 +99,17 @@ namespace dae
             }
             return false;
         }
+        //gets specific child with component
+        template<typename T>
+        GameObject* FindChildWithComponent()
+        {
+            for (auto* child : m_Children)
+            {
+                if (child && child->GetComponent<T>())
+                    return child;
+            }
+            return nullptr;
+        }
 
     private:
         RenderLayer m_RenderLayer{ RenderLayer::Tiles };

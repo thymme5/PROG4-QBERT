@@ -7,7 +7,6 @@
 enum class SoundID
 {
     QbertJump,
-    QbertDeath,
     CoilySnakeJump,
     CoilyEggJump,
     DiscWarp,
