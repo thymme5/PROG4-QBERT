@@ -23,13 +23,16 @@ void CoilyComponent::SetPaused(bool paused)
 }
 void CoilyComponent::Update()
 {
-    if (m_pCurrentState)
-    {
-        m_pCurrentState->Update(*this);
-    }
-
-    //do nothing if paused (obviously)
     if (m_IsPaused) return;
+
+    // === collision ===
+    if (dynamic_cast<ChasingState*>(m_pCurrentState.get()))
+    {
+        if (GetCoilyTile() == GetQbertTile())
+        {
+            GetOwner()->NotifyObservers(dae::Event::CoilyHitPlayer);
+        }
+    }
 
     constexpr float fixedDeltaTime = 1.f / 60.f;
 
@@ -42,7 +45,7 @@ void CoilyComponent::Update()
         {
             m_pOwner->SetPosition(m_Jump.endPos.x, m_Jump.endPos.y);
             m_Jump.isJumping = false;
-            m_Jump.waitTimer = 0.f; 
+            m_Jump.waitTimer = 0.f;
             SetJumpSprite(m_LastMoveDir);
             return;
         }
@@ -59,10 +62,15 @@ void CoilyComponent::Update()
     if (m_Jump.waitTimer < m_Jump.waitDuration)
     {
         m_Jump.waitTimer += fixedDeltaTime;
-        return; 
+        return;
     }
-    
+
+    if (m_pCurrentState)
+    {
+        m_pCurrentState->Update(*this);
+    }
 }
+
 
 void CoilyComponent::Render() const
 {

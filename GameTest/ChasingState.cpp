@@ -14,11 +14,6 @@ void ChasingState::Update(CoilyComponent& coily)
 {
     if (coily.GetPaused() || coily.IsJumping()) return;
 
-    if (coily.GetCoilyTile() == coily.GetQbertTile())
-    {
-        coily.GetOwner()->NotifyObservers(dae::Event::CoilyHitPlayer);
-    }
-
     if (coily.IsPlayerControlled()) return;
 
     auto coilyTile = coily.GetCoilyTile();

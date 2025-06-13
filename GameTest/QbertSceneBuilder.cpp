@@ -166,16 +166,15 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     const auto windowWidth = dae::Renderer::GetInstance().GetWindowSize().x;
 
     // === Title ===
-    {
-        auto titleGO = std::make_shared<dae::GameObject>();
-        auto* titleText = titleGO->AddComponent<dae::TextComponent>(*titleGO, "HIGH SCORES", font);
-        titleText->Update();
-        float x = (windowWidth - static_cast<float>(titleText->GetTextureSize().x)) / 2.f;
-        titleGO->SetPosition(x, 100.f);
-        scene.Add(titleGO);
-    }
+    auto titleGO = std::make_shared<dae::GameObject>();
+    auto* titleText = titleGO->AddComponent<dae::TextComponent>(*titleGO, "HIGH SCORES", font);
+    titleText->Update();
+    float x = (windowWidth - static_cast<float>(titleText->GetTextureSize().x)) / 2.f;
+    titleGO->SetPosition(x, 100.f);
+    scene.Add(titleGO);
+    
 
-    // === Load and display scores ===
+    // === load and display scores ===
     HighscoreManager::GetInstance().LoadHighscores();
     const auto& scores = HighscoreManager::GetInstance().GetHighscores();
     const float baseY = 180.0f;
@@ -191,7 +190,7 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
         scoreText->Update();
 
         float width = static_cast<float>(scoreText->GetTextureSize().x);
-        float x = (windowWidth - width) / 2.f;
+        x = (windowWidth - width) / 2.f;
         float y = baseY + static_cast<float>(i) * spacing;
 
         scoreGO->SetPosition(x, y);
@@ -204,7 +203,7 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     auto* hintText = hintGO->AddComponent<dae::TextComponent>(*hintGO, "ESC OR B TO GO BACK", smallFont);
     hintText->Update();
 
-    float x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
+    x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
     hintGO->SetPosition(x, 400.f);
     scene.Add(hintGO);
     
