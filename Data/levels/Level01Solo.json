@@ -12,15 +12,15 @@
     },
     {
       "round": 2,
-      "jumpMode": "single",
+      "jumpMode": "double",
       "startColor": "orange",
+      "intermediateColor": "green",
       "targetColor": "gold"
     },
     {
       "round": 3,
-      "jumpMode": "double",
+      "jumpMode": "toggle",
       "startColor": "blue",
-      "intermediateColor": "green",
       "targetColor": "purple"
     }
   ]

@@ -13,14 +13,18 @@
 //      (5,0)     (5,1)     (5,2)     (5,3)     (5,4)     (5,5)
 // (6,0)     (6,1)     (6,2)     (6,3)     (6,4)     (6,5)     (6,6)
 
-// todo: work this out to a state system with classes
 enum class TileState
 {
 	Default,
 	Intermediate,
 	Target
 };
-
+enum class TileRule
+{
+	OneStepToTarget,      // Level 1 and 3
+	TwoStepsToTarget,     // Level 2
+	ToggleColor           // Level 3 only
+};
 class TileComponent final : public dae::Component
 {
 public:
@@ -51,7 +55,7 @@ public:
 	//for the cool game ending animation
 	void StartFlashing();
 	void StopFlashing();
-
+	void SetTileRule(TileRule rule);
 private:
 	int m_ID{}; // basically index
 	TileState m_CurrentState{ TileState::Default };
@@ -60,6 +64,9 @@ private:
 
 	int m_Row{};
 	int m_Col{};
+
+	TileRule m_TileRule{ TileRule::OneStepToTarget };
+	int m_JumpCount{ 0 };
 
 	std::string m_StartColor{};
 	std::string m_IntermediateColor{};

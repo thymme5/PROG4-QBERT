@@ -389,11 +389,13 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
         manager->SetQbert(qbert1);
         if (auto* gameUI = manager->GetGameUI())
         {
-            manager->SetQbert(qbert1);
             manager->SetCoily(coily);
 
             qbert1->AddObserver(gameUI);
             qbert2->AddObserver(gameUI);
+
+            coily->AddObserver(gameUI);
+            coily->AddObserver(manager);
         }
     }
 

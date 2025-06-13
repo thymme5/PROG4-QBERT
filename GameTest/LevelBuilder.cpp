@@ -13,91 +13,102 @@ std::vector<std::vector<std::shared_ptr<dae::GameObject>>> LevelBuilder::m_Tiles
 
 void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber)
 {
-	using json = nlohmann::json;
+    using json = nlohmann::json;
 
-	std::ifstream file(pathToJson);
-	if (!file.is_open())
-		throw std::runtime_error("Failed to open level json: " + pathToJson);
+    std::ifstream file(pathToJson);
+    if (!file.is_open())
+        throw std::runtime_error("Failed to open level json: " + pathToJson);
 
-	json data;
-	file >> data;
+    json data;
+    file >> data;
 
-	constexpr float tileSize = 64.0f;
-	constexpr float startX = 288.f;
-	constexpr float startY = 64.f;
+    constexpr float tileSize = 64.0f;
+    constexpr float startX = 288.f;
+    constexpr float startY = 64.f;
 
-	// === Load basic level structure ===
-	int tileCount = data["tileCount"].get<int>();
-	m_TilesByRow.clear();
-	m_TilesByRow.resize(tileCount);
+    // === Load basic level structure ===
+    int tileCount = data["tileCount"].get<int>();
+    m_TilesByRow.clear();
+    m_TilesByRow.resize(tileCount);
 
-	// === Decide start tiles based on mode ===
-	m_StartTiles.clear();
-	std::string mode = data.value("mode", "Solo");
+    // === decide start tiles based on mode ===
+    m_StartTiles.clear();
+    std::string mode = data.value("mode", "Solo");
 
-	if (mode == "Solo" && data.contains("startTile"))
-	{
-		const auto& start = data["startTile"];
-		m_StartTiles.emplace_back(start[0], start[1]);
-	}
-	else if ((mode == "Coop" || mode == "Versus") && data.contains("startTiles"))
-	{
-		for (const auto& start : data["startTiles"])
-			m_StartTiles.emplace_back(start[0], start[1]);
-	}
-	else
-	{
-		throw std::runtime_error("Missing or invalid start tile(s) for mode: " + mode);
-	}
+    if (mode == "Solo" && data.contains("startTile"))
+    {
+        const auto& start = data["startTile"];
+        m_StartTiles.emplace_back(start[0], start[1]);
+    }
+    else if ((mode == "Coop" || mode == "Versus") && data.contains("startTiles"))
+    {
+        for (const auto& start : data["startTiles"])
+            m_StartTiles.emplace_back(start[0], start[1]);
+    }
+    else
+    {
+        throw std::runtime_error("Missing or invalid start tile(s) for mode: " + mode);
+    }
 
-	// === Find the correct round entry ===
-	const auto& rounds = data["rounds"];
-	const json* round = nullptr;
+    // === Find the correct round entry ===
+    const auto& rounds = data["rounds"];
+    const json* round = nullptr;
 
-	for (const auto& r : rounds)
-	{
-		if (r.contains("round") && r["round"].get<int>() == roundNumber)
-		{
-			round = &r;
-			break;
-		}
-	}
-	if (!round)
-		throw std::runtime_error("Round number " + std::to_string(roundNumber) + " not found.");
+    for (const auto& r : rounds)
+    {
+        if (r.contains("round") && r["round"].get<int>() == roundNumber)
+        {
+            round = &r;
+            break;
+        }
+    }
 
-	// === Extract round color data ===
-	std::string startColor = (*round)["startColor"];
-	std::string targetColor = (*round)["targetColor"];
-	std::string intermediateColor{};
+    if (!round)
+        throw std::runtime_error("Round number " + std::to_string(roundNumber) + " not found.");
 
-	if (round->value("jumpMode", "single") == "double")
-	{
-		if (!round->contains("intermediateColor"))
-			throw std::runtime_error("jumpMode is 'double' but 'intermediateColor' is missing.");
-		intermediateColor = (*round)["intermediateColor"];
-	}
+    // === Extract round color data and rule ===
+    std::string startColor = (*round)["startColor"];
+    std::string targetColor = (*round)["targetColor"];
+    std::string intermediateColor{};
 
-	// === Create all tiles ===
-	int id = 0;
-	for (int row = 0; row < tileCount; ++row)
-	{
-		for (int col = 0; col <= row; ++col)
-		{
-			glm::vec2 pos = {
-				startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
-				startY + static_cast<float>(row) * tileSize * 0.75f
-			};
+    TileRule rule = TileRule::OneStepToTarget;
+    const std::string jumpMode = round->value("jumpMode", "single");
 
-			auto tile = CreateTile(id++, pos, startColor);
-			auto* tileComp = tile->GetComponent<TileComponent>();
-			tileComp->SetGridPosition(row, col);
-			tileComp->SetColorStates(startColor, intermediateColor, targetColor);
+    if (jumpMode == "double")
+    {
+        if (!round->contains("intermediateColor"))
+            throw std::runtime_error("jumpMode is 'double' but 'intermediateColor' is missing.");
+        intermediateColor = (*round)["intermediateColor"];
+        rule = TileRule::TwoStepsToTarget;
+    }
+    else if (jumpMode == "toggle")
+    {
+        rule = TileRule::ToggleColor;
+    }
 
-			m_TilesByRow[row].push_back(tile);
-			scene.Add(tile);
-		}
-	}
+    // === Create all tiles ===
+    int id = 0;
+    for (int row = 0; row < tileCount; ++row)
+    {
+        for (int col = 0; col <= row; ++col)
+        {
+            glm::vec2 pos = {
+                startX + (static_cast<float>(col) - static_cast<float>(row) / 2.0f) * tileSize,
+                startY + static_cast<float>(row) * tileSize * 0.75f
+            };
+
+            auto tile = CreateTile(id++, pos, startColor);
+            auto* tileComp = tile->GetComponent<TileComponent>();
+            tileComp->SetGridPosition(row, col);
+            tileComp->SetColorStates(startColor, intermediateColor, targetColor);
+            tileComp->SetTileRule(rule);
+
+            m_TilesByRow[row].push_back(tile);
+            scene.Add(tile);
+        }
+    }
 }
+
 
 
 std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos, const std::string& color)
