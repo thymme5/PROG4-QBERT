@@ -1,18 +1,27 @@
 #include "CoopMode.h"
 #include "QbertSceneBuilder.h"
+#include "ResourceManager.h"
+
+#include <filesystem>
+#include <sstream>
 
 CoopMode::CoopMode(int levelIndex) :
     m_LevelIndex(levelIndex)
 {
-
 }
+
 void CoopMode::Enter()
 {
+    const auto& basePath = dae::ResourceManager::GetInstance().GetDataPath();
+
     std::stringstream ss;
-    ss << "../data/levels/Level0" << m_LevelIndex << "Coop.json";
+    ss << (basePath / "levels" / ("Level0" + std::to_string(m_LevelIndex) + "Coop.json")).string();
     std::string levelPath = ss.str();
 
-    QbertSceneBuilder::BuildCoopScene(dae::SceneManager::GetInstance().CreateScene(m_SceneName), levelPath);
+    QbertSceneBuilder::BuildCoopScene(
+        dae::SceneManager::GetInstance().CreateScene(m_SceneName),
+        levelPath
+    );
 }
 
 void CoopMode::Exit()

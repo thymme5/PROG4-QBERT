@@ -7,8 +7,6 @@
 #include "TileComponent.h"
 #include <fstream>
 
-
-
 std::vector<std::vector<std::shared_ptr<dae::GameObject>>> LevelBuilder::m_TilesByRow{};
 
 void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson, int roundNumber)
@@ -108,8 +106,6 @@ void LevelBuilder::LoadFromJson(dae::Scene& scene, const std::string& pathToJson
         }
     }
 }
-
-
 
 std::shared_ptr<dae::GameObject> LevelBuilder::CreateTile(int id, const glm::vec2& pos, const std::string& color)
 {

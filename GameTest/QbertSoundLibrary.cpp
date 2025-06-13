@@ -1,25 +1,28 @@
 #include "QbertSoundLibrary.h"
+#include "ResourceManager.h"
 
 std::unordered_map<SoundID, std::string> QbertSoundLibrary::m_SoundMap{};
 
 void QbertSoundLibrary::LoadAllSounds()
 {
-    Register(SoundID::QbertJump, "../Data/Sounds/QBert Jump.wav");
-    Register(SoundID::CoilyEggJump, "../Data/Sounds/Coily Egg Jump.wav");
-    Register(SoundID::CoilySnakeJump, "../Data/Sounds/Coily Snake Jump.wav");
-    Register(SoundID::RoundComplete, "../Data/Sounds/Round Complete Tune.wav");
-    Register(SoundID::ChangeSelection, "../Data/Sounds/Change Selection.wav");
-    Register(SoundID::ClearDisks, "../Data/Sounds/Clear Disks.wav");
-    Register(SoundID::CoilyFall, "../Data/Sounds/Coily Fall.wav");
-    Register(SoundID::DemoSound, "../Data/Sounds/Demo Sound.wav");
-    Register(SoundID::DiskLand, "../Data/Sounds/Disk Land.wav");
-    Register(SoundID::DiskLift, "../Data/Sounds/Disk Lift.wav");
-    Register(SoundID::LevelScreenTune, "../Data/Sounds/Level Screen Tune.wav");
-    Register(SoundID::OtherFoesJump, "../Data/Sounds/Other Foes Jump.wav");
-    Register(SoundID::QbertFall, "../Data/Sounds/QBert Fall.wav");
-    Register(SoundID::QbertHit, "../Data/Sounds/QBert Hit.wav");
-    Register(SoundID::SlickSamCaught, "../Data/Sounds/SlickSam Caught.wav");
-    Register(SoundID::Swearing, "../Data/Sounds/Swearing.wav");
+    const auto& basePath = dae::ResourceManager::GetInstance().GetDataPath();
+
+    Register(SoundID::QbertJump, (basePath / "Sounds/QBert Jump.wav").string());
+    Register(SoundID::CoilyEggJump, (basePath / "Sounds/Coily Egg Jump.wav").string());
+    Register(SoundID::CoilySnakeJump, (basePath / "Sounds/Coily Snake Jump.wav").string());
+    Register(SoundID::RoundComplete, (basePath / "Sounds/Round Complete Tune.wav").string());
+    Register(SoundID::ChangeSelection, (basePath / "Sounds/Change Selection.wav").string());
+    Register(SoundID::ClearDisks, (basePath / "Sounds/Clear Disks.wav").string());
+    Register(SoundID::CoilyFall, (basePath / "Sounds/Coily Fall.wav").string());
+    Register(SoundID::DemoSound, (basePath / "Sounds/Demo Sound.wav").string());
+    Register(SoundID::DiskLand, (basePath / "Sounds/Disk Land.wav").string());
+    Register(SoundID::DiskLift, (basePath / "Sounds/Disk Lift.wav").string());
+    Register(SoundID::LevelScreenTune, (basePath / "Sounds/Level Screen Tune.wav").string());
+    Register(SoundID::OtherFoesJump, (basePath / "Sounds/Other Foes Jump.wav").string());
+    Register(SoundID::QbertFall, (basePath / "Sounds/QBert Fall.wav").string());
+    Register(SoundID::QbertHit, (basePath / "Sounds/QBert Hit.wav").string());
+    Register(SoundID::SlickSamCaught, (basePath / "Sounds/SlickSam Caught.wav").string());
+    Register(SoundID::Swearing, (basePath / "Sounds/Swearing.wav").string());
 }
 
 void QbertSoundLibrary::Play(SoundID id)
