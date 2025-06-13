@@ -106,38 +106,47 @@ std::string TileComponent::GetCurrentColor() const
 
 void TileComponent::OnStepped(dae::GameObject* actor)
 {
-	if (m_CurrentState == TileState::Target)
-		return;
+	switch (m_TileRule)
+	{
+	case TileRule::OneStepToTarget:
+		if (m_CurrentState != TileState::Target)
+		{
+			m_CurrentState = TileState::Target;
+			m_IsCompleted = true;
+		}
+		break;
 
-	if (m_CurrentState != TileState::Intermediate && m_IntermediateColor != "")
-	{
-		m_CurrentState = TileState::Intermediate;
-	}
-	else if (m_CurrentState == TileState::Intermediate or m_IntermediateColor == "")
-	{
-		m_CurrentState = TileState::Target;
-		m_IsCompleted = true;
+	case TileRule::TwoStepsToTarget:
+		if (m_CurrentState == TileState::Default && !m_IntermediateColor.empty())
+		{
+			m_CurrentState = TileState::Intermediate;
+		}
+		else if (m_CurrentState == TileState::Intermediate)
+		{
+			m_CurrentState = TileState::Target;
+			m_IsCompleted = true;
+		}
+		break;
+
+	case TileRule::ToggleColor:
+		if (m_CurrentState == TileState::Target)
+		{
+			m_CurrentState = TileState::Default;
+			m_IsCompleted = false;
+		}
+		else
+		{
+			m_CurrentState = TileState::Target;
+			m_IsCompleted = true;
+		}
+		break;
 	}
 
 	actor->NotifyObservers(dae::Event::TileStateChanged);
 
-	auto* texture = GetOwner()->GetComponent<dae::TextureComponent>();
-	if (texture)
+	if (auto* texture = GetOwner()->GetComponent<dae::TextureComponent>())
 	{
-		std::string colorToSet;
-
-		switch (m_CurrentState)
-		{
-		case TileState::Default:
-			colorToSet = m_StartColor;
-			break;
-		case TileState::Intermediate:
-			colorToSet = m_IntermediateColor;
-			break;
-		case TileState::Target:
-			colorToSet = m_TargetColor;
-			break;
-		}
+		std::string colorToSet = GetCurrentColor();
 
 		if (g_ColorSpriteMap.contains(colorToSet))
 		{
@@ -145,6 +154,10 @@ void TileComponent::OnStepped(dae::GameObject* actor)
 			texture->SetSourceRect(srcRect);
 		}
 	}
+}
+void TileComponent::SetTileRule(TileRule rule)
+{
+	m_TileRule = rule;
 }
 
 void TileComponent::SetGridPosition(int row, int col)
