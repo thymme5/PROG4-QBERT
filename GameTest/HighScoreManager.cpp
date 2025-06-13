@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <nlohmann/json.hpp>
 
+
 const std::vector<HighscoreEntry>& HighscoreManager::GetHighscores() const
 {
     return m_Highscores;

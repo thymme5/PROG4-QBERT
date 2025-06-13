@@ -275,7 +275,6 @@ void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGa
             }
         }
 
-
         // pause Coily's behavior
         if (auto coily = m_pCoily.lock())
         {
@@ -290,7 +289,6 @@ void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGa
         QbertSoundLibrary::Play(SoundID::Swearing);
     }
 }
-
 
 void GameplayManagerComponent::RespawnQbert()
 {
