@@ -33,7 +33,7 @@ public:
 	static std::shared_ptr<dae::GameObject> CreateTile(int id, const glm::vec2& pos, const std::string& color);
 	static const std::vector<std::vector<std::shared_ptr<dae::GameObject>>>& GetTileMap();
 	static const std::vector<std::vector<std::shared_ptr<TileComponent>>>& GetTileComponentMap();
-
+	static std::vector<std::pair<int, int>> GetStartTileIndices();
 private:
 	static std::vector<std::vector<std::shared_ptr<dae::GameObject>>> m_TilesByRow;
 	inline static std::vector<std::pair<int, int>> m_StartTiles{};

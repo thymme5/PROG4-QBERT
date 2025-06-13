@@ -153,3 +153,9 @@ const std::vector<std::vector<std::shared_ptr<TileComponent>>>& LevelBuilder::Ge
 	}
 	return tileComponentMap;
 }
+
+
+std::vector<std::pair<int, int>> LevelBuilder::GetStartTileIndices()
+{
+	return m_StartTiles;
+}

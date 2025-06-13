@@ -3,7 +3,7 @@
   "mode": "Coop",
   "tileCount": 7,
   "startTiles": [
-    [0, 0],         
+    [6, 6],         
     [6, 0]          
   ],
   "rounds": [
