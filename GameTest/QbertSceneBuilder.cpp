@@ -31,7 +31,6 @@
 #include "InputBindingHelper.h"
 #include "HighScoreManager.h"
 
-
 void QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer)
 {
     auto qbert = std::make_shared<dae::GameObject>();
@@ -43,7 +42,7 @@ void QbertSceneBuilder::CreateQbertPlayer(const std::shared_ptr<TileComponent>& 
 
     // === Create swear bubble as child ===
     auto swear = std::make_shared<dae::GameObject>();
-    auto* textureComponent =  swear->AddComponent<dae::TextureComponent>(*swear, "Qbert Curses.png", 2.f, 1);
+    auto* textureComponent = swear->AddComponent<dae::TextureComponent>(*swear, "Qbert Curses.png", 2.f, 1);
     textureComponent->SetVisible(false);
     swear->SetParent(qbert.get());
     swear->SetPosition(-5.f, -30.f);
@@ -312,21 +311,19 @@ void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string
     inputManager.BindCommand(SDLK_F4, KeyState::Down, skipRound);
 
 }
-
 void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::string& levelPath)
 {
     BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
-    auto tileGO = tileMap[0][0];
+    auto startTiles = LevelBuilder::GetStartTileIndices();
+    auto tileGO = tileMap[startTiles[0].first][startTiles[0].second];
     auto tileComp = std::shared_ptr<TileComponent>(tileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
 
     CreateQbertPlayer(tileComp, scene, false);
 
-    // Find Qbert after creation
     auto qbert = scene.FindFirstObjectOfType<QbertMoveComponent>();
 
-    // === coily component ===
     const int startRow = 0;
     const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
     auto coilyTileGO = tileMap[startRow][startCol];
@@ -335,7 +332,6 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
     auto coily = SpawnCoily(coilyTile, qbert, false);
     scene.Add(coily);
 
-    // === connect to manager ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
@@ -353,7 +349,6 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
         }
     }
 
-    // Input binding
     InputBindingHelper::BindPlayer1GamepadInputs(qbert.get());
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());
 }
@@ -363,20 +358,16 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
     BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
+    auto startTiles = LevelBuilder::GetStartTileIndices();
 
-    // P1 starts top-left
-    auto p1TileGO = tileMap[0][0];
+    auto p1TileGO = tileMap[startTiles[0].first][startTiles[0].second];
     auto p1Tile = std::shared_ptr<TileComponent>(p1TileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
     CreateQbertPlayer(p1Tile, scene, false);
 
-    // P2 starts bottom-right
-    int rows = static_cast<int>(tileMap.size());
-    int cols = static_cast<int>(tileMap.back().size());
-    auto p2TileGO = tileMap[rows - 1][cols - 1];
+    auto p2TileGO = tileMap[startTiles[1].first][startTiles[1].second];
     auto p2Tile = std::shared_ptr<TileComponent>(p2TileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
     CreateQbertPlayer(p2Tile, scene, true);
 
-    // === Get Qbert instances ===
     auto qbertObjects = scene.FindObjectsOfType<QbertMoveComponent>();
     if (qbertObjects.size() < 2)
         return;
@@ -384,7 +375,6 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
     auto qbert1 = qbertObjects[0];
     auto qbert2 = qbertObjects[1];
 
-    // === Coily component ===
     const int startRow = 0;
     const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
     auto coilyTileGO = tileMap[startRow][startCol];
@@ -393,7 +383,6 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
     auto coily = SpawnCoily(coilyTile, qbert1, false);
     scene.Add(coily);
 
-    // === Connect to gameplay manager ===
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
@@ -408,7 +397,6 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
         }
     }
 
-    // === Bind inputs ===
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert1.get());
     InputBindingHelper::BindPlayer2GamepadInputs(qbert2.get());
 }
@@ -418,9 +406,9 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
     BuildQbertBaseScene(scene, levelPath);
 
     auto tileMap = LevelBuilder::GetTileMap();
+    auto startTiles = LevelBuilder::GetStartTileIndices();
 
-    // Qbert (P1) at top-left
-    auto qbertTileGO = tileMap[0][0];
+    auto qbertTileGO = tileMap[startTiles[0].first][startTiles[0].second];
     auto qbertTile = std::shared_ptr<TileComponent>(qbertTileGO->GetComponent<TileComponent>(), [](TileComponent*) {});
     CreateQbertPlayer(qbertTile, scene, false);
 
@@ -428,7 +416,6 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
     if (!qbert)
         return;
 
-    // Coily starts at center top
     const int startRow = 0;
     const int startCol = static_cast<int>(tileMap[startRow].size()) / 2;
     auto coilyTileGO = tileMap[startRow][startCol];
@@ -437,7 +424,6 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
     auto coily = SpawnCoily(coilyTile, qbert, true);
     scene.Add(coily);
 
-    // Connect to manager
     if (auto managerGO = scene.FindFirstObjectOfType<GameplayManagerComponent>())
     {
         auto* manager = managerGO->GetComponent<GameplayManagerComponent>();
@@ -453,7 +439,6 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
         }
     }
 
-    // Bind inputs
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());
     InputBindingHelper::BindPlayer2CoilyGamepadInputs(coily.get());
 }
