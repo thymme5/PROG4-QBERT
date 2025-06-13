@@ -176,6 +176,7 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     }
 
     // === Load and display scores ===
+    HighscoreManager::GetInstance().LoadHighscores();
     const auto& scores = HighscoreManager::GetInstance().GetHighscores();
     const float baseY = 180.0f;
     const float spacing = 40.0f;
@@ -198,15 +199,15 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     }
 
     // === Hint text ===
-    {
-        auto hintGO = std::make_shared<dae::GameObject>();
-        auto* hintText = hintGO->AddComponent<dae::TextComponent>(*hintGO, "ESC OR B TO GO BACK", smallFont);
-        hintText->Update();
+    
+    auto hintGO = std::make_shared<dae::GameObject>();
+    auto* hintText = hintGO->AddComponent<dae::TextComponent>(*hintGO, "ESC OR B TO GO BACK", smallFont);
+    hintText->Update();
 
-        float x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
-        hintGO->SetPosition(x, 400.f);
-        scene.Add(hintGO);
-    }
+    float x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
+    hintGO->SetPosition(x, 400.f);
+    scene.Add(hintGO);
+    
 
     // === Input ===
     auto& input = dae::InputManager::GetInstance();
