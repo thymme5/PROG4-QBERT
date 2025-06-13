@@ -12,14 +12,14 @@ void ChasingState::Enter(CoilyComponent&)
 
 void ChasingState::Update(CoilyComponent& coily)
 {
-    if (coily.GetPaused()) return;
+    if (coily.GetPaused() || coily.IsJumping()) return;
 
     if (coily.GetCoilyTile() == coily.GetQbertTile())
     {
         coily.GetOwner()->NotifyObservers(dae::Event::CoilyHitPlayer);
     }
 
-    if (coily.IsJumping()) return;
+    if (coily.IsPlayerControlled()) return;
 
     auto coilyTile = coily.GetCoilyTile();
     auto qbertTile = coily.GetQbertTile();

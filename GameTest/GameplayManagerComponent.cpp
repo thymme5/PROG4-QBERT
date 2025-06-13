@@ -244,31 +244,53 @@ void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGa
     if (m_ShouldRespawnQbert)
         return;
 
-    switch (event)
+    if (event == dae::Event::CoilyHitPlayer)
     {
-    case dae::Event::CoilyHitPlayer:
+        // update UI lives
         if (m_GameUIComponent)
+        {
             m_GameUIComponent->UpdateLives();
+            if (m_GameUIComponent->GetLives() == 0)
+
+            {
+                HighscoreEntry newEntry{ "YOU", m_GameUIComponent->GetScore()};
+                HighscoreManager::GetInstance().AddHighscore(newEntry);
+
+                HighscoreManager::GetInstance().SaveHighscores();
+
+                GameModeManager::GetInstance().SetMode(std::make_unique<GameOverMenu>());
+                return;
+
+            }
+        }
+            
+        // show Q*bert's swearing icon
         if (auto qbert = m_pQbert.lock())
         {
-            auto* swear = qbert->FindChildWithComponent<dae::TextureComponent>();
-            if (swear)
-                swear->GetComponent<dae::TextureComponent>()->SetVisible(true);
+            auto* swearGO = qbert->FindChildWithComponent<dae::TextureComponent>();
+            if (swearGO)
+            {
+                if (auto* tex = swearGO->GetComponent<dae::TextureComponent>())
+                    tex->SetVisible(true);
+            }
         }
+
+
+        // pause Coily's behavior
         if (auto coily = m_pCoily.lock())
         {
             if (auto* coilyComp = coily->GetComponent<CoilyComponent>())
                 coilyComp->SetPaused(true);
         }
 
+
+        // Set timer and play sound
         m_ShowSwearTimer = 2.0f;
         m_ShouldRespawnQbert = true;
-
         QbertSoundLibrary::Play(SoundID::Swearing);
-        break;
-
     }
 }
+
 
 void GameplayManagerComponent::RespawnQbert()
 {

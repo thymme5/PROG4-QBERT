@@ -396,7 +396,9 @@ void QbertSceneBuilder::BuildVersusScene(dae::Scene& scene, const std::string& l
         if (auto* gameUI = manager->GetGameUI())
         {
             qbert->AddObserver(gameUI);
+            qbert->AddObserver(manager);
             coily->AddObserver(gameUI);
+            coily->AddObserver(manager);
         }
     }
 
