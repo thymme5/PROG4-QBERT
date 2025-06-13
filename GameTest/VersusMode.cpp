@@ -19,7 +19,7 @@ void VersusMode::Enter()
 
 void VersusMode::Exit()
 {
-    dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+    dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 
 void VersusMode::Update()

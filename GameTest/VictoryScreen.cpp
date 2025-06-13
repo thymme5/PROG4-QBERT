@@ -10,7 +10,7 @@ void VictoryScreen::Enter()
 void VictoryScreen::Exit() 
 {
 	dae::InputManager::GetInstance().ClearAllBindings();
-	dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+	dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 void VictoryScreen::Update() 
 

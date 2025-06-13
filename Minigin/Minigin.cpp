@@ -115,6 +115,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			lag -= fixedTimeStep;
 		}
 		renderer.Render();
-
+		sceneManager.Cleanup();
 	}
 }

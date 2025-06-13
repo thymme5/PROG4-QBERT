@@ -31,6 +31,18 @@ void dae::SceneManager::RemoveScene(const std::string& name)
 		}
 	}
 }
+void dae::SceneManager::MarkSceneForDeletion(const std::string& name)
+{
+	m_sceneMarkedForDeletion = name;
+}
+void dae::SceneManager::Cleanup()
+{
+	if (!m_sceneMarkedForDeletion.empty())
+	{
+		RemoveScene(m_sceneMarkedForDeletion);
+		m_sceneMarkedForDeletion.clear();
+	}
+}
 void dae::SceneManager::RenderUI()
 {
 	for (auto& scene : m_scenes)

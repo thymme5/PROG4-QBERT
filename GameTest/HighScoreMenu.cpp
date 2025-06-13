@@ -9,7 +9,7 @@ void HighScoreMenu::Enter()
 void HighScoreMenu::Exit() 
 {
     dae::InputManager::GetInstance().ClearAllBindings();
-    dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+    dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 void HighScoreMenu::Update()
 {
