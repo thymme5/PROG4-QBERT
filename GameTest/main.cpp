@@ -14,6 +14,10 @@
 #include "GameModeManager.h"
 #include "MainMenu.h"
 #include "SoundService.h"
+#include "ResourceManager.h"
+
+#include <filesystem>
+#include <iostream>
 
 void load()
 {
@@ -22,7 +26,7 @@ void load()
 }
 int main(int, char* [])
 {
-	dae::Minigin engine("../Data/");
+    dae::Minigin engine("Data/");
 	engine.Run(load);
 	return 0;
 }

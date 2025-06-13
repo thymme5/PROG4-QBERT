@@ -92,7 +92,8 @@
       <AdditionalDependencies>xinput.lib;minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(ProjectDir)..\Data\*" "$(OutDir)"
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)Data"
+
 
 </Command>
     </PostBuildEvent>
@@ -118,7 +119,8 @@
       <AdditionalDependencies>xinput.lib;minigin.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(ProjectDir)..\Data\*" "$(OutDir)"
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)Data"
+
 
 </Command>
     </PostBuildEvent>
@@ -140,7 +142,8 @@
       <AdditionalDependencies>xinput.lib;minigin.lib;opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(ProjectDir)..\Data\*" "$(OutDir)"
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)Data"
+
 
 </Command>
     </PostBuildEvent>
@@ -166,7 +169,8 @@
       <AdditionalDependencies>xinput.lib;minigin.lib;opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(ProjectDir)..\Data\*" "$(OutDir)"
+      <Command>xcopy /E /Y /I "$(SolutionDir)Data" "$(OutDir)Data"
+
 
 </Command>
     </PostBuildEvent>

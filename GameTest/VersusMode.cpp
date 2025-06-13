@@ -1,20 +1,27 @@
 #include "VersusMode.h"
 #include "QbertSceneBuilder.h"
+#include "ResourceManager.h"
 
+#include <filesystem>
+#include <sstream>
 
 VersusMode::VersusMode(int levelIndex) :
     m_LevelIndex(levelIndex)
 {
-
 }
 
 void VersusMode::Enter()
 {
+    const auto& basePath = dae::ResourceManager::GetInstance().GetDataPath();
+
     std::stringstream ss;
-    ss << "../data/levels/Level0" << m_LevelIndex << "Versus.json";
+    ss << (basePath / "levels" / ("Level0" + std::to_string(m_LevelIndex) + "Versus.json")).string();
     std::string levelPath = ss.str();
 
-    QbertSceneBuilder::BuildVersusScene(dae::SceneManager::GetInstance().CreateScene(m_SceneName),levelPath);
+    QbertSceneBuilder::BuildVersusScene(
+        dae::SceneManager::GetInstance().CreateScene(m_SceneName),
+        levelPath
+    );
 }
 
 void VersusMode::Exit()
@@ -24,5 +31,4 @@ void VersusMode::Exit()
 
 void VersusMode::Update()
 {
-
 }

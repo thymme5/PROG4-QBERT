@@ -55,3 +55,7 @@ void dae::ResourceManager::UnloadUnusedResources()
 			++it;
 	}
 }
+const std::filesystem::path& dae::ResourceManager::GetDataPath()
+{
+	return m_dataPath;
+}

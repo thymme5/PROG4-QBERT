@@ -11,10 +11,8 @@ SinglePlayerMode::SinglePlayerMode(int levelIndex)
 
 void SinglePlayerMode::Enter()
 {
-    std::cout << "buildcing scene " << std::endl;
-
     std::stringstream ss;
-    ss << "../data/levels/Level0" << m_LevelIndex << "Solo.json";
+    ss << dae::ResourceManager::GetInstance().GetDataPath().string() << "/levels/Level0" << m_LevelIndex << "Solo.json";
     std::string levelPath = ss.str();
 
     QbertSceneBuilder::BuildSinglePlayerScene(dae::SceneManager::GetInstance().CreateScene(m_SceneName), levelPath);
@@ -22,9 +20,7 @@ void SinglePlayerMode::Enter()
 
 void SinglePlayerMode::Exit()
 {
-    std::cout << "removing scene " << std::endl;
     dae::InputManager::GetInstance().ClearAllBindings();
-    //dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
     dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 

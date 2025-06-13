@@ -20,7 +20,6 @@ public:
     static void BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath);
     static void CreateQbertPlayer(const std::shared_ptr<TileComponent>& startTile, dae::Scene& scene, bool isSecondPlayer);
 
-
     static std::shared_ptr<dae::GameObject> SpawnCoily(const std::shared_ptr<TileComponent>& startTile, const std::shared_ptr<dae::GameObject>& qbert, bool isPlayerControlled);
 
     //different gamemodes
