@@ -109,6 +109,9 @@
     <Filter Include="GameMode\HighScore">
       <UniqueIdentifier>{3afdf041-8fe9-435d-99f9-a444de71d546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMode\GameOverMenu">
+      <UniqueIdentifier>{ea3c9f09-3b51-4704-9429-1b42c7010596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="HighScoreMenu.cpp">
       <Filter>GameMode\HighScore</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverMenu.cpp">
+      <Filter>GameMode\GameOverMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="BackToMenuCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverMenu.h">
+      <Filter>GameMode\GameOverMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

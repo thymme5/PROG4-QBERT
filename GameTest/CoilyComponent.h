@@ -47,6 +47,9 @@ public:
     std::shared_ptr<TileComponent> GetQbertTile();
     
     bool IsJumping() const;
+    bool GetPaused() const noexcept;
+    void SetPaused(bool paused);
+
     void TryMove(Direction direction);
     glm::vec3 GetPosition() const;
 
@@ -75,5 +78,7 @@ private:
     CoilyJumpData m_Jump;
 
     bool m_IsPlayerControlled{ false };
+
+    bool m_IsPaused;
 
 };

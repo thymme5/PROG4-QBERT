@@ -54,6 +54,11 @@ void GameUIComponent::UpdateLives()
         m_Lives--;
         m_IsDirty = true;
     }
+    else
+    {
+        //should also save current score to a file
+        GameModeManager::GetInstance().SetMode(std::make_unique<GameOverMenu>());
+    }
 }
 
 void GameUIComponent::UpdateScore(int newScore)

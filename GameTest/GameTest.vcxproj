@@ -179,6 +179,7 @@
     <ClCompile Include="EggState.cpp" />
     <ClCompile Include="FinishRoundCommand.h" />
     <ClCompile Include="GameModeManager.cpp" />
+    <ClCompile Include="GameOverMenu.cpp" />
     <ClCompile Include="GameplayManagerComponent.cpp" />
     <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="HighScoreMenu.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="EnterGameMode.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameModeManager.h" />
+    <ClInclude Include="GameOverMenu.h" />
     <ClInclude Include="GameplayManagerComponent.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameUIComponent.h" />
