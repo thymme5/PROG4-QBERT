@@ -70,6 +70,33 @@ std::shared_ptr<dae::GameObject> QbertSceneBuilder::SpawnCoily(const std::shared
     return coily;
 }
 
+void QbertSceneBuilder::BuildGameOverScene(dae::Scene& scene)
+{
+    // === Load texture ===
+    auto gameOverTexture = dae::ResourceManager::GetInstance().LoadTexture("Game Over Title.png");
+
+    // === Create GameObject with texture ===
+    auto titleGO = std::make_shared<dae::GameObject>();
+    titleGO->AddComponent<dae::TextureComponent>(*titleGO, "Game Over Title.png");
+
+    // Center it on screen
+    const auto screenWidth = dae::Renderer::GetInstance().GetWindowSize().x;
+    const auto screenHeight = dae::Renderer::GetInstance().GetWindowSize().y;
+    const auto textureSize = gameOverTexture->GetSize();
+
+    const float x = (screenWidth - textureSize.x) / 2.0f;
+    const float y = (screenHeight - textureSize.y) / 2.0f;
+
+    titleGO->SetPosition(x, y);
+    scene.Add(titleGO);
+
+    // === Input binding: Press ESC or B to return to menu ===
+    auto& inputManager = dae::InputManager::GetInstance();
+    auto backCommand = std::make_shared<BackToMenuCommand>();
+
+    inputManager.BindCommand(SDLK_ESCAPE, KeyState::Down, backCommand);
+    inputManager.BindCommand(0, GamepadButton::B, KeyState::Down, backCommand);
+}
 void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<dae::Font>& font)
 {
     auto go = std::make_shared<dae::GameObject>();

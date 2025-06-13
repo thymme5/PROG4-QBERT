@@ -13,7 +13,6 @@ public:
 
     void Execute() override
     {
-        GameModeManager::GetInstance().SetMode(std::make_unique<MainMenu>());
-        
+        GameModeManager::GetInstance().SetMode(std::make_unique<MainMenu>());   
     }
 };

@@ -2,7 +2,8 @@
 
 CoilyComponent::CoilyComponent(dae::GameObject& owner)
     : Component(owner),
-    m_LastMoveDir{}
+    m_LastMoveDir{},
+    m_IsPaused{}
 {
     m_pOwner->GetComponent<dae::TextureComponent>()->SetTexture("Coily Spritesheet.png");
     m_pOwner->SetRenderLayer(RenderLayer::Characters);
@@ -12,9 +13,18 @@ CoilyComponent::~CoilyComponent()
 {
 
 }
-
+bool CoilyComponent::GetPaused() const noexcept
+{
+    return m_IsPaused;
+}
+void CoilyComponent::SetPaused(bool paused) 
+{
+    m_IsPaused = paused;
+}
 void CoilyComponent::Update()
 {
+    //do nothing if paused (obviously)
+    if (m_IsPaused) return;
 
     constexpr float fixedDeltaTime = 1.f / 60.f;
 

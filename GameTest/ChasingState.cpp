@@ -12,40 +12,11 @@ void ChasingState::Enter(CoilyComponent&)
 
 void ChasingState::Update(CoilyComponent& coily)
 {
-    auto* coilyTexture = coily.GetOwner()->GetComponent<dae::TextureComponent>();
-    auto* qbertTexture = coily.GetQbert()->GetOwner()->GetComponent<dae::TextureComponent>();
+    if (coily.GetPaused()) return;
 
-    if (!coilyTexture || !qbertTexture)
-        return;
-
-    const auto coilyPos = coily.GetOwner()->GetTransform().GetPosition();
-    const auto qbertPos = coily.GetQbert()->GetOwner()->GetTransform().GetPosition();
-
-    const auto coilySize = coilyTexture->GetTexture()->GetSize();   // returns {width, height}
-    const auto qbertSize = qbertTexture->GetTexture()->GetSize();   // returns {width, height}
-
-    // coily bounds
-    float coilyLeft = coilyPos.x;
-    float coilyRight = coilyPos.x + coilySize.x;
-    float coilyTop = coilyPos.y;
-    float coilyBottom = coilyPos.y + coilySize.y;
-
-    // qbert bounds
-    float qbertLeft = qbertPos.x;
-    float qbertRight = qbertPos.x + qbertSize.x;
-    float qbertTop = qbertPos.y;
-    float qbertBottom = qbertPos.y + qbertSize.y;
-
-    // collision check
-    bool isOverlapping = !(coilyRight < qbertLeft ||
-        coilyLeft > qbertRight ||
-        coilyBottom < qbertTop ||
-        coilyTop > qbertBottom);
-
-    if (isOverlapping)
+    if (coily.GetCoilyTile() == coily.GetQbertTile())
     {
         coily.GetOwner()->NotifyObservers(dae::Event::CoilyHitPlayer);
-
     }
 
     if (coily.IsJumping()) return;

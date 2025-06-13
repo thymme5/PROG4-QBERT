@@ -2,6 +2,8 @@
 #include "Observer.h"
 #include "Component.h"
 #include "TextComponent.h"
+#include "GameModeManager.h"
+#include "GameOverMenu.h"
 namespace dae
 {
     class GameObject;
@@ -19,10 +21,10 @@ namespace dae
 
         void SetRoundText(std::shared_ptr<TextComponent> pText) { m_pRoundText = pText; }
         void SetLevelText(std::shared_ptr<TextComponent> pText) { m_pLevelText = pText; }
+        void UpdateLives();
 
 
     private: 
-        void UpdateLives();
         void UpdateScore(int newScore);
 
         int m_Lives;

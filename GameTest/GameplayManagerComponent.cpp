@@ -39,6 +39,12 @@ void GameplayManagerComponent::Update()
 
                 RespawnQbert();
                 m_ShouldRespawnQbert = false;
+
+                if (auto coily = m_pCoily.lock())
+                {
+                    if (auto* coilyComp = coily->GetComponent<CoilyComponent>())
+                        coilyComp->SetPaused(false);
+                }
             }
         }
 
@@ -235,20 +241,27 @@ void GameplayManagerComponent::ForceCompleteRound()
 }
 void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGameObject*/)
 {
+    if (m_ShouldRespawnQbert)
+        return;
+
     switch (event)
     {
     case dae::Event::CoilyHitPlayer:
         if (m_GameUIComponent)
-            //m_GameUIComponent->UpdateLives();
-
+            m_GameUIComponent->UpdateLives();
         if (auto qbert = m_pQbert.lock())
         {
             auto* swear = qbert->FindChildWithComponent<dae::TextureComponent>();
             if (swear)
                 swear->GetComponent<dae::TextureComponent>()->SetVisible(true);
         }
+        if (auto coily = m_pCoily.lock())
+        {
+            if (auto* coilyComp = coily->GetComponent<CoilyComponent>())
+                coilyComp->SetPaused(true);
+        }
 
-        m_ShowSwearTimer = 1.0f;
+        m_ShowSwearTimer = 2.0f;
         m_ShouldRespawnQbert = true;
 
         QbertSoundLibrary::Play(SoundID::Swearing);
@@ -269,6 +282,7 @@ void GameplayManagerComponent::RespawnQbert()
     {
         if (auto* moveComp = qbert->GetComponent<QbertMoveComponent>())
         {
+            std::cout << "moving his ass back" << std::endl;
             moveComp->SetTileMap(tileMap);
             moveComp->SetCurrentTile(startTile); 
         }
