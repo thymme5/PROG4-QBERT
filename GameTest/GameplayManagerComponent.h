@@ -5,6 +5,13 @@
 #include "QbertMoveComponent.h"
 #include "CoilyComponent.h"
 #include "GameUIComponent.h"
+#include "GameModeManager.h"
+
+#include "SinglePlayerMode.h"
+#include "CoopMode.h"
+#include "VersusMode.h"
+#include "Observer.h"
+#include "TextureComponent.h"
 
 enum class GameState
 {
@@ -13,7 +20,7 @@ enum class GameState
     TransitionToNextRound
 };
 
-class GameplayManagerComponent final : public dae::Component {
+class GameplayManagerComponent final : public dae::Component, public dae::Observer {
 public:
     explicit GameplayManagerComponent(dae::GameObject& owner);
     void Init(dae::Scene& scene, const std::string& levelPath = "../data/levels/Level01Solo.json");
@@ -26,6 +33,7 @@ public:
 
     GameState GetCurrentState() const noexcept;
 
+    void OnNotify(dae::Event event, dae::GameObject* pGameObject) override;
     ~GameplayManagerComponent() override = default;
 
     static GameplayManagerComponent* GetInstance();
@@ -35,7 +43,9 @@ public:
     void Render() const override {};
 
     void ForceCompleteRound();
+    void SetNextLevel();
 
+    void RespawnQbert();
 private:
     void CheckRoundComplete();
     void StopTileFlashing();
@@ -49,7 +59,8 @@ private:
     std::string m_LevelPath{};
     
     int m_CurrentRoundIndex = 0;
-
+    int m_CurrentLevelIndex = 1;
+    
     //pointers to entities
     std::weak_ptr<dae::GameObject> m_pQbert; // in multiplayer modes gameplaymanager component will still use qbert 1 as a reference - which shouldn't create any gameplay differences, but also doesn't require for gameplaymanager to be aware of all qbert entities
     std::weak_ptr<dae::GameObject> m_pCoily;
@@ -57,4 +68,10 @@ private:
     dae::GameUIComponent* m_GameUIComponent;
 
     inline static GameplayManagerComponent* s_Instance = nullptr;
+
+    float m_ShowSwearTimer{};
+
+    bool m_ShouldRespawnQbert{false};
+   
+
 };

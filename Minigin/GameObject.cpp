@@ -143,8 +143,6 @@ void GameObject::UpdateWorldPosition()
     }
 }
 
-
-
 void GameObject::AddObserver(Observer* pObserver)
 {
     m_Observers.push_back(pObserver);

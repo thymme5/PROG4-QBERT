@@ -18,3 +18,8 @@ void GameModeManager::Update()
     if (m_CurrentMode)
         m_CurrentMode->Update();
 }
+
+GameMode* GameModeManager::GetCurrentGameMode() const noexcept
+{
+    return m_CurrentMode.get();
+}

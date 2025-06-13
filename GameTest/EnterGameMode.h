@@ -24,16 +24,16 @@ public:
         switch (selected)
         {
         case 0:
-            GameModeManager::GetInstance().SetMode(std::make_unique<SinglePlayerMode>());
+            GameModeManager::GetInstance().SetMode(std::make_unique<SinglePlayerMode>(1));
             break;
         case 1:
-            GameModeManager::GetInstance().SetMode(std::make_unique<CoopMode>());
+            GameModeManager::GetInstance().SetMode(std::make_unique<CoopMode>(1));
             break;
         case 2:
-            GameModeManager::GetInstance().SetMode(std::make_unique<VersusMode>());
+            GameModeManager::GetInstance().SetMode(std::make_unique<VersusMode>(1));
             break;
         case 3:
-            GameModeManager::GetInstance().SetMode(std::make_unique<HighScoreMenu>());
+            GameModeManager::GetInstance().SetMode(std::make_unique<HighScoreMenu>( ));
             break;
         default:
             break;

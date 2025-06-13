@@ -24,6 +24,24 @@ void GameplayManagerComponent::Update()
     case GameState::Playing:
         if (m_RoundInProgress)
             CheckRoundComplete();
+
+        if (m_ShowSwearTimer > 0.0f)
+        {
+            m_ShowSwearTimer -= deltaTime;
+
+            if (m_ShowSwearTimer <= 0.0f && m_ShouldRespawnQbert)
+            {
+                if (auto qbert = m_pQbert.lock())
+                {
+                    if (auto* swear = qbert->FindChildWithComponent<dae::TextureComponent>())
+                        swear->GetComponent<dae::TextureComponent>()->SetVisible(false);
+                }
+
+                RespawnQbert();
+                m_ShouldRespawnQbert = false;
+            }
+        }
+
         break;
 
     case GameState::RoundComplete:
@@ -171,9 +189,31 @@ void GameplayManagerComponent::StartNextRound()
     }
     else
     {
-        //start next level
+        
+        SetNextLevel();
     }
 }
+
+void GameplayManagerComponent::SetNextLevel()
+{
+    ++m_CurrentLevelIndex;
+    m_CurrentRoundIndex = 1;
+
+        auto* currentMode = GameModeManager::GetInstance().GetCurrentGameMode();
+    if (dynamic_cast<SinglePlayerMode*>(currentMode))
+    {
+        GameModeManager::GetInstance().SetMode(std::make_unique<SinglePlayerMode>(m_CurrentLevelIndex));
+    }
+    else if (dynamic_cast<CoopMode*>(currentMode))
+    {
+        GameModeManager::GetInstance().SetMode(std::make_unique<CoopMode>(m_CurrentLevelIndex));
+    }
+    else if (dynamic_cast<VersusMode*>(currentMode))
+    {
+        GameModeManager::GetInstance().SetMode(std::make_unique<VersusMode>(m_CurrentLevelIndex));
+    }
+}
+
 
 void GameplayManagerComponent::ForceCompleteRound()
 {
@@ -193,6 +233,48 @@ void GameplayManagerComponent::ForceCompleteRound()
         }
     }
 }
+void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGameObject*/)
+{
+    switch (event)
+    {
+    case dae::Event::CoilyHitPlayer:
+        if (m_GameUIComponent)
+            //m_GameUIComponent->UpdateLives();
+
+        if (auto qbert = m_pQbert.lock())
+        {
+            auto* swear = qbert->FindChildWithComponent<dae::TextureComponent>();
+            if (swear)
+                swear->GetComponent<dae::TextureComponent>()->SetVisible(true);
+        }
+
+        m_ShowSwearTimer = 1.0f;
+        m_ShouldRespawnQbert = true;
+
+        QbertSoundLibrary::Play(SoundID::Swearing);
+        break;
+
+    }
+}
+
+void GameplayManagerComponent::RespawnQbert()
+{
+    const auto& tileMap = LevelBuilder::GetTileComponentMap();
+    if (tileMap.empty() || tileMap[0].empty())
+        return;
+
+    auto startTile = tileMap[0][0];
+
+    if (auto qbert = m_pQbert.lock())
+    {
+        if (auto* moveComp = qbert->GetComponent<QbertMoveComponent>())
+        {
+            moveComp->SetTileMap(tileMap);
+            moveComp->SetCurrentTile(startTile); 
+        }
+    }
+}
+
 
 GameState GameplayManagerComponent::GetCurrentState() const noexcept
 {
