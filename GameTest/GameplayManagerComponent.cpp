@@ -234,11 +234,16 @@ void GameplayManagerComponent::SetNextLevel()
     }
 }
 
-
 void GameplayManagerComponent::ForceCompleteRound()
 {
     if (m_CurrentState != GameState::Playing)
         return;
+
+    if (auto coily = m_pCoily.lock())
+    {
+        if (auto* coilyComp = coily->GetComponent<CoilyComponent>())
+            coilyComp->SetPaused(false);
+    }
 
     m_CurrentState = GameState::RoundComplete;
     m_StateTimer = 0.0f;
@@ -278,7 +283,7 @@ void GameplayManagerComponent::OnNotify(dae::Event event, dae::GameObject* /*pGa
             }
         }
             
-        // show Q*bert's swearing icon
+        // show Qbert's swearing icon
         if (auto qbert = m_pQbert.lock())
         {
             auto* swearGO = qbert->FindChildWithComponent<dae::TextureComponent>();
@@ -316,19 +321,16 @@ void GameplayManagerComponent::RespawnQbert()
     {
         if (auto* moveComp = qbert->GetComponent<QbertMoveComponent>())
         {
-            std::cout << "moving his ass back" << std::endl;
             moveComp->SetTileMap(tileMap);
             moveComp->SetCurrentTile(startTile); 
         }
     }
 }
 
-
 GameState GameplayManagerComponent::GetCurrentState() const noexcept
 {
     return m_CurrentState;
 }
-
 
 GameplayManagerComponent* GameplayManagerComponent::GetInstance()
 {

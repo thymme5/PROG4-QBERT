@@ -17,7 +17,7 @@ void CoopMode::Enter()
 
 void CoopMode::Exit()
 {
-    dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+    dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 
 void CoopMode::Update()

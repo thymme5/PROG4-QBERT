@@ -9,7 +9,7 @@ void GameOverMenu::Enter()
 void GameOverMenu::Exit()
 {
 	dae::InputManager::GetInstance().ClearAllBindings();
-	dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+	dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 void GameOverMenu::Update()
 {

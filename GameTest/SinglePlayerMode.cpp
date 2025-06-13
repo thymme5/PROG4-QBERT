@@ -24,7 +24,8 @@ void SinglePlayerMode::Exit()
 {
     std::cout << "removing scene " << std::endl;
     dae::InputManager::GetInstance().ClearAllBindings();
-    dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+    //dae::SceneManager::GetInstance().RemoveScene(m_SceneName);
+    dae::SceneManager::GetInstance().MarkSceneForDeletion(m_SceneName);
 }
 
 void SinglePlayerMode::Update()
