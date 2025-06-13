@@ -48,7 +48,9 @@ public:
     
     bool IsJumping() const;
     bool GetPaused() const noexcept;
+    bool GetIsPlayer() const noexcept;
     void SetPaused(bool paused);
+
 
     void TryMove(Direction direction);
     glm::vec3 GetPosition() const;

@@ -46,7 +46,10 @@ void GameUIComponent::OnNotify(Event event, GameObject* pGameObject)
         break;
     }
 }
-
+int GameUIComponent::GetLives() const noexcept
+{
+    return m_Lives;
+}
 void GameUIComponent::UpdateLives()
 {
     if (m_Lives > 0)
@@ -56,15 +59,13 @@ void GameUIComponent::UpdateLives()
     }
     else
     {
-        HighscoreEntry newEntry{ "YOU", m_Score };
-        HighscoreManager::GetInstance().AddHighscore(newEntry);
-
-        HighscoreManager::GetInstance().SaveHighscores();
-
-        GameModeManager::GetInstance().SetMode(std::make_unique<GameOverMenu>());
+        
     }
 }
-
+int GameUIComponent::GetScore() const noexcept
+{
+    return m_Score;
+}
 void GameUIComponent::UpdateScore(int newScore)
 {
     if (m_Score != newScore)

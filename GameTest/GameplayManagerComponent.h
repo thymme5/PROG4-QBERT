@@ -17,7 +17,8 @@ enum class GameState
 {
     Playing,
     RoundComplete,
-    TransitionToNextRound
+    TransitionToNextRound,
+    gameOver
 };
 
 class GameplayManagerComponent final : public dae::Component, public dae::Observer {
@@ -30,6 +31,7 @@ public:
 
     void SetGameUI(dae::GameUIComponent* gameUI);
     dae::GameUIComponent* GetGameUI() const;
+    
 
     GameState GetCurrentState() const noexcept;
 

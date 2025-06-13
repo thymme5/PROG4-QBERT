@@ -25,7 +25,8 @@ namespace dae
         void SetLevelText(std::shared_ptr<TextComponent> pText) { m_pLevelText = pText; }
         void UpdateLives();
 
-
+        int GetLives() const noexcept;
+        int GetScore() const noexcept;
     private: 
         void UpdateScore(int newScore);
 

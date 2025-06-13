@@ -23,6 +23,11 @@ void CoilyComponent::SetPaused(bool paused)
 }
 void CoilyComponent::Update()
 {
+    if (m_pCurrentState)
+    {
+        m_pCurrentState->Update(*this);
+    }
+
     //do nothing if paused (obviously)
     if (m_IsPaused) return;
 
@@ -56,16 +61,7 @@ void CoilyComponent::Update()
         m_Jump.waitTimer += fixedDeltaTime;
         return; 
     }
-
-    if (m_IsPlayerControlled)
-    {
-        if (dynamic_cast<ChasingState*>(m_pCurrentState.get()))
-            return;
-    }
-    if (m_pCurrentState)
-    {
-        m_pCurrentState->Update(*this);
-    }
+    
 }
 
 void CoilyComponent::Render() const
@@ -140,7 +136,10 @@ const CoilyState* CoilyComponent::GetState() const noexcept
 {
     return m_pCurrentState.get();
 }
-
+bool CoilyComponent::GetIsPlayer() const noexcept
+{
+    return m_IsPlayerControlled;
+}
 void CoilyComponent::SetPlayerControlled(bool isControlled)
 {
     m_IsPlayerControlled = isControlled;
@@ -173,7 +172,6 @@ std::shared_ptr<TileComponent> CoilyComponent::GetCoilyTile()
 }
 void CoilyComponent::SetQbert(std::shared_ptr<dae::GameObject> qbert)
 { 
-    //TODO: apply observer pattern here
     m_pQbert = std::move(qbert); 
 }
 
