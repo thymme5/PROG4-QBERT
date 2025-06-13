@@ -112,6 +112,9 @@
     <Filter Include="GameMode\GameOverMenu">
       <UniqueIdentifier>{ea3c9f09-3b51-4704-9429-1b42c7010596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMode\VictoryScreen">
+      <UniqueIdentifier>{08bb5ca4-ed5b-46c9-9706-b1587ee086a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="HighScoreManager.cpp">
       <Filter>GameMode\HighScore</Filter>
+    </ClCompile>
+    <ClCompile Include="VictoryScreen.cpp">
+      <Filter>GameMode\VictoryScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="HighScoreManager.h">
       <Filter>GameMode\HighScore</Filter>
+    </ClInclude>
+    <ClInclude Include="VictoryScreen.h">
+      <Filter>GameMode\VictoryScreen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -110,6 +110,12 @@ void GameplayManagerComponent::CheckRoundComplete()
         m_StateTimer = 0.0f;
         m_RoundInProgress = false;
 
+        if (auto coily = m_pCoily.lock())
+        {
+            auto* coilyMoveComponent = coily->GetComponent<CoilyComponent>();
+            coilyMoveComponent->SetPaused(true);
+        }
+
         for (const auto& row : LevelBuilder::GetTileComponentMap())
         {
             for (const auto& tile : row)
@@ -166,8 +172,9 @@ void GameplayManagerComponent::StartNextRound()
         LevelBuilder::LoadFromJson(*m_pScene, m_LevelPath, m_CurrentRoundIndex);
 
         const auto& newTileMap = LevelBuilder::GetTileMap();
-        auto firstTile = newTileMap[0][0];
-        auto firstTileComp = std::shared_ptr<TileComponent>(firstTile->GetComponent<TileComponent>(), [](TileComponent*) {});
+        auto firstTileGO = newTileMap[0][0]; 
+        TileComponent* rawComp = firstTileGO->GetComponent<TileComponent>();
+        std::shared_ptr<TileComponent> firstTileComp(firstTileGO, rawComp); 
 
         // update Qbert
         if (auto qbert = m_pQbert.lock())
@@ -183,10 +190,11 @@ void GameplayManagerComponent::StartNextRound()
         if (auto coily = m_pCoily.lock())
         {
             auto* coilyMoveComponent = coily->GetComponent<CoilyComponent>();
-
             coilyMoveComponent->SetState(std::make_unique<EggState>());
             coilyMoveComponent->SetTileMap(LevelBuilder::GetTileComponentMap());
             coilyMoveComponent->SetCurrentTile(firstTileComp);
+            coilyMoveComponent->SetPaused(false);
+
         }
 
         // set state flags
@@ -195,8 +203,14 @@ void GameplayManagerComponent::StartNextRound()
     }
     else
     {
-        
-        SetNextLevel();
+        //game won logic 
+        HighscoreEntry newEntry{ "YOU", m_GameUIComponent->GetScore() };
+        HighscoreManager::GetInstance().AddHighscore(newEntry);
+
+        HighscoreManager::GetInstance().SaveHighscores();
+
+        GameModeManager::GetInstance().SetMode(std::make_unique<VictoryScreen>());
+        return;
     }
 }
 

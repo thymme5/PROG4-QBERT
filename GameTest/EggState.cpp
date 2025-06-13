@@ -12,7 +12,7 @@ void EggState::Enter(CoilyComponent& coily)
 
 void EggState::Update(CoilyComponent& coily)
 {
-    if (coily.IsJumping()) return;
+    if (coily.IsJumping() || coily.GetPaused()) return;
 
     // alternate directions
     //TODO: get rid of the fucking enum and adapt this (i have no fucking clue how)

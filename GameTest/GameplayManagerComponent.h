@@ -12,13 +12,14 @@
 #include "VersusMode.h"
 #include "Observer.h"
 #include "TextureComponent.h"
-
+#include "VictoryScreen.h"
 enum class GameState
 {
     Playing,
     RoundComplete,
     TransitionToNextRound,
-    gameOver
+    gameOver,
+    gameWon
 };
 
 class GameplayManagerComponent final : public dae::Component, public dae::Observer {

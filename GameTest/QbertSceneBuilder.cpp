@@ -158,7 +158,6 @@ void QbertSceneBuilder::BuildMainMenu(dae::Scene& scene, const std::shared_ptr<d
     inputManager.BindCommand(SDLK_RETURN, KeyState::Down, confirmCommand);
     inputManager.BindCommand(0, GamepadButton::A, KeyState::Down, confirmCommand);
 }
-
 void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
 {
     const auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -207,6 +206,52 @@ void QbertSceneBuilder::BuildHighScoreScene(dae::Scene& scene)
     hintGO->SetPosition(x, 400.f);
     scene.Add(hintGO);
     
+
+    // === Input ===
+    auto& input = dae::InputManager::GetInstance();
+    auto confirmCmd = std::make_shared<BackToMenuCommand>();
+    input.BindCommand(SDLK_ESCAPE, KeyState::Down, confirmCmd);
+    input.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCmd);
+}
+void QbertSceneBuilder::BuildVictoryScene(dae::Scene& scene)
+{
+    const auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+    const auto smallFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+    const auto windowWidth = dae::Renderer::GetInstance().GetWindowSize().x;
+
+    // === Victory Title ===
+    {
+        auto titleGO = std::make_shared<dae::GameObject>();
+        titleGO->AddComponent<dae::TextureComponent>(*titleGO, "Victory Title.png", 2.f); // assuming 2x scale
+        float titleWidth = static_cast<float>(titleGO->GetComponent<dae::TextureComponent>()->GetTexture()->GetSize().x) * 2.f;
+        float x = (windowWidth - titleWidth) / 2.f;
+        titleGO->SetPosition(x, 100.f);
+        scene.Add(titleGO);
+    }
+    int finalScore = HighscoreManager::GetInstance().GetLastAddedEntry().score;
+
+
+    // === Score Display ===
+    {
+        auto scoreGO = std::make_shared<dae::GameObject>();
+        std::stringstream ss;
+        ss << "YOUR SCORE: " << finalScore;
+        auto* scoreText = scoreGO->AddComponent<dae::TextComponent>(*scoreGO, ss.str(), font);
+        scoreText->Update();
+        float x = (windowWidth - static_cast<float>(scoreText->GetTextureSize().x)) / 2.f;
+        scoreGO->SetPosition(x, 220.f);
+        scene.Add(scoreGO);
+    }
+
+    // === Continue Hint ===
+    {
+        auto hintGO = std::make_shared<dae::GameObject>();
+        auto* hintText = hintGO->AddComponent<dae::TextComponent>(*hintGO, "ESC OR B TO RETURN TO MENU", smallFont);
+        hintText->Update();
+        float x = (windowWidth - static_cast<float>(hintText->GetTextureSize().x)) / 2.f;
+        hintGO->SetPosition(x, 350.f);
+        scene.Add(hintGO);
+    }
 
     // === Input ===
     auto& input = dae::InputManager::GetInstance();
@@ -297,6 +342,9 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
         manager->SetQbert(qbert);
         if (auto* gameUI = manager->GetGameUI())
         {
+            manager->SetQbert(qbert);
+            manager->SetCoily(coily);
+
             qbert->AddObserver(gameUI);
             qbert->AddObserver(manager);
 
@@ -352,6 +400,9 @@ void QbertSceneBuilder::BuildCoopScene(dae::Scene& scene, const std::string& lev
         manager->SetQbert(qbert1);
         if (auto* gameUI = manager->GetGameUI())
         {
+            manager->SetQbert(qbert1);
+            manager->SetCoily(coily);
+
             qbert1->AddObserver(gameUI);
             qbert2->AddObserver(gameUI);
         }

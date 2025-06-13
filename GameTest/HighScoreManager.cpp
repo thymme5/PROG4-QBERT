@@ -11,6 +11,8 @@ const std::vector<HighscoreEntry>& HighscoreManager::GetHighscores() const
 
 void HighscoreManager::AddHighscore(const HighscoreEntry& entry)
 {
+    m_LastAddedEntry = entry; // last score
+
     m_Highscores.push_back(entry);
 
     std::sort(m_Highscores.begin(), m_Highscores.end(), [](const auto& a, const auto& b) {
@@ -20,6 +22,7 @@ void HighscoreManager::AddHighscore(const HighscoreEntry& entry)
     if (m_Highscores.size() > 5)
         m_Highscores.resize(5);
 }
+
 
 void HighscoreManager::LoadHighscores()
 {
@@ -54,4 +57,8 @@ void HighscoreManager::SaveHighscores() const
     std::ofstream file(m_FilePath);
     if (file.is_open())
         file << data.dump(4);
+}
+HighscoreEntry& HighscoreManager::GetLastAddedEntry()
+{ 
+    return m_LastAddedEntry;
 }
