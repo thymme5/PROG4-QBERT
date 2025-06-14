@@ -206,10 +206,10 @@ void GameplayManagerComponent::StartNextRound()
         //game won logic 
         HighscoreEntry newEntry{ "YOU", m_GameUIComponent->GetScore() };
         HighscoreManager::GetInstance().AddHighscore(newEntry);
-
         HighscoreManager::GetInstance().SaveHighscores();
 
         GameModeManager::GetInstance().SetMode(std::make_unique<VictoryScreen>());
+
         return;
     }
 }

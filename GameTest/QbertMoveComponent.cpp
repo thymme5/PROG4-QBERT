@@ -115,14 +115,14 @@ void QbertMoveComponent::TryMove(Direction direction)
 	//check row bounds
 	if (newRow < 0 || newRow >= static_cast<int>(m_pTileMap->size()))
 	{
-		std::cout << "Out of bounds row: " << newRow << "\n";
+		m_pOwner->NotifyObservers(dae::Event::CoilyHitPlayer);
 		return;
 	}
 
 	//check col bounds
 	if (newCol < 0 || newCol >= static_cast<int>((*m_pTileMap)[newRow].size()))
 	{
-		std::cout << "Out of bounds col: " << newCol << "\n";
+		m_pOwner->NotifyObservers(dae::Event::CoilyHitPlayer);
 		return;
 	}
 
