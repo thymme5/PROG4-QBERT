@@ -115,6 +115,9 @@
     <Filter Include="GameMode\SinglePlayerMode\VersusMode">
       <UniqueIdentifier>{a35eceac-86fa-47fe-bd62-d0cc96f2a3b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\EdgeEnemyComponent">
+      <UniqueIdentifier>{207feed1-bd34-43c0-a62e-276dc0907e22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="VictoryScreen.cpp">
       <Filter>GameMode\VictoryScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeEnemyComponent.cpp">
+      <Filter>Game\Components\EdgeEnemyComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="VictoryScreen.h">
       <Filter>GameMode\VictoryScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeEnemyComponent.h">
+      <Filter>Game\Components\EdgeEnemyComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

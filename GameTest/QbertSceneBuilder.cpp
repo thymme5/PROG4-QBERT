@@ -221,10 +221,10 @@ void QbertSceneBuilder::BuildVictoryScene(dae::Scene& scene)
     // === Victory Title ===
     {
         auto titleGO = std::make_shared<dae::GameObject>();
-        titleGO->AddComponent<dae::TextureComponent>(*titleGO, "Victory Title.png", 2.f); // assuming 2x scale
-        float titleWidth = static_cast<float>(titleGO->GetComponent<dae::TextureComponent>()->GetTexture()->GetSize().x) * 2.f;
+        titleGO->AddComponent<dae::TextureComponent>(*titleGO, "Victory Title.png", 1.f);
+        float titleWidth = static_cast<float>(titleGO->GetComponent<dae::TextureComponent>()->GetTexture()->GetSize().x);
         float x = (windowWidth - titleWidth) / 2.f;
-        titleGO->SetPosition(x, 100.f);
+        titleGO->SetPosition(x, 50.f);
         scene.Add(titleGO);
     }
     int finalScore = HighscoreManager::GetInstance().GetLastAddedEntry().score;
@@ -258,8 +258,6 @@ void QbertSceneBuilder::BuildVictoryScene(dae::Scene& scene)
     input.BindCommand(SDLK_ESCAPE, KeyState::Down, confirmCmd);
     input.BindCommand(0, GamepadButton::B, KeyState::Down, confirmCmd);
 }
-
-
 void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string& levelPath)
 {
     auto& inputManager = dae::InputManager::GetInstance();
@@ -290,17 +288,11 @@ void QbertSceneBuilder::BuildQbertBaseScene(dae::Scene& scene, const std::string
 
     // === Round & Level UI ===
     auto roundGO = std::make_shared<dae::GameObject>();
-    roundGO->AddComponent<dae::TextComponent>(*roundGO, "ROUND: 1", font);
+    roundGO->AddComponent<dae::TextComponent>(*roundGO, "LEVEL: 1", font);
     roundGO->SetPosition(400, 80);
     scene.Add(roundGO);
 
-    auto levelGO = std::make_shared<dae::GameObject>();
-    levelGO->AddComponent<dae::TextComponent>(*levelGO, "LEVEL: 1", font);
-    levelGO->SetPosition(400, 110);
-    scene.Add(levelGO);
-
     gameUI->SetRoundText(std::shared_ptr<dae::TextComponent>(roundGO->GetComponent<dae::TextComponent>(), [](dae::TextComponent*) {}));
-    gameUI->SetLevelText(std::shared_ptr<dae::TextComponent>(levelGO->GetComponent<dae::TextComponent>(), [](dae::TextComponent*) {}));
 
     // === Mute toggle ===
     auto toggleMute = std::make_shared<ToggleMuteCommand>();
@@ -348,6 +340,28 @@ void QbertSceneBuilder::BuildSinglePlayerScene(dae::Scene& scene, const std::str
             coily->AddObserver(manager);
         }
     }
+
+    //// === Spawn Ugg ===
+    //{
+    //    auto uggGO = std::make_shared<dae::GameObject>();
+
+    //    uggGO->AddComponent<dae::TextureComponent>(*uggGO, "Ugg.png", 2.f, 0);
+    //    auto uggComp = uggGO->AddComponent<EdgeEnemyComponent>(EdgeEnemyType::Ugg, *uggGO);
+    //    uggComp->SetTileMap(LevelBuilder::GetTileComponentMap());
+
+    //    scene.Add(uggGO);
+    //}
+
+    //// === Spawn Wrongway ===
+    //{
+    //    auto wrongwayGO = std::make_shared<dae::GameObject>();
+
+    //    wrongwayGO->AddComponent<dae::TextureComponent>(*wrongwayGO, "Wrongway.png", 2.f, 0);
+    //    auto wrongwayComp = wrongwayGO->AddComponent<EdgeEnemyComponent>(EdgeEnemyType::Wrongway, *wrongwayGO);
+    //    wrongwayComp->SetTileMap(LevelBuilder::GetTileComponentMap());
+
+    //    scene.Add(wrongwayGO);
+    //}
 
     InputBindingHelper::BindPlayer1GamepadInputs(qbert.get());
     InputBindingHelper::BindPlayer1KeyboardInputs(qbert.get());

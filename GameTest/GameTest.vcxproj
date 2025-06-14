@@ -53,7 +53,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -183,6 +183,7 @@
     <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="ColorMap.cpp" />
     <ClCompile Include="CoopMode.cpp" />
+    <ClCompile Include="EdgeEnemyComponent.cpp" />
     <ClCompile Include="EggState.cpp" />
     <ClCompile Include="FinishRoundCommand.h" />
     <ClCompile Include="GameModeManager.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="CoilyState.h" />
     <ClInclude Include="ColorMap.h" />
     <ClInclude Include="CoopMode.h" />
+    <ClInclude Include="EdgeEnemyComponent.h" />
     <ClInclude Include="EggState.h" />
     <ClInclude Include="EnterGameMode.h" />
     <ClInclude Include="GameMode.h" />
@@ -250,9 +252,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  
   <PropertyGroup>
-  <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
-</PropertyGroup>
-
+    <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
+  </PropertyGroup>
 </Project>

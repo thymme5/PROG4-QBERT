@@ -81,11 +81,7 @@ void GameUIComponent::Update()
         m_pOwner->GetComponent<TextComponent>()->SetText(text);
 
         if (m_pRoundText)
-            m_pRoundText->SetText("ROUND: " + std::to_string(m_Round));
-
-        if (m_pLevelText)
-            m_pLevelText->SetText("LEVEL: " + std::to_string(m_Level));
-        
+            m_pRoundText->SetText("LEVEL: " + std::to_string(m_Round));
         m_IsDirty = false;
     }
 }

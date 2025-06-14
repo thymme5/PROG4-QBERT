@@ -6,6 +6,7 @@
 #include "GameModeManager.h"
 #include "BackToMenuCommand.h"
 #include "FinishRoundCommand.h"
+#include "EdgeEnemyComponent.h"
 
 class QbertSceneBuilder
 {
