@@ -85,9 +85,6 @@
     <Filter Include="GameMode\CoopMode">
       <UniqueIdentifier>{a3f49624-3f32-47e9-ba26-8160675f0b72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameMode\VersusMode">
-      <UniqueIdentifier>{a35eceac-86fa-47fe-bd62-d0cc96f2a3b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameMode\GameModeManager">
       <UniqueIdentifier>{4eb65f4e-5ec8-4169-b12e-69f0af694d18}</UniqueIdentifier>
     </Filter>
@@ -114,6 +111,9 @@
     </Filter>
     <Filter Include="GameMode\VictoryScreen">
       <UniqueIdentifier>{08bb5ca4-ed5b-46c9-9706-b1587ee086a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode\SinglePlayerMode\VersusMode">
+      <UniqueIdentifier>{a35eceac-86fa-47fe-bd62-d0cc96f2a3b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +172,7 @@
       <Filter>GameMode\CoopMode</Filter>
     </ClCompile>
     <ClCompile Include="VersusMode.cpp">
-      <Filter>GameMode\VersusMode</Filter>
+      <Filter>GameMode\SinglePlayerMode\VersusMode</Filter>
     </ClCompile>
     <ClCompile Include="GameModeManager.cpp">
       <Filter>GameMode\GameModeManager</Filter>
@@ -261,7 +261,7 @@
       <Filter>GameMode\CoopMode</Filter>
     </ClInclude>
     <ClInclude Include="VersusMode.h">
-      <Filter>GameMode\VersusMode</Filter>
+      <Filter>GameMode\SinglePlayerMode\VersusMode</Filter>
     </ClInclude>
     <ClInclude Include="GameModeManager.h">
       <Filter>GameMode\GameModeManager</Filter>
