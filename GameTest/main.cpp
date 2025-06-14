@@ -17,7 +17,6 @@
 #include "ResourceManager.h"
 
 #include <filesystem>
-#include <iostream>
 
 void load()
 {
