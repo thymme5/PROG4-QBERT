@@ -2,7 +2,7 @@
 
 ## 🕹️ Overview
 
-This project is a faithful recreation of the classic **Q*bert** arcade game, developed using a custom-built C++ game engine. Designed as part of a programming assignment, the engine emphasizes modularity, component-driven architecture, and modern C++ design patterns. It includes full support for audio, input, rendering, and scene transitions, with extensive use of **SDL2** and **nlohmann/json** for asset and level handling.
+This project is a faithful recreation of the classic **Q*bert** arcade game, developed using a custom-built C++ game engine. Designed as part of a programming assignment, the engine emphasizes modularity, component-driven architecture, and modern C++ design patterns. It includes full support for audio, input, rendering, and scene transitions, with extensive use of **SDL2** and **nlohmann/json** for asset and level handling and uses mingin as a base.
 
 ---
 
